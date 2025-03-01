@@ -1,0 +1,53 @@
+.header {
+  padding: 20px 0;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  background: rgba(15, 14, 26, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+}
+
+.logo span {
+  color: var(--primary);
+}
+
+.navLinks {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.navLinks a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navLinks a:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .headerContainer {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .navLinks {
+    gap: 20px;
+  }
+} 

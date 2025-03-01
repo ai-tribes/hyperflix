@@ -1,0 +1,145 @@
+.tokenSection {
+  background: linear-gradient(135deg, rgba(15, 14, 26, 0.9), rgba(15, 14, 26, 0.95));
+  padding: 100px 0;
+}
+
+.tokenContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.tokenContent h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, white, var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tokenContent p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 30px;
+}
+
+.tokenFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tokenFeature {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.tokenFeatureIcon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 51, 102, 0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.tokenFeature h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.tokenFeature p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.tokenDistribution {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.tokenCircle {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--primary) 0% 40%,
+    var(--secondary) 40% 65%,
+    var(--accent) 65% 80%,
+    rgba(255, 255, 255, 0.3) 80% 100%
+  );
+}
+
+.tokenCircle::before {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: var(--dark);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tokenLegend {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tokenLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tokenLegendColor {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+}
+
+@media (max-width: 992px) {
+  .tokenContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .tokenCircle {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tokenSection {
+    padding: 60px 0;
+  }
+
+  .tokenContent h2 {
+    font-size: 2rem;
+  }
+
+  .tokenDistribution {
+    height: 300px;
+  }
+} 

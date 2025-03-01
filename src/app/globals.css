@@ -1,0 +1,59 @@
+:root {
+  --primary: #ff3366;
+  --secondary: #6633ff;
+  --accent: #f7931a;
+  --dark: #0f0e1a;
+  --light: #f8f9fa;
+  --gray: #6c757d;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --glow: rgba(255, 51, 102, 0.5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  color: white;
+  background-color: var(--dark);
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Button Styles */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 51, 102, 0.6);
+}
+
+.btn-accent {
+  background: linear-gradient(90deg, var(--accent), #ff8a00);
+  box-shadow: 0 4px 15px rgba(247, 147, 26, 0.4);
+}
+
+.btn-accent:hover {
+  box-shadow: 0 8px 25px rgba(247, 147, 26, 0.6);
+} 
