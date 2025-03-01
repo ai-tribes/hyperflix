@@ -1,14 +1,19 @@
+"use client";
+
 import React, { useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import styles from './Header.module.css'
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className={styles.header}>
       <div className="container">
         <div className={styles.headerContainer}>
-          <a href="#" className={styles.logo}>Hyper-<span>Flix</span></a>
+          <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>
           
           <div className={styles.tagline}>
             <span>HyperFlix - Generate Viral TikTok Content for Memecoins</span>
@@ -26,15 +31,73 @@ const Header = () => {
           
           <nav className={`${styles.navigation} ${mobileMenuOpen ? styles.open : ''}`}>
             <ul className={styles.navLinks}>
-              <li><a href="#dashboard">Dashboard</a></li>
-              <li><a href="#create">Create UGC</a></li>
-              <li><a href="#videos">Videos</a></li>
-              <li><a href="#tokens">Tokens</a></li>
-              <li><a href="#audios">Audios</a></li>
-              <li><a href="#lipsync">Lip Sync <span className={styles.new}>New!</span></a></li>
-              <li><a href="#account">Account</a></li>
-              <li><a href="#support">Support</a></li>
-              <li className={styles.ctaButton}><a href="#pricing">Pricing</a></li>
+              <li>
+                <Link 
+                  href="/dashboard" 
+                  className={pathname === '/dashboard' ? styles.active : ''}
+                >
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/create" 
+                  className={pathname === '/create' ? styles.active : ''}
+                >
+                  Create UGC
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/videos" 
+                  className={pathname === '/videos' ? styles.active : ''}
+                >
+                  Videos
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/tokens" 
+                  className={pathname === '/tokens' ? styles.active : ''}
+                >
+                  Tokens
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/audios" 
+                  className={pathname === '/audios' ? styles.active : ''}
+                >
+                  Audios
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/lipsync" 
+                  className={pathname === '/lipsync' ? styles.active : ''}
+                >
+                  Lip Sync <span className={styles.new}>New!</span>
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/account" 
+                  className={pathname === '/account' ? styles.active : ''}
+                >
+                  Account
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/support" 
+                  className={pathname === '/support' ? styles.active : ''}
+                >
+                  Support
+                </Link>
+              </li>
+              <li className={styles.ctaButton}>
+                <Link href="/pricing">Pricing</Link>
+              </li>
             </ul>
           </nav>
         </div>

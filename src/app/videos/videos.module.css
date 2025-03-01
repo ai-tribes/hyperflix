@@ -1,0 +1,417 @@
+/* Videos page styles */
+.videosPage {
+  padding: 24px;
+  width: 100%;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.pageHeader h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.pageHeader p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.createButton {
+  background: linear-gradient(90deg, #FF6B00, #FF9E00);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.createButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.2);
+}
+
+.createButton span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Filters */
+.filters {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filterControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterGroup label {
+  font-size: 0.9rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+.filterGroup select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 0.9rem;
+  min-width: 120px;
+  color: #333;
+}
+
+.searchBox {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.searchBox input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 1rem;
+}
+
+.viewToggle {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.viewButton {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #777;
+  font-size: 1rem;
+}
+
+.viewButton.active {
+  background-color: #f0f4ff;
+  color: #5865F2;
+  border-color: #5865F2;
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: 60px 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.emptyState h3 {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.emptyState p {
+  color: #777;
+  margin-bottom: 24px;
+}
+
+/* Videos Grid */
+.videosGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.videoCard {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.videoCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.thumbnailContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9/16;
+  background-color: #eee;
+  overflow: hidden;
+}
+
+.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px;
+  pointer-events: none;
+}
+
+.statusBadge {
+  background-color: white;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statusPublished {
+  background-color: #22c55e;
+  color: white;
+}
+
+.statusProcessing {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.statusDraft {
+  background-color: #94a3b8;
+  color: white;
+}
+
+.platformBadge {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.videoInfo {
+  padding: 16px;
+}
+
+.videoTitle {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  height: 2.8em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.videoStats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+}
+
+.videoStats span {
+  color: #666;
+  display: flex;
+  flex-direction: column;
+}
+
+.videoStats strong {
+  color: #333;
+  font-size: 1rem;
+}
+
+.videoDate {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 16px;
+}
+
+.videoActions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.actionButton {
+  background-color: #f5f7fa;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  color: #555;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actionButton:hover {
+  background-color: #e4e7eb;
+}
+
+.actionButtonDanger {
+  background-color: #fee2e2;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  color: #ef4444;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actionButtonDanger:hover {
+  background-color: #fecaca;
+}
+
+/* List view */
+.videosList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.videoRow {
+  display: flex;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.videoRow .thumbnailContainer {
+  width: 120px;
+  min-width: 120px;
+  height: auto;
+  aspect-ratio: 9/16;
+}
+
+.videoRow .videoInfo {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.videoRow .videoTitle {
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.videoRow .videoStats {
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 8px;
+}
+
+.videoRow .videoActions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.videoRow .actionButton,
+.videoRow .actionButtonDanger {
+  padding: 6px 12px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .pageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .pageHeader a {
+    align-self: stretch;
+  }
+  
+  .pageHeader .createButton {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .filterControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filterGroup {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .filterGroup select {
+    width: 100%;
+  }
+  
+  .viewToggle {
+    margin-left: 0;
+    align-self: flex-end;
+  }
+  
+  .videoRow {
+    flex-direction: column;
+  }
+  
+  .videoRow .thumbnailContainer {
+    width: 100%;
+  }
+  
+  .videoRow .videoStats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+} 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Sidebar.module.css';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -8,6 +9,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+  const pathname = usePathname();
+  
   return (
     <>
       <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
@@ -21,22 +24,31 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         <nav className={styles.sidebarNav}>
           <ul>
             <li>
-              <Link href="/dashboard" className={styles.active}>
+              <Link 
+                href="/dashboard" 
+                className={pathname === '/dashboard' ? styles.active : styles.navLink}
+              >
                 <span className={styles.icon}>📊</span>
                 Dashboard
               </Link>
             </li>
             <li>
-              <Link href="/create" className={styles.navLink}>
+              <Link 
+                href="/create" 
+                className={pathname === '/create' ? styles.active : styles.navLink}
+              >
                 <span className={styles.icon}>🎬</span>
                 Create UGC Content
               </Link>
             </li>
             <li>
-              <a href="#videos">
+              <Link 
+                href="/videos" 
+                className={pathname === '/videos' ? styles.active : styles.navLink}
+              >
                 <span className={styles.icon}>🎥</span>
                 Videos
-              </a>
+              </Link>
             </li>
             <li>
               <a href="#tokens">
