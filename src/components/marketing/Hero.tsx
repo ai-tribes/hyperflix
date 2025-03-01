@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react'
 import styles from './Hero.module.css'
 
@@ -7,9 +9,9 @@ const Hero = () => {
       <div className="container">
         <div className={styles.heroContent}>
           <h1>Revolutionize Memecoin Marketing with AI</h1>
-          <p>$HFLIX - The utility token powering the first AI-driven platform designed specifically for memecoins to create viral TikTok content. Join the future of crypto marketing.</p>
+          <p>$FLIX - The utility token powering the first AI-driven platform designed specifically for memecoins to create viral TikTok content. Join the future of crypto marketing.</p>
           <div className={styles.heroButtons}>
-            <a href="#" className="btn">Buy $HFLIX Token</a>
+            <a href="#" className="btn">Buy $FLIX Token</a>
             <a href="#" className="btn btn-accent">Try the Platform</a>
           </div>
           <div className={styles.tokenInfo}>

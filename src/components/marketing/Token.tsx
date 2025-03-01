@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react'
 import styles from './Token.module.css'
 
@@ -6,7 +8,7 @@ const Token = () => {
     {
       icon: '💎',
       title: 'Platform Access',
-      description: 'Hold $HFLIX to access premium features and create unlimited viral content.'
+      description: 'Hold $FLIX to access premium features and create unlimited viral content.'
     },
     {
       icon: '📈',
@@ -25,8 +27,8 @@ const Token = () => {
       <div className="container">
         <div className={styles.tokenContainer}>
           <div className={styles.tokenContent}>
-            <h2>The $HFLIX Token Economy</h2>
-            <p>$HFLIX is more than just a utility token - it's your stake in the future of memecoin marketing and the growing platform revenue.</p>
+            <h2>The $FLIX Token Economy</h2>
+            <p>$FLIX is more than just a utility token - it's your stake in the future of memecoin marketing and the growing platform revenue.</p>
             <div className={styles.tokenFeatures}>
               {features.map((feature, index) => (
                 <div key={index} className={styles.tokenFeature}>

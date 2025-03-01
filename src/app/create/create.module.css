@@ -1,0 +1,417 @@
+/* Create Page Styles */
+.createPage {
+  padding: 24px;
+  width: 100%;
+}
+
+.createHeader {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.createHeader h1 {
+  margin-bottom: 8px;
+  font-size: 2rem;
+  background: linear-gradient(90deg, #FF6B00, #FF9E00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.createHeader p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.createContainer {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Step Indicator */
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 40px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.stepNumber {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.step.active .stepNumber {
+  background: linear-gradient(90deg, #FF6B00, #FF9E00);
+  color: white;
+}
+
+.stepLabel {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.step.active .stepLabel {
+  color: #FF6B00;
+  font-weight: 600;
+}
+
+.stepConnector {
+  flex-grow: 1;
+  height: 3px;
+  background-color: #e0e0e0;
+  margin: 0 10px;
+  transform: translateY(-20px);
+}
+
+/* Content Container */
+.contentContainer {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  min-height: 500px;
+}
+
+@media (max-width: 768px) {
+  .contentContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Form Container */
+.formContainer {
+  padding: 32px;
+  border-right: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+  .formContainer {
+    border-right: none;
+    border-bottom: 1px solid #eee;
+  }
+}
+
+.stepContent {
+  max-width: 600px;
+}
+
+.stepContent h2 {
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.stepDescription {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* Form Elements */
+.formGroup {
+  margin-bottom: 24px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #444;
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #FF6B00;
+  box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
+}
+
+.generateBtn {
+  background: linear-gradient(90deg, #FF6B00, #FF9E00);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.generateBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.2);
+}
+
+.helperText {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* Toggle Buttons */
+.toggleButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.toggleBtn {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggleBtn.active {
+  background: linear-gradient(90deg, #FF6B00, #FF9E00);
+  color: white;
+  border-color: #FF6B00;
+}
+
+/* Avatar Grid */
+.avatarGrid {
+  min-height: 150px;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.placeholderText {
+  text-align: center;
+  color: #777;
+}
+
+/* Select Dropdown */
+.select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background-color: white;
+  color: #444;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #FF6B00;
+  box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
+}
+
+/* Voice Options */
+.voiceOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+  align-items: center;
+}
+
+.voiceOptions label {
+  margin: 0;
+  min-width: 80px;
+}
+
+.voiceOptions .select {
+  width: auto;
+  flex: 1;
+}
+
+/* Upload Area */
+.uploadArea {
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.uploadArea:hover {
+  border-color: #FF6B00;
+  background-color: rgba(255, 107, 0, 0.02);
+}
+
+.uploadIcon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.uploadBtn {
+  margin-top: 16px;
+  background-color: #f5f5f5;
+  color: #444;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.uploadBtn:hover {
+  background-color: #eee;
+}
+
+/* Form Actions */
+.formActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 32px;
+}
+
+.backBtn {
+  background-color: #f5f5f5;
+  color: #555;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.backBtn:hover {
+  background-color: #eee;
+}
+
+.nextBtn {
+  background: linear-gradient(90deg, #FF6B00, #FF9E00);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.nextBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.2);
+}
+
+.generateContentBtn {
+  background: linear-gradient(90deg, #FF6B00, #FF9E00);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.generateContentBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.2);
+}
+
+/* Preview Container */
+.previewContainer {
+  background-color: #fafafa;
+  padding: 24px;
+}
+
+.previewHeader {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.previewHeader h3 {
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.previewContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+.previewPlaceholder {
+  text-align: center;
+}
+
+.previewPlaceholder p {
+  margin-bottom: 20px;
+  color: #777;
+}
+
+/* Phone Frame for Preview */
+.phoneFrame {
+  width: 220px;
+  height: 380px;
+  border: 12px solid #333;
+  border-radius: 32px;
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  background-color: black;
+}
+
+.phoneScreen {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  color: white;
+  overflow: hidden;
+}
+
+.previewHook {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+} 

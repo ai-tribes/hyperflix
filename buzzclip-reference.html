@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuzzClip Platform Reference Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #1a1a1a;
+            border-bottom: 2px solid #1a1a1a;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        h2 {
+            color: #0066cc;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: #404040;
+            margin-top: 25px;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            background-color: #f8f8f8;
+            display: block;
+            margin: 20px 0;
+        }
+        
+        p {
+            margin: 16px 0;
+        }
+        
+        ul, ol {
+            padding-left: 25px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        strong {
+            font-weight: 600;
+        }
+        
+        .image-placeholder {
+            background-color: #f0f0f0;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+        
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+        
+        .highlight {
+            background-color: #ffffcc;
+            padding: 2px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .feature-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .feature-card {
+            flex: 1 1 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #fff;
+        }
+        
+        .feature-card h4 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BuzzClip Platform Reference Documentation</h1>
+    </header>
+    
+    <section class="section">
+        <h2>Overview</h2>
+        <p>BuzzClip is an AI-powered platform that enables users to create TikTok UGC (User Generated Content) quickly and efficiently. The platform offers tools for generating viral hooks, selecting AI avatars, adding audio elements, and directly publishing to TikTok. This document serves as a reference for developing HyperFlix, a similar platform specifically focused on memecoin marketing.</p>
+    </section>
+    
+    <section class="section">
+        <h2>Platform Structure</h2>
+        
+        <h3>Navigation & Main Sections</h3>
+        <p>BuzzClip features a consistent left sidebar navigation with the following sections:</p>
+        <ul>
+            <li>Dashboard</li>
+            <li>Create UGC Content</li>
+            <li>Videos</li>
+            <li>Products</li>
+            <li>Audios</li>
+            <li>Lip Sync (marked as "<span class="highlight">New!</span>")</li>
+            <li>Account</li>
+            <li>Support</li>
+        </ul>
+        
+        <p>In the top-right corner, there's typically a promotional tag line: "<strong>BuzzClip - Generate Viral TikTok UGC in Seconds</strong>"</p>
+    </section>
+    
+    <section class="section">
+        <h2>Key Pages & Features</h2>
+        
+        <h3>1. Setup Guide</h3>
+        <div class="image-placeholder">[Setup Guide Image Placeholder]</div>
+        
+        <p>The setup process includes three main steps:</p>
+        <ol>
+            <li>
+                <strong>Connect TikTok account</strong>
+                <ul>
+                    <li>Allows direct publishing to TikTok</li>
+                    <li>Takes approximately 30 seconds to connect</li>
+                    <li>Features a "Connect" button with TikTok icon</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Add First Product</strong>
+                <ul>
+                    <li>Enables generation of viral hooks</li>
+                    <li>Takes approximately 30 seconds to set up</li>
+                    <li>Has an "Add Product" button</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Subscription Required</strong>
+                <ul>
+                    <li>Shows estimated setup time (2-3 minutes)</li>
+                    <li>Features an "Upgrade now" button</li>
+                    <li>Uses Stripe for payment processing</li>
+                </ul>
+            </li>
+        </ol>
+        
+        <h3>2. Create UGC Content Interface</h3>
+        <div class="image-placeholder">[Create UGC Content Image Placeholder]</div>
+        
+        <p>The content creation workflow follows a four-step process:</p>
+        
+        <ol>
+            <li>
+                <strong>Hook</strong>
+                <ul>
+                    <li>Text input field for entering hooks</li>
+                    <li>Option to "Generate 10+ hooks" with an AI-powered tool</li>
+                    <li>Text formatting options (Bold, Outline, etc.)</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Video</strong>
+                <ul>
+                    <li>Choose from a gallery of AI avatars/characters</li>
+                    <li>Tabs for "UGC" and "Lipsync" content types</li>
+                    <li>Visual preview of selected avatar</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Audio</strong> (Optional)
+                <ul>
+                    <li>Two options: "Background Music" and "Voice Over"</li>
+                    <li>Dropdown to select music or generate voice over</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Demo Video</strong> (Optional)
+                <ul>
+                    <li>Upload area for demo video content</li>
+                </ul>
+            </li>
+        </ol>
+        
+        <p>The right side of the interface shows a live preview of the video being created with the selected avatar and hook text. At the bottom is a prominent "Generate" button.</p>
+        
+        <h3>3. My Videos Page</h3>
+        <div class="image-placeholder">[My Videos Image Placeholder]</div>
+        
+        <p>A simple gallery view showing:</p>
+        <ul>
+            <li>Page title "My Videos"</li>
+            <li>"Upload Demo Video" button in the top-right</li>
+            <li>Empty state indicating no videos have been created yet</li>
+        </ul>
+        
+        <h3>4. Products Page</h3>
+        <div class="image-placeholder">[Products Image Placeholder]</div>
+        
+        <p>Features:</p>
+        <ul>
+            <li>"Add Product" button in the top-right</li>
+            <li>Empty state message: "No products yet. Click 'Add Product' to create your first product."</li>
+        </ul>
+        
+        <p><strong>Add Product Modal:</strong></p>
+        <ul>
+            <li>Name field</li>
+            <li>"What it does" description field (with note about using this for generating hooks)</li>
+            <li>Character counter (50 characters needed)</li>
+            <li>Default Language selector (showing English with US flag)</li>
+            <li>Cancel and "Add product" buttons</li>
+        </ul>
+        
+        <h3>5. Audios Page</h3>
+        <div class="image-placeholder">[Audios Image Placeholder]</div>
+        
+        <p>Contains two main options:</p>
+        <ol>
+            <li>
+                <strong>Generate Voice</strong>
+                <ul>
+                    <li>AI text-to-speech functionality</li>
+                    <li>Describes the feature as generating AI voice</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Upload Audio</strong>
+                <ul>
+                    <li>For songs or voice recordings</li>
+                    <li>Upload interface for audio files</li>
+                </ul>
+            </li>
+        </ol>
+        
+        <h3>6. Lip Sync Creator</h3>
+        <div class="image-placeholder">[Lip Sync Image Placeholder]</div>
+        
+        <p>A specialized tool with several components:</p>
+        <ul>
+            <li>"Lip Sync Creator" title</li>
+            <li>Left panel for selecting voices</li>
+            <li>Central preview area showing "Original Video" and "Generated Video"</li>
+            <li>Right panel with:
+                <ul>
+                    <li>"How It Works" instructions (3 steps)</li>
+                    <li>Tips for best results</li>
+                    <li>Advanced Settings section with:
+                        <ul>
+                            <li>Model Version options (v1.9.0-beta, v1.8.0, v1.7.1)</li>
+                            <li>Processing Speed options (1x, 2x, 3x, 4x)</li>
+                        </ul>
+                    </li>
+                    <li>"Generate Lip Sync" button at bottom</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <h3>7. Pricing Page</h3>
+        <div class="image-placeholder">[Pricing Image Placeholder]</div>
+        
+        <p>The pricing page features:</p>
+        <ul>
+            <li>Headline: "Start TikTok Virality Today"</li>
+            <li>Subheadline: "For no more than ~$1 per video. Cancel anytime."</li>
+            <li>Toggle between Monthly and Yearly (save 20%) billing options</li>
+        </ul>
+        
+        <p>Three pricing tiers:</p>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>Starter: $19/month</h4>
+                <ul>
+                    <li>15 videos per month</li>
+                    <li>15 video generations</li>
+                    <li>15 voiceovers (29 languages)</li>
+                    <li>150+ UGC Avatars</li>
+                    <li>Unlimited viral hooks</li>
+                    <li>Multiple TikTok accounts</li>
+                    <li>Direct TikTok publishing</li>
+                    <li>15 lipsyncs</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card" style="border-color: #0066cc; box-shadow: 0 0 10px rgba(0,102,204,0.2);">
+                <h4>Growth: $49/month</h4>
+                <p><span class="highlight">Highlighted as recommended</span></p>
+                <ul>
+                    <li>50 videos per month</li>
+                    <li>Same features as Starter but with higher limits</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>Scale: $95/month</h4>
+                <ul>
+                    <li>150 videos per month</li>
+                    <li>Same features as other plans but with highest limits</li>
+                </ul>
+            </div>
+        </div>
+        
+        <p>All plans include:</p>
+        <ul>
+            <li>"Get Started" button</li>
+            <li>"Secured by Stripe" badge</li>
+        </ul>
+        
+        <p>Additional pricing/value sections include:</p>
+        <ul>
+            <li>"Save Hours using AI"</li>
+            <li>"Save Money and Time" comparison with traditional methods</li>
+            <li>Cost comparison chart (BuzzClip ~$1 per video vs. Traditional ~$100 per video)</li>
+        </ul>
+        
+        <h3>8. Marketing/Landing Pages</h3>
+        <div class="image-placeholder">[Landing Pages Image Placeholder]</div>
+        
+        <p>Several marketing sections:</p>
+        <ol>
+            <li>
+                <strong>Hero Section</strong>
+                <ul>
+                    <li>"Generate Clips that buzz your traffic in seconds"</li>
+                    <li>Subtitle: "Post daily user AI-generated TikToks in one click"</li>
+                    <li>"Dashboard" button</li>
+                    <li>"Trusted by 700+ happy users"</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Product Demonstration</strong>
+                <ul>
+                    <li>"You're 60 seconds from your first viral TikTok UGC"</li>
+                    <li>Shows product interface with TikTok publishing modal</li>
+                    <li>Featured on Product Hunt badge</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Process Explanation</strong>
+                <ul>
+                    <li>"UGC TikToks. At Lightspeed."</li>
+                    <li>Three-step process:
+                        <ol>
+                            <li>Pick a character (100+ unique avatars)</li>
+                            <li>Customize the UGC (hooks, text, demo video)</li>
+                            <li>Publish on TikTok (direct or draft publishing)</li>
+                        </ol>
+                    </li>
+                    <li>"Create Now" button</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Features Sections</strong>
+                <ul>
+                    <li>"AI UGC Characters"</li>
+                    <li>"AI Lip Sync" (Marked as "New!")</li>
+                    <li>"Multi-Language Support" (28+ languages)</li>
+                    <li>"Viral Hooks"</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Final CTA</strong>
+                <ul>
+                    <li>"Ready to Create Your First Viral Video?"</li>
+                    <li>"Join hundreds of creators transforming their content strategy"</li>
+                    <li>"Dashboard" button</li>
+                    <li>Trust indicators</li>
+                </ul>
+            </li>
+        </ol>
+        
+        <h3>9. FAQ Section</h3>
+        <div class="image-placeholder">[FAQ Image Placeholder]</div>
+        
+        <p>Questions covered:</p>
+        <ul>
+            <li>What is BuzzClip?</li>
+            <li>How does BuzzClip's AI UGC creation work?</li>
+            <li>Can I use the videos for commercial purposes?</li>
+            <li>How many videos can I create?</li>
+            <li>Can I cancel my subscription anytime?</li>
+            <li>How fast is the generation process?</li>
+            <li>How many languages do you support?</li>
+            <li>How does the AI character generation work?</li>
+            <li>Can I publish directly to TikTok?</li>
+            <li>What makes BuzzClip different from other tools?</li>
+            <li>Do you offer customer support?</li>
+        </ul>
+        
+        <p>Each question has an expandable answer section.</p>
+        
+        <h3>10. Account Settings</h3>
+        <div class="image-placeholder">[Account Settings Image Placeholder]</div>
+        
+        <p>The account page includes:</p>
+        <ul>
+            <li>Account Settings header</li>
+            <li>Form fields for:
+                <ul>
+                    <li>Your Name (with 64 character maximum)</li>
+                    <li>Your Email (with verification notice)</li>
+                </ul>
+            </li>
+            <li>Connected TikTok Accounts section
+                <ul>
+                    <li>Shows if any accounts are connected</li>
+                    <li>"Connect TikTok Account" button</li>
+                </ul>
+            </li>
+            <li>Subscription Plan section
+                <ul>
+                    <li>Current plan display</li>
+                    <li>Option to change plan</li>
+                    <li>"Open customer portal" button for managing subscription on Stripe</li>
+                </ul>
+            </li>
+            <li>Sign Out section
+                <ul>
+                    <li>"Sign Out" button</li>
+                    <li>Message that you can always sign back in</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <h3>11. TikTok Authorization</h3>
+        <div class="image-placeholder">[TikTok Authorization Image Placeholder]</div>
+        
+        <p>Shows the TikTok authorization screen:</p>
+        <ul>
+            <li>"BuzzClip wants to access your TikTok account"</li>
+            <li>Profile switching option</li>
+            <li>Permissions requested:
+                <ul>
+                    <li>Access profile info (avatar and display name)</li>
+                    <li>Post content to TikTok</li>
+                    <li>Upload draft content to TikTok for further editing</li>
+                </ul>
+            </li>
+            <li>Links to Terms of Service and Privacy Policy</li>
+            <li>Cancel and Continue buttons</li>
+        </ul>
+    </section>
+    
+    <section class="section">
+        <h2>Adaptation for HyperFlix (Memecoin Marketing Focus)</h2>
+        
+        <p>To adapt this platform for HyperFlix's memecoin marketing focus, consider:</p>
+        
+        <ol>
+            <li>
+                <strong>Terminology Changes</strong>
+                <ul>
+                    <li>Replace generic "product" with "memecoin" or "token"</li>
+                    <li>Focus the hook generation on crypto/memecoin specific language</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Feature Adaptations</strong>
+                <ul>
+                    <li>Add memecoin-specific UGC templates</li>
+                    <li>Include price chart displays in videos</li>
+                    <li>Feature token metrics prominently (price, market cap, holder count)</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Additional Sections</strong>
+                <ul>
+                    <li>Token metrics dashboard</li>
+                    <li>Integration with popular crypto data APIs</li>
+                    <li>Memecoin-specific AI avatars/characters</li>
+                    <li>Templates for common memecoin marketing formats</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Content Focus</strong>
+                <ul>
+                    <li>Pre-written hooks specifically about token launches, pumps, community, etc.</li>
+                    <li>Background elements related to crypto/trading</li>
+                    <li>Educational elements about token utility</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Marketing Language</strong>
+                <ul>
+                    <li>Emphasize ROI for token marketing</li>
+                    <li>Focus on virality leading to token purchases</li>
+                    <li>Highlight memecoin success stories</li>
+                </ul>
+            </li>
+        </ol>
+    </section>
+    
+    <section class="section">
+        <h2>Technical Implementation Notes</h2>
+        
+        <ol>
+            <li>
+                <strong>TikTok API Integration</strong>
+                <ul>
+                    <li>Requires OAuth for posting directly to TikTok</li>
+                    <li>Needs permissions for profile access and content posting</li>
+                </ul>
+            </li>
+            <li>
+                <strong>AI Generation Features</strong>
+                <ul>
+                    <li>Character/avatar generation system</li>
+                    <li>Voice generation in multiple languages</li>
+                    <li>Lip-sync technology (latest v1.9.0-beta)</li>
+                    <li>Hook generation AI</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Subscription Management</strong>
+                <ul>
+                    <li>Stripe integration for payments</li>
+                    <li>Tiered system based on usage volume</li>
+                    <li>Monthly and yearly billing options</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Video Processing</strong>
+                <ul>
+                    <li>Different processing speeds (1x-4x)</li>
+                    <li>Video preview functionality</li>
+                    <li>Multiple avatar options</li>
+                    <li>Text overlay capabilities</li>
+                </ul>
+            </li>
+        </ol>
+    </section>
+    
+    <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #666;">
+        <p>This documentation serves as a reference for the HyperFlix platform development.</p>
+    </footer>
+</body>
+</html> 

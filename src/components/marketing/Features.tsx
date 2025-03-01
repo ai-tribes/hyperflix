@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react'
 import styles from './Features.module.css'
 
@@ -11,7 +13,7 @@ const Features = () => {
     {
       icon: '⚡',
       title: '30-Second Creation',
-      description: 'What takes hours with traditional methods takes seconds with Hyper-Flix. Create professional UGC videos for your token in under a minute.'
+      description: 'What takes hours with traditional methods takes seconds with HyperFlix. Create professional UGC videos for your token in under a minute.'
     },
     {
       icon: '🌐',
@@ -31,7 +33,7 @@ const Features = () => {
     {
       icon: '💰',
       title: 'Token-Powered Ecosystem',
-      description: '$HFLIX holders enjoy discounted platform access, governance rights, and participation in the platform\'s growing revenue.'
+      description: '$FLIX holders enjoy discounted platform access, governance rights, and participation in the platform\'s growing revenue.'
     }
   ]
 
@@ -39,7 +41,7 @@ const Features = () => {
     <section id="value" className={styles.section}>
       <div className="container">
         <div className={styles.sectionTitle}>
-          <h2>Why Hyper-Flix is a Game-Changer</h2>
+          <h2>Why HyperFlix is a Game-Changer</h2>
           <p>We're solving the biggest challenge in memecoin marketing: creating authentic, viral content that drives real adoption.</p>
         </div>
         <div className={styles.valueCards}>

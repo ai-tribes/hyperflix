@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react'
 import styles from './Platform.module.css'
 
@@ -6,7 +8,7 @@ const Platform = () => {
     {
       number: 1,
       title: 'Connect Your Wallet',
-      description: 'Hold $HFLIX tokens to access the platform and unlock premium features based on your holding tier.'
+      description: 'Hold $FLIX tokens to access the platform and unlock premium features based on your holding tier.'
     },
     {
       number: 2,
@@ -39,7 +41,7 @@ const Platform = () => {
     <section id="platform" className={styles.section}>
       <div className="container">
         <div className={styles.sectionTitle}>
-          <h2>How to Use Hyper-Flix</h2>
+          <h2>How to Use HyperFlix</h2>
           <p>Creating viral memecoin content has never been easier. Follow these simple steps to launch your next token to the moon.</p>
         </div>
         <div className={styles.platformGrid}>

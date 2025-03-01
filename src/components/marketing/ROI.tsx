@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react'
 import styles from './ROI.module.css'
 
@@ -39,7 +41,7 @@ const ROI = () => {
               ))}
             </div>
             
-            <p>With Hyper-Flix, you can create and publish up to 150 viral-optimized videos per month at a fraction of traditional production costs.</p>
+            <p>With HyperFlix, you can create and publish up to 150 viral-optimized videos per month at a fraction of traditional production costs.</p>
             <a href="#" className="btn btn-accent">View Case Studies</a>
           </div>
           <div className={styles.roiChart}>
