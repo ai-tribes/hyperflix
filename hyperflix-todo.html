@@ -178,8 +178,7 @@
         <h1>HyperFlix Development To-Do List</h1>
         
         <div class="progress-container">
-            <div class="progress-bar" style="width: 60%"></div>
-            <div class="progress-text">60% Complete</div>
+            <div class="progress-bar" style="width: 70%">70% Complete</div>
         </div>
         
         <section id="overview">
@@ -272,15 +271,15 @@
 
             <h3>3.2 Setup Guide</h3>
             <ul class="task-list">
-                <li><input type="checkbox" data-section="main-features"> <span>Develop onboarding flow with three main steps:</span>
+                <li><input type="checkbox" data-section="setup-guide"> <span>Develop onboarding flow with three main steps:</span>
                     <ul class="nested-list">
-                        <li><input type="checkbox" data-section="main-features"> <span>TikTok account connection</span></li>
-                        <li><input type="checkbox" data-section="main-features"> <span>Memecoin/token setup</span></li>
-                        <li><input type="checkbox" data-section="main-features"> <span>Subscription selection</span></li>
+                        <li><input type="checkbox" data-section="setup-guide"> <span>TikTok account connection</span></li>
+                        <li><input type="checkbox" data-section="setup-guide"> <span>Memecoin/token setup</span></li>
+                        <li><input type="checkbox" checked data-section="setup-guide"> <span>Subscription selection</span></li>
                     </ul>
                 </li>
-                <li><input type="checkbox" data-section="main-features"> <span>Create progress tracking system</span></li>
-                <li><input type="checkbox" data-section="main-features"> <span>Add helpful tooltips and information</span></li>
+                <li><input type="checkbox" data-section="setup-guide"> <span>Create progress tracking system</span></li>
+                <li><input type="checkbox" data-section="setup-guide"> <span>Add helpful tooltips and information</span></li>
             </ul>
 
             <h3>3.3 Create UGC Content Interface</h3>
@@ -404,34 +403,34 @@
             </ul>
         </section>
 
-        <section id="pricing">
+        <section id="pricing-subscription">
             <div class="section-header">
                 <h2>6. Pricing & Subscription</h2>
-                <div class="section-progress">0/6 Completed</div>
+                <div class="section-progress complete">6/6 Completed</div>
             </div>
             <ul class="task-list">
-                <li><input type="checkbox" data-section="pricing"> <span>Design pricing page with three tiers:</span>
+                <li><input type="checkbox" checked data-section="pricing-subscription"> <span>Design pricing page with three tiers:</span>
                     <ul class="nested-list">
-                        <li><input type="checkbox" data-section="pricing"> <span>Starter plan ($19/month)</span></li>
-                        <li><input type="checkbox" data-section="pricing"> <span>Growth plan ($49/month)</span></li>
-                        <li><input type="checkbox" data-section="pricing"> <span>Scale plan ($95/month)</span></li>
+                        <li><input type="checkbox" checked data-section="pricing-subscription"> <span>Starter plan ($19/month)</span></li>
+                        <li><input type="checkbox" checked data-section="pricing-subscription"> <span>Growth plan ($49/month)</span></li>
+                        <li><input type="checkbox" checked data-section="pricing-subscription"> <span>Scale plan ($99/month)</span></li>
                     </ul>
                 </li>
-                <li><input type="checkbox" data-section="pricing"> <span>Implement monthly/yearly toggle with discount</span></li>
-                <li><input type="checkbox" data-section="pricing"> <span>Create comparison chart (HyperFlix vs. Traditional methods)</span></li>
-                <li><input type="checkbox" data-section="pricing"> <span>Implement Stripe integration for payments</span></li>
-                <li><input type="checkbox" data-section="pricing"> <span>Develop subscription management system</span></li>
-                <li><input type="checkbox" data-section="pricing"> <span>Create usage tracking for video limits</span></li>
+                <li><input type="checkbox" checked data-section="pricing-subscription"> <span>Implement monthly/yearly toggle with discount</span></li>
+                <li><input type="checkbox" checked data-section="pricing-subscription"> <span>Create comparison chart (HyperFlix vs. Traditional methods)</span></li>
+                <li><input type="checkbox" checked data-section="pricing-subscription"> <span>Implement Stripe integration for payments</span></li>
+                <li><input type="checkbox" checked data-section="pricing-subscription"> <span>Develop subscription management system</span></li>
+                <li><input type="checkbox" checked data-section="pricing-subscription"> <span>Create usage tracking for video limits</span></li>
             </ul>
         </section>
 
         <section id="faq-support">
             <div class="section-header">
                 <h2>7. FAQ & Support</h2>
-                <div class="section-progress">0/5 Completed</div>
+                <div class="section-progress">1/5 Completed</div>
             </div>
             <ul class="task-list">
-                <li><input type="checkbox" data-section="faq-support"> <span>Create expandable FAQ section with memecoin-focused questions</span></li>
+                <li><input type="checkbox" checked data-section="faq-support"> <span>Create expandable FAQ section with memecoin-focused questions</span></li>
                 <li><input type="checkbox" data-section="faq-support"> <span>Implement support ticket system</span></li>
                 <li><input type="checkbox" data-section="faq-support"> <span>Add live chat support option</span></li>
                 <li><input type="checkbox" data-section="faq-support"> <span>Create knowledge base articles</span></li>
@@ -441,88 +440,35 @@
 
         <section id="account-management">
             <div class="section-header">
-                <h2>8. Account Management <span class="section-status status-in-progress">In Progress</span></h2>
-                <div class="section-progress">0/5 Completed</div>
+                <h2>8. Account Management</h2>
+                <div class="section-progress complete">6/6 Completed</div>
             </div>
-            <ul>
-                <li class="task completed">
-                    <div class="checkbox"></div>
-                    <div class="task-content">
-                        <span class="task-text">Build account settings page:</span>
-                        <ul>
-                            <li class="task completed">
-                                <div class="checkbox"></div>
-                                <div class="task-content">
-                                    <span class="task-text">Name and email management</span>
-                                </div>
-                            </li>
-                            <li class="task">
-                                <div class="checkbox"></div>
-                                <div class="task-content">
-                                    <span class="task-text">Connected TikTok accounts section</span>
-                                </div>
-                            </li>
-                            <li class="task">
-                                <div class="checkbox"></div>
-                                <div class="task-content">
-                                    <span class="task-text">Subscription plan management</span>
-                                </div>
-                            </li>
-                            <li class="task completed">
-                                <div class="checkbox"></div>
-                                <div class="task-content">
-                                    <span class="task-text">Sign out functionality</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+            <ul class="task-list">
+                <li><input type="checkbox" checked data-section="account-management"> <span>Build account settings page:</span>
+                    <ul class="nested-list">
+                        <li><input type="checkbox" checked data-section="account-management"> <span>Name and email management</span></li>
+                        <li><input type="checkbox" checked data-section="account-management"> <span>Connected TikTok accounts section</span></li>
+                        <li><input type="checkbox" checked data-section="account-management"> <span>Subscription plan management</span></li>
+                        <li><input type="checkbox" checked data-section="account-management"> <span>Sign out functionality</span></li>
+                    </ul>
                 </li>
-                <li class="task completed">
-                    <div class="checkbox"></div>
-                    <div class="task-content">
-                        <span class="task-text">Implement TikTok authorization flow</span>
-                    </div>
-                </li>
+                <li><input type="checkbox" checked data-section="account-management"> <span>Implement TikTok authorization flow</span></li>
             </ul>
         </section>
 
         <section id="technical-integrations">
             <div class="section-header">
                 <h2>9. Technical Integrations</h2>
-                <div class="section-progress">2/4 Completed</div>
+                <div class="section-progress complete">4/4 Completed</div>
             </div>
             <ul class="task-list">
-                <li class="task completed">
-                    <div class="checkbox"></div>
-                    <div class="task-content">
-                        <span class="task-text">Implement TikTok API integration:</span>
-                        <ul>
-                            <li class="task completed">
-                                <div class="checkbox"></div>
-                                <div class="task-content">
-                                    <span class="task-text">OAuth authentication</span>
-                                </div>
-                            </li>
-                            <li class="task completed">
-                                <div class="checkbox"></div>
-                                <div class="task-content">
-                                    <span class="task-text">Profile access</span>
-                                </div>
-                            </li>
-                            <li class="task completed">
-                                <div class="checkbox"></div>
-                                <div class="task-content">
-                                    <span class="task-text">Content posting capabilities</span>
-                                </div>
-                            </li>
-                            <li class="task completed">
-                                <div class="checkbox"></div>
-                                <div class="task-content">
-                                    <span class="task-text">Draft uploading</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                <li><input type="checkbox" checked data-section="technical-integrations"> <span>Implement TikTok API integration:</span>
+                    <ul class="nested-list">
+                        <li><input type="checkbox" checked data-section="technical-integrations"> <span>OAuth authentication</span></li>
+                        <li><input type="checkbox" checked data-section="technical-integrations"> <span>Profile access</span></li>
+                        <li><input type="checkbox" checked data-section="technical-integrations"> <span>Content posting capabilities</span></li>
+                        <li><input type="checkbox" checked data-section="technical-integrations"> <span>Draft uploading</span></li>
+                    </ul>
                 </li>
                 <li><input type="checkbox" checked data-section="technical-integrations"> <span>Set up AI systems:</span>
                     <ul class="nested-list">
@@ -538,7 +484,7 @@
                         <li><input type="checkbox" checked data-section="technical-integrations"> <span>Etherscan or similar for on-chain metrics</span></li>
                     </ul>
                 </li>
-                <li><input type="checkbox" data-section="technical-integrations"> <span>Implement Stripe for payment processing</span></li>
+                <li><input type="checkbox" checked data-section="technical-integrations"> <span>Implement Stripe for payment processing</span></li>
             </ul>
         </section>
 
@@ -637,7 +583,7 @@
                 
                 // Section progress
                 const sections = ['project-setup', 'core-components', 'main-features', 'memecoin-features', 
-                                'marketing-pages', 'pricing', 'faq-support', 'account-management', 
+                                'marketing-pages', 'pricing-subscription', 'faq-support', 'account-management', 
                                 'technical-integrations', 'testing-launch', 'post-launch'];
                 
                 sections.forEach(section => {

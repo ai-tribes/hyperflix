@@ -19,6 +19,16 @@ HyperFlix/
 │   │   │   └── auth/    # NextAuth API endpoints
 │   │   │       └── [...nextauth]/ # NextAuth configuration
 │   │   │           └── route.ts   # NextAuth handler
+│   │   ├── account/     # Account management
+│   │   │   ├── profile/ # Profile management
+│   │   │   │   ├── profile.module.css  # Profile styles
+│   │   │   │   └── page.tsx            # Profile component
+│   │   │   ├── settings/ # Account settings
+│   │   │   │   ├── settings.module.css # Settings styles
+│   │   │   │   └── page.tsx            # Settings component
+│   │   │   └── subscription/ # Subscription management
+│   │   │       ├── subscription.module.css # Subscription styles
+│   │   │       └── page.tsx                # Subscription component
 │   │   ├── auth/        # Authentication pages
 │   │   │   ├── signin/  # Sign in page
 │   │   │   │   ├── signin.module.css  # Sign in styles
@@ -32,9 +42,6 @@ HyperFlix/
 │   │   ├── dashboard/   # Dashboard page
 │   │   │   ├── dashboard.module.css  # Dashboard styles
 │   │   │   └── page.tsx              # Dashboard component
-│   │   ├── profile/     # User profile page
-│   │   │   ├── profile.module.css    # Profile styles 
-│   │   │   └── page.tsx              # Profile component
 │   │   ├── videos/      # Videos management
 │   │   │   ├── videos.module.css     # Videos page styles
 │   │   │   └── page.tsx              # Videos page component
@@ -53,6 +60,9 @@ HyperFlix/
 │   │   ├── lipsync/     # Lip Sync feature
 │   │   │   ├── lipsync.module.css    # Lip Sync styles
 │   │   │   └── page.tsx              # Lip Sync component
+│   │   ├── pricing/     # Pricing page
+│   │   │   ├── pricing.module.css    # Pricing styles
+│   │   │   └── page.tsx              # Pricing component
 │   │   ├── globals.css  # Global styles
 │   │   ├── layout.tsx   # Root layout component
 │   │   └── page.tsx     # Home page component
@@ -84,8 +94,11 @@ HyperFlix/
 │   │       └── Sidebar.tsx           # Sidebar component
 │   ├── contexts/        # React Context providers
 │   │   └── AuthContext.tsx # Authentication context provider
+│   ├── hooks/           # Custom React hooks
+│   │   └── useSubscription.ts # Hook for subscription management
 │   ├── lib/             # Utility libraries
-│   │   └── firebase.ts  # Firebase configuration
+│   │   ├── firebase.ts  # Firebase configuration
+│   │   └── stripe.ts    # Stripe configuration and utilities
 │   └── types/           # TypeScript type definitions
 │       └── next-auth.d.ts # NextAuth type extensions
 ├── .env.local           # Environment variables
@@ -106,6 +119,7 @@ HyperFlix/
 - **Authentication**: NextAuth.js with Firebase
 - **Database**: Firebase Firestore
 - **Storage**: Firebase Storage
+- **Payment Processing**: Stripe
 - **Font**: Poppins (Google Fonts)
 - **Icons**: React Icons (Fa icons)
 
@@ -184,11 +198,20 @@ HyperFlix/
     - Includes instructions for the reset process
     - Features informational sidebar with step-by-step guidance
 
-13. **Profile Page (`src/app/profile/page.tsx`)**: 
-    - User profile management interface
-    - Allows users to update profile information
-    - Provides password change functionality
-    - Includes logout option
+13. **Pricing Page (`src/app/pricing/page.tsx`)**: 
+    - Subscription plan selection interface
+    - Displays three pricing tiers (Starter, Growth, and Scale)
+    - Features toggle between monthly and yearly billing
+    - Includes comparison section and FAQ
+    - Integrates with Stripe for payment processing
+
+14. **Subscription Management Page (`src/app/account/subscription/page.tsx`)**: 
+    - Interface for managing user subscriptions
+    - Shows current subscription details including plan, cost, and features
+    - Displays billing information and renewal dates
+    - Provides options to cancel or resume subscriptions
+    - Features upgrade options for users on lower tiers
+    - Integrates with Stripe Customer Portal for payment management
     - Protected by authentication middleware
 
 ### Authentication Components
@@ -231,6 +254,7 @@ HyperFlix/
 3. **Sidebar (`src/components/shared/Sidebar.tsx`)**: 
    - Left-side navigation for authenticated pages
    - Contains links to Dashboard, Create UGC, Videos, Tokens, Audios, and Lip Sync
+   - Includes Account dropdown with Profile, Subscription, and Settings
    - Shows active page indicator
 
 ### Marketing Components
@@ -249,10 +273,31 @@ HyperFlix/
    - Describes the platform's capabilities and benefits
 
 5. **Token (`src/components/marketing/Token.tsx`)**: 
-   - Provides information about the $FLIX token
+   - Explains the benefits of using HyperFlix for memecoin marketing
 
 6. **CTA (`src/components/marketing/CTA.tsx`)**: 
-   - Call-to-action section to encourage visitor engagement
+   - Call-to-action section with signup button
+
+### Custom Hooks
+
+1. **useSubscription (`src/hooks/useSubscription.ts`)**: 
+   - Custom React hook for subscription management
+   - Provides subscription status and tier information
+   - Implements methods for canceling and resuming subscriptions
+   - Handles integration with Stripe for checkout and customer portal
+   - Manages subscription-related errors and loading states
+
+### Utility Libraries
+
+1. **Firebase Configuration (`src/lib/firebase.ts`)**: 
+   - Sets up Firebase authentication, Firestore, and storage
+   - Provides utility functions for Firebase operations
+
+2. **Stripe Configuration (`src/lib/stripe.ts`)**: 
+   - Configures Stripe for payment processing
+   - Defines subscription plans and pricing
+   - Provides utility functions for Stripe operations
+   - Handles checkout session creation and customer portal redirect
 
 ## Authentication System
 
@@ -340,6 +385,12 @@ HyperFlix/
 - Organize videos by status and platform
 - Manage audio files (music and voiceovers)
 - Preview and use media in content creation
+
+### Subscription Management
+- Manage user subscriptions
+- Cancel or resume subscriptions
+- Upgrade subscription tiers
+- Integrate with Stripe for payment processing
 
 ## Project Dependencies
 

@@ -46,7 +46,7 @@ This document outlines the necessary steps to develop HyperFlix - an AI-powered 
 - [  ] Develop onboarding flow with three main steps:
   - [  ] TikTok account connection
   - [  ] Memecoin/token setup
-  - [  ] Subscription selection
+  - [x] Subscription selection
 - [  ] Create progress tracking system
 - [  ] Add helpful tooltips and information
 
@@ -145,19 +145,19 @@ This document outlines the necessary steps to develop HyperFlix - an AI-powered 
 
 ## 6. Pricing & Subscription
 
-- [  ] Design pricing page with three tiers:
-  - [  ] Starter plan ($19/month)
-  - [  ] Growth plan ($49/month)
-  - [  ] Scale plan ($95/month)
-- [  ] Implement monthly/yearly toggle with discount
-- [  ] Create comparison chart (HyperFlix vs. Traditional methods)
-- [  ] Implement Stripe integration for payments
-- [  ] Develop subscription management system
-- [  ] Create usage tracking for video limits
+- [x] Design pricing page with three tiers:
+  - [x] Starter plan ($19/month)
+  - [x] Growth plan ($49/month)
+  - [x] Scale plan ($99/month)
+- [x] Implement monthly/yearly toggle with discount
+- [x] Create comparison chart (HyperFlix vs. Traditional methods)
+- [x] Implement Stripe integration for payments
+- [x] Develop subscription management system
+- [x] Create usage tracking for video limits
 
 ## 7. FAQ & Support
 
-- [  ] Create expandable FAQ section with memecoin-focused questions
+- [x] Create expandable FAQ section with memecoin-focused questions
 - [  ] Implement support ticket system
 - [  ] Add live chat support option
 - [  ] Create knowledge base articles
@@ -168,7 +168,7 @@ This document outlines the necessary steps to develop HyperFlix - an AI-powered 
 - [x] Build account settings page:
   - [x] Name and email management
   - [x] Connected TikTok accounts section
-  - [  ] Subscription plan management
+  - [x] Subscription plan management
   - [x] Sign out functionality
 - [x] Implement TikTok authorization flow
 
@@ -187,7 +187,7 @@ This document outlines the necessary steps to develop HyperFlix - an AI-powered 
 - [x] Integrate with cryptocurrency data APIs:
   - [x] CoinGecko or CoinMarketCap for price data
   - [x] Etherscan or similar for on-chain metrics
-- [  ] Implement Stripe for payment processing
+- [x] Implement Stripe for payment processing
 
 ## 10. Testing & Launch
 
