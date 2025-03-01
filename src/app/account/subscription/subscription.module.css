@@ -230,7 +230,12 @@
   background-color: rgba(0, 200, 83, 0.2);
 }
 
-button:disabled {
+/* Replace the generic button:disabled selector with specific classes */
+.paymentButton:disabled,
+.cancelButton:disabled,
+.resumeButton:disabled,
+.upgradeButton:disabled,
+.viewPlansButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

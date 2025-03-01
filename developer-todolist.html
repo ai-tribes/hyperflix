@@ -216,9 +216,9 @@ SOA     @       Primary: ns35.domaincontrol.com. 1 Hour</code></pre>
     </div>
 
     <div class="section">
-        <h2>8. Fixed: Vercel Deployment Issue</h2>
+        <h2>8. Fixed: Vercel Deployment Issues</h2>
         <div class="note">
-            <strong>Fixed:</strong> The Vercel build error has been resolved by updating the configuration in the Stripe webhook route.
+            <strong>Fixed:</strong> Two deployment issues have been resolved to enable successful builds on Vercel.
         </div>
         <ul class="task-list completed">
             <li class="completed">Fixed <code>src/app/api/stripe/webhook/route.ts</code> configuration:
@@ -237,8 +237,31 @@ export const bodyParser = false;</code></pre>
                     </li>
                 </ul>
             </li>
+            <li class="completed">Fixed CSS Modules syntax in <code>src/app/account/subscription/subscription.module.css</code>:
+                <ul>
+                    <li>Replaced non-pure selector:
+                    <pre><code>button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}</code></pre>
+                    </li>
+                    <li>With class-specific selectors:
+                    <pre><code>.paymentButton:disabled,
+.cancelButton:disabled,
+.resumeButton:disabled,
+.upgradeButton:disabled,
+.viewPlansButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}</code></pre>
+                    </li>
+                </ul>
+            </li>
             <li>The next Vercel deployment should build successfully</li>
         </ul>
+        <div class="note">
+            <strong>Note about CSS Modules:</strong> In Next.js CSS Modules (.module.css files), all selectors must contain at least one local class or ID. Generic element selectors like <code>button</code>, <code>input</code>, etc. are not allowed by themselves.
+        </div>
     </div>
 </body>
 </html> 
