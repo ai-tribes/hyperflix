@@ -107,17 +107,46 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       if (providerName === 'google') {
         provider = new GoogleAuthProvider();
+        // Add scopes for Google provider
+        provider.addScope('profile');
+        provider.addScope('email');
+        // Set custom parameters
+        provider.setCustomParameters({
+          prompt: 'select_account'
+        });
       } else if (providerName === 'twitter') {
         provider = new TwitterAuthProvider();
       } else {
         throw new Error('Invalid provider');
       }
       
-      await signInWithPopup(auth, provider);
+      console.log(`Attempting to sign in with ${providerName}...`);
+      const result = await signInWithPopup(auth, provider);
+      console.log(`Successfully signed in with ${providerName}`, result.user.uid);
       router.push('/dashboard');
-    } catch (error) {
+    } catch (error: any) {
       console.error(`${providerName} login error:`, error);
-      throw error;
+      console.error('Error code:', error.code);
+      console.error('Error message:', error.message);
+      
+      // Log Firebase error details if available
+      if (error.customData && error.customData._tokenResponse) {
+        console.error('Token response error:', error.customData._tokenResponse);
+      }
+      
+      // Provide more specific error messages based on Firebase error codes
+      if (error.code === 'auth/popup-closed-by-user') {
+        throw new Error('Sign-in was cancelled. Please try again.');
+      } else if (error.code === 'auth/popup-blocked') {
+        throw new Error('Sign-in popup was blocked by your browser. Please allow popups for this site.');
+      } else if (error.code === 'auth/cancelled-popup-request') {
+        throw new Error('The sign-in operation was cancelled. Please try again.');
+      } else if (error.code === 'auth/account-exists-with-different-credential') {
+        throw new Error('An account already exists with the same email address but different sign-in credentials. Please sign in using the original provider.');
+      } else {
+        // Throw the original error for other cases
+        throw error;
+      }
     } finally {
       setLoading(false);
     }

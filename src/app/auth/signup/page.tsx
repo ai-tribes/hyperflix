@@ -55,9 +55,21 @@ export default function SignUpPage() {
       setLoading(true);
       setError('');
       await loginWithProvider(provider);
-    } catch (err) {
-      setError(`Failed to sign up with ${provider}. Please try again.`);
-      console.error(err);
+    } catch (err: any) {
+      console.error(`Social login error (${provider}):`, err);
+      
+      // Display more specific error messages based on the error type
+      if (err.message && err.message.includes('popup')) {
+        setError(`Sign-up popup was closed or blocked. Please allow popups for this site and try again.`);
+      } else if (err.code === 'auth/account-exists-with-different-credential') {
+        setError(`An account already exists with the same email. Please use a different ${provider} account or sign in with your existing account.`);
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        setError(`Sign-up was cancelled. Please try again.`);
+      } else if (err.code === 'auth/network-request-failed') {
+        setError(`Network error. Please check your internet connection and try again.`);
+      } else {
+        setError(`Failed to sign up with ${provider}. Please try again.`);
+      }
     } finally {
       setLoading(false);
     }

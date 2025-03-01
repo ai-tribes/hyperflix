@@ -86,9 +86,9 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Disable body parsing for webhook
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}; 
+// Modern config approach for App Router
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+// This tells Next.js to not parse the body automatically
+// since we'll handle the raw body with Stripe's webhooks
+export const bodyParser = false; 

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperFlix Developer Todo List</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #FF6B00;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #FF9E00;
+            margin-top: 30px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .task-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .task-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+        .task-list li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            font-size: 20px;
+            color: #FF6B00;
+        }
+        .task-list li.completed:before {
+            content: "☑";
+            color: #4CAF50;
+        }
+        .note {
+            background-color: #FFF8E1;
+            border-left: 4px solid #FFC107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        /* New styles for completed task lists */
+        .task-list.completed li:before {
+            content: "☑";
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>HyperFlix Developer Todo List: Fix Google Authentication</h1>
+    
+    <div class="note">
+        <strong>Priority:</strong> High - Users are currently unable to sign up or sign in using Google authentication.
+    </div>
+
+    <div class="section">
+        <h2>1. Firebase Configuration</h2>
+        <ul class="task-list">
+            <li>Create a Firebase project or use an existing one from <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
+            <li>Enable Authentication in Firebase and set up Google as a sign-in provider</li>
+            <li>Update the <code>.env.local</code> file with real Firebase credentials:
+                <ul>
+                    <li>NEXT_PUBLIC_FIREBASE_API_KEY</li>
+                    <li>NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN</li>
+                    <li>NEXT_PUBLIC_FIREBASE_PROJECT_ID</li>
+                    <li>NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET</li>
+                    <li>NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID</li>
+                    <li>NEXT_PUBLIC_FIREBASE_APP_ID</li>
+                    <li>NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>2. Google Cloud OAuth Configuration</h2>
+        <ul class="task-list">
+            <li>Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console → APIs & Services → Credentials</a></li>
+            <li>Create an OAuth 2.0 Client ID (Web application)</li>
+            <li>Add authorized JavaScript origins:
+                <ul>
+                    <li><code>http://localhost:3000</code> (for local development)</li>
+                    <li>Your production domain if applicable</li>
+                </ul>
+            </li>
+            <li>Add authorized redirect URIs:
+                <ul>
+                    <li><code>http://localhost:3000/api/auth/callback/google</code> (for NextAuth)</li>
+                    <li><code>http://localhost:3000/__/auth/handler</code> (for Firebase Auth)</li>
+                    <li>Production equivalents if applicable</li>
+                </ul>
+            </li>
+            <li>Copy the Client ID and Client Secret</li>
+            <li>Update <code>.env.local</code> with real Google credentials:
+                <ul>
+                    <li>GOOGLE_CLIENT_ID</li>
+                    <li>GOOGLE_CLIENT_SECRET</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. Firebase Authentication Setup</h2>
+        <ul class="task-list">
+            <li>In Firebase Console, go to Authentication → Sign-in method</li>
+            <li>Enable Google provider</li>
+            <li>Set up the OAuth configuration in Firebase Auth:
+                <ul>
+                    <li>Add your Google Cloud Client ID as the Web SDK configuration</li>
+                    <li>Configure authorized domains to include <code>localhost</code> and your production domain</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>4. Testing & Verification</h2>
+        <ul class="task-list">
+            <li>Start the development server with <code>npm run dev</code></li>
+            <li>Open browser developer tools to the Console tab</li>
+            <li>Attempt to sign up with Google</li>
+            <li>If there are errors, check the console for specific error messages</li>
+            <li>Verify successful sign-up by checking:
+                <ul>
+                    <li>Firebase Authentication console for new users</li>
+                    <li>Successful redirect to the dashboard</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>5. Common Issues & Troubleshooting</h2>
+        <ul>
+            <li><strong>Popup blocked</strong>: Ensure the user has allowed popups for your site</li>
+            <li><strong>Invalid origin</strong>: Double-check that your localhost URL exactly matches what's in Google Cloud Console</li>
+            <li><strong>Configuration mismatch</strong>: Make sure the Google Client ID is the same in both Firebase and .env.local</li>
+            <li><strong>API not enabled</strong>: Ensure the Google Identity API is enabled in Google Cloud Console</li>
+            <li><strong>CORS issues</strong>: Check if there are CORS errors in the console</li>
+        </ul>
+    </div>
+
+    <div class="note">
+        <strong>Testing Note:</strong> You can temporarily add console logs in <code>src/contexts/AuthContext.tsx</code> 
+        within the <code>loginWithProvider</code> function to help diagnose issues. The changes we've already implemented 
+        will give you detailed error information in the console.
+    </div>
+
+    <div class="section">
+        <h2>6. Domain Configuration for Production</h2>
+        <ul class="task-list">
+            <li>Verify the current DNS configuration for hyper-flix.com:
+                <pre><code>Type    Name    Data                            TTL
+A       @       76.76.21.21                     600 seconds
+NS      @       ns35.domaincontrol.com.         1 Hour
+NS      @       ns36.domaincontrol.com.         1 Hour
+CNAME   www     cname.vercel-dns.com.           1 Hour
+CNAME   _dc     _domainconnect.gd.domaincontrol.com. 1 Hour
+SOA     @       Primary: ns35.domaincontrol.com. 1 Hour</code></pre>
+            </li>
+            <li>Add production domain to Google Cloud OAuth settings:
+                <ul>
+                    <li>Add <code>https://hyper-flix.com</code> to authorized JavaScript origins</li>
+                    <li>Add <code>https://hyper-flix.com/api/auth/callback/google</code> to authorized redirect URIs</li>
+                </ul>
+            </li>
+            <li>Add production domain to Firebase Authentication:
+                <ul>
+                    <li>In Firebase Console → Authentication → Settings → Authorized domains</li>
+                    <li>Add <code>hyper-flix.com</code> to the list of authorized domains</li>
+                </ul>
+            </li>
+            <li>Optional Vercel Recommendations:
+                <ul>
+                    <li>Consider switching to Vercel nameservers (ns1.vercel-dns.com, ns2.vercel-dns.com) for better support of Vercel features</li>
+                    <li>Add a TXT record for domain verification if requested by Vercel</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>7. Additional Resources</h2>
+        <ul>
+            <li><a href="https://firebase.google.com/docs/auth/web/google-signin" target="_blank">Firebase Google Sign-In Documentation</a></li>
+            <li><a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console Credentials</a></li>
+            <li><a href="https://next-auth.js.org/providers/google" target="_blank">NextAuth Google Provider Documentation</a></li>
+            <li><a href="https://vercel.com/docs/projects/domains/add-a-domain" target="_blank">Vercel Domain Configuration Guide</a></li>
+            <li><a href="https://vercel.com/docs/projects/domains/troubleshooting" target="_blank">Vercel DNS Troubleshooting</a></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>8. Fixed: Vercel Deployment Issue</h2>
+        <div class="note">
+            <strong>Fixed:</strong> The Vercel build error has been resolved by updating the configuration in the Stripe webhook route.
+        </div>
+        <ul class="task-list completed">
+            <li class="completed">Fixed <code>src/app/api/stripe/webhook/route.ts</code> configuration:
+                <ul>
+                    <li>Removed deprecated API config format:
+                    <pre><code>export const config = {
+  api: {
+    bodyParser: false,
+  },
+};</code></pre>
+                    </li>
+                    <li>Added modern Next.js App Router config exports:
+                    <pre><code>export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+export const bodyParser = false;</code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li>The next Vercel deployment should build successfully</li>
+        </ul>
+    </div>
+</body>
+</html> 
