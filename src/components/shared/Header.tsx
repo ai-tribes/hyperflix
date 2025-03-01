@@ -81,8 +81,8 @@ const Header = () => {
               </li>
               <li>
                 <Link 
-                  href="/account" 
-                  className={pathname === '/account' ? styles.active : ''}
+                  href="/account/profile" 
+                  className={pathname.startsWith('/account') ? styles.active : ''}
                 >
                   Account
                 </Link>
