@@ -1,6 +1,8 @@
 import React from 'react'
 import './globals.css'
 import { Poppins } from 'next/font/google'
+import { AuthProvider } from '@/contexts/AuthContext'
+import AuthSessionProvider from '@/components/auth/AuthSessionProvider'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -20,7 +22,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <body className={poppins.className}>
+        <AuthSessionProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </AuthSessionProvider>
+      </body>
     </html>
   )
 } 
