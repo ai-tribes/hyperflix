@@ -60,17 +60,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               </Link>
             </li>
             <li>
-              <a href="#audios">
+              <Link href="/audios" className={pathname === '/audios' ? styles.active : styles.navLink}>
                 <span className={styles.icon}>🎵</span>
                 Audios
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#lipsync">
+              <Link href="/lipsync" className={pathname === '/lipsync' ? styles.active : styles.navLink}>
                 <span className={styles.icon}>🗣️</span>
                 Lip Sync
                 <span className={styles.new}>New!</span>
-              </a>
+              </Link>
             </li>
             <li className={styles.dropdownItem}>
               <div className={styles.dropdownHeader}>
@@ -99,10 +99,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               </div>
             </li>
             <li>
-              <a href="#support">
+              <Link href="/support" className={pathname === '/support' ? styles.active : styles.navLink}>
                 <span className={styles.icon}>💬</span>
                 Support
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

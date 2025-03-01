@@ -6,16 +6,26 @@ import {
   onAuthStateChanged, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword,
-  signOut,
+  signOut as firebaseSignOut,
   GoogleAuthProvider,
   TwitterAuthProvider,
   signInWithPopup,
   sendPasswordResetEmail,
-  User,
-  updateProfile
+  User as FirebaseUser,
+  updateProfile as firebaseUpdateProfile
 } from 'firebase/auth';
 import { app } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
+
+// Extended User type with image property
+interface User extends FirebaseUser {
+  image?: string;
+}
+
+interface UpdateProfileParams {
+  displayName?: string;
+  photoURL?: string;
+}
 
 interface AuthContextType {
   user: User | null;
@@ -23,8 +33,10 @@ interface AuthContextType {
   loginWithEmail: (email: string, password: string) => Promise<void>;
   registerWithEmail: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  signOut: () => Promise<void>; // Alias for logout
   loginWithProvider: (provider: 'google' | 'twitter') => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  updateProfile: (params: UpdateProfileParams) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -48,8 +60,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        // Cast to our extended User type and add image property
+        const extendedUser = firebaseUser as User;
+        extendedUser.image = firebaseUser.photoURL || undefined;
+        setUser(extendedUser);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
@@ -76,7 +95,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       // Set display name
       if (userCredential.user) {
-        await updateProfile(userCredential.user, {
+        await firebaseUpdateProfile(userCredential.user, {
           displayName: name
         });
       }
@@ -92,10 +111,37 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = async () => {
     try {
-      await signOut(auth);
+      await firebaseSignOut(auth);
       router.push('/');
     } catch (error) {
       console.error('Logout error:', error);
+      throw error;
+    }
+  };
+
+  // Add updateProfile function
+  const updateProfile = async (params: UpdateProfileParams) => {
+    try {
+      if (!user) {
+        throw new Error('No user logged in');
+      }
+      
+      await firebaseUpdateProfile(user, {
+        displayName: params.displayName || user.displayName,
+        photoURL: params.photoURL || user.photoURL
+      });
+      
+      // Update the local user state
+      const updatedUser = { ...user };
+      if (params.displayName) updatedUser.displayName = params.displayName;
+      if (params.photoURL) {
+        updatedUser.photoURL = params.photoURL;
+        updatedUser.image = params.photoURL;
+      }
+      
+      setUser(updatedUser);
+    } catch (error) {
+      console.error('Update profile error:', error);
       throw error;
     }
   };
@@ -184,8 +230,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     loginWithEmail,
     registerWithEmail,
     logout,
+    signOut: logout, // Alias for logout
     loginWithProvider,
-    resetPassword
+    resetPassword,
+    updateProfile
   };
 
   return (
@@ -193,4 +241,4 @@ export function AuthProvider({ children }: AuthProviderProps) {
       {children}
     </AuthContext.Provider>
   );
-} 
+}

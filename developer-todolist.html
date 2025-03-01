@@ -234,5 +234,83 @@ if (result?.error) {
             <strong>Debug Tip:</strong> For detailed NextAuth.js debugging, add <code>DEBUG=next-auth:*</code> to your start command: <code>DEBUG=next-auth:* npm run dev</code>
         </div>
     </div>
+    
+    <div class="section">
+        <h2>6. Stripe Payment Integration</h2>
+        
+        <div class="task">
+            <strong>Current Issue:</strong> Missing Stripe API keys causing an error: "Neither apiKey nor config.authenticator provided" on the pricing page.
+        </div>
+        
+        <h3>Steps to Fix:</h3>
+        
+        <div class="task">
+            1. Create a Stripe account if you don't have one already at <a href="https://dashboard.stripe.com/register" target="_blank">Stripe Dashboard</a>
+        </div>
+        
+        <div class="task">
+            2. Get your API keys from the Stripe Dashboard:
+            <ul>
+                <li>Go to <a href="https://dashboard.stripe.com/test/apikeys" target="_blank">Stripe API Keys</a> (test mode)</li>
+                <li>Copy your "Publishable key" and "Secret key"</li>
+            </ul>
+        </div>
+        
+        <div class="task">
+            3. Update your <span class="file-path">.env.local</span> file with the actual Stripe credentials:
+            <div class="code">
+# Stripe API Keys
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key
+STRIPE_SECRET_KEY=sk_test_your_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+
+# Stripe Price IDs
+STRIPE_PRICE_ID_STARTER=price_your_starter_price_id
+STRIPE_PRICE_ID_GROWTH=price_your_growth_price_id
+STRIPE_PRICE_ID_SCALE=price_your_scale_price_id</div>
+        </div>
+        
+        <div class="task">
+            4. Create Stripe Products and Prices:
+            <ul>
+                <li>Go to <a href="https://dashboard.stripe.com/test/products" target="_blank">Stripe Products</a></li>
+                <li>Create products for each subscription tier (Starter, Growth, Scale)</li>
+                <li>For each product, create prices with the appropriate amount and recurrence</li>
+                <li>Copy the price IDs (they start with "price_") and update them in your <span class="file-path">.env.local</span> file</li>
+            </ul>
+        </div>
+        
+        <div class="note">
+            <strong>Note:</strong> The application has been updated to handle missing Stripe API keys gracefully, so the error won't appear even without adding real keys. However, for actual payment processing to work, you will need to add valid Stripe API keys.
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>7. Additional Resources</h2>
+        
+        <div class="task">
+            <a href="https://firebase.google.com/docs/auth/web/google-signin" target="_blank">Firebase Google Sign-In Documentation</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console Credentials</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://next-auth.js.org/providers/google" target="_blank">NextAuth Google Provider Documentation</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://vercel.com/docs/projects/domains/add-a-domain" target="_blank">Vercel Domain Configuration Guide</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://stripe.com/docs/payments/checkout" target="_blank">Stripe Checkout Documentation</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://stripe.com/docs/billing/subscriptions/overview" target="_blank">Stripe Subscription Documentation</a>
+        </div>
+    </div>
 </body>
 </html> 

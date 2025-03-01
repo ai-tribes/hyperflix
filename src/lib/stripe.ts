@@ -1,26 +1,33 @@
 import { loadStripe } from '@stripe/stripe-js';
 import Stripe from 'stripe';
 
+// Check if we have Stripe API keys before initializing
+const hasPublishableKey = !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const hasSecretKey = !!process.env.STRIPE_SECRET_KEY;
+
 // Initialize Stripe on the client
-let stripePromise: Promise<any>;
+let stripePromise: Promise<any> | null = null;
 export const getStripe = () => {
-  if (!stripePromise) {
+  if (!stripePromise && hasPublishableKey) {
     stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
   }
   return stripePromise;
 };
 
 // Initialize Stripe on the server
-// @ts-ignore: Using any to avoid version mismatch issues
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2023-10-16', 
-} as any);
+let stripe: Stripe | null = null;
+if (hasSecretKey) {
+  // @ts-ignore: Using any to avoid version mismatch issues
+  stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+    apiVersion: '2023-10-16', 
+  } as any);
+}
 
 // Price IDs for different subscription tiers
 export const SUBSCRIPTION_PRICE_IDS = {
-  starter: process.env.STRIPE_PRICE_ID_STARTER || '',
-  growth: process.env.STRIPE_PRICE_ID_GROWTH || '',
-  scale: process.env.STRIPE_PRICE_ID_SCALE || '',
+  starter: process.env.STRIPE_PRICE_ID_STARTER || 'price_starter_monthly',
+  growth: process.env.STRIPE_PRICE_ID_GROWTH || 'price_growth_monthly',
+  scale: process.env.STRIPE_PRICE_ID_SCALE || 'price_scale_monthly',
 };
 
 export interface SubscriptionPlan {
@@ -102,6 +109,10 @@ export async function createCheckoutSession(
   priceId: string,
   isYearly: boolean = false
 ) {
+  if (!stripe) {
+    throw new Error('Stripe is not initialized. Please check your API keys.');
+  }
+  
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -140,6 +151,10 @@ export async function createCheckoutSession(
  * @returns The user's active subscription or null
  */
 export async function getUserSubscription(userId: string) {
+  if (!stripe) {
+    throw new Error('Stripe is not initialized. Please check your API keys.');
+  }
+  
   try {
     // First, find the customer ID for this user
     const customers = await stripe.customers.list({
@@ -173,6 +188,10 @@ export async function getUserSubscription(userId: string) {
  * @returns The updated subscription
  */
 export async function cancelSubscription(subscriptionId: string) {
+  if (!stripe) {
+    throw new Error('Stripe is not initialized. Please check your API keys.');
+  }
+  
   try {
     return await stripe.subscriptions.update(subscriptionId, {
       cancel_at_period_end: true,
@@ -189,6 +208,10 @@ export async function cancelSubscription(subscriptionId: string) {
  * @returns The updated subscription
  */
 export async function resumeSubscription(subscriptionId: string) {
+  if (!stripe) {
+    throw new Error('Stripe is not initialized. Please check your API keys.');
+  }
+  
   try {
     return await stripe.subscriptions.update(subscriptionId, {
       cancel_at_period_end: false,
@@ -209,9 +232,14 @@ export async function updateSubscription(
   subscriptionId: string, 
   newPriceId: string
 ) {
+  if (!stripe) {
+    throw new Error('Stripe is not initialized. Please check your API keys.');
+  }
+  
   try {
     return await stripe.subscriptions.retrieve(subscriptionId)
       .then(subscription => {
+        if (!stripe) throw new Error('Stripe is not initialized');
         return stripe.subscriptions.update(subscriptionId, {
           items: [
             {
@@ -233,6 +261,10 @@ export async function updateSubscription(
  * @returns The portal session URL
  */
 export async function createPortalSession(customerId: string) {
+  if (!stripe) {
+    throw new Error('Stripe is not initialized. Please check your API keys.');
+  }
+  
   try {
     const session = await stripe.billingPortal.sessions.create({
       customer: customerId,
