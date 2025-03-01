@@ -6,66 +6,81 @@
     <title>HyperFlix Codebase Documentation</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
         h1 {
-            border-bottom: 2px solid #333;
+            border-bottom: 2px solid #FF6B00;
             padding-bottom: 10px;
-            margin-top: 30px;
         }
         h2 {
-            border-bottom: 1px solid #ddd;
+            margin-top: 30px;
             padding-bottom: 5px;
-            margin-top: 25px;
-            color: #0066cc;
+            border-bottom: 1px solid #eee;
         }
         h3 {
-            margin-top: 20px;
-            color: #444;
-        }
-        code {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #f5f5f5;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-size: 0.9em;
+            margin-top: 25px;
+            color: #FF6B00;
         }
         pre {
             background-color: #f5f5f5;
             padding: 15px;
             border-radius: 5px;
             overflow-x: auto;
-            border: 1px solid #ddd;
         }
-        ul, ol {
-            padding-left: 25px;
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #c7254e;
+            background-color: #f9f2f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        ul {
+            margin-bottom: 20px;
         }
         li {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
-        .project-structure {
-            white-space: pre;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9em;
+        .section {
+            margin-bottom: 30px;
         }
-        strong {
-            font-weight: 600;
+        .component {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .component h4 {
+            margin-top: 0;
+            color: #FF6B00;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #FF6B00, #FF9E00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <h1>HyperFlix Codebase Documentation</h1>
-    
-    <h2>Project Overview</h2>
-    <p>HyperFlix is an AI-powered platform for creating viral TikTok content for memecoins. The website is built using Next.js with TypeScript and React, following a component-based architecture.</p>
-    
-    <h2>Project Structure</h2>
-    <pre class="project-structure">HyperFlix/
+
+    <div class="section">
+        <h2>Project Overview</h2>
+        <p>HyperFlix is an AI-powered platform for creating viral TikTok content for memecoins. The website is built using Next.js with TypeScript and React, following a component-based architecture.</p>
+    </div>
+
+    <div class="section">
+        <h2>Project Structure</h2>
+        <pre>HyperFlix/
 ├── .git/                # Git repository
 ├── .next/               # Next.js build directory
 ├── css/                 # Global CSS
@@ -73,10 +88,34 @@
 ├── node_modules/        # Project dependencies
 ├── src/                 # Source code
 │   ├── app/             # Next.js App Router
+│   │   ├── dashboard/   # Dashboard page
+│   │   │   ├── dashboard.module.css  # Dashboard styles
+│   │   │   └── page.tsx              # Dashboard component
+│   │   ├── videos/      # Videos management
+│   │   │   ├── videos.module.css     # Videos page styles
+│   │   │   └── page.tsx              # Videos page component
+│   │   ├── tokens/      # Token management
+│   │   │   ├── tokens.module.css     # Tokens page styles
+│   │   │   └── page.tsx              # Tokens page component
+│   │   ├── audios/      # Audio management
+│   │   │   ├── audios.module.css     # Audios page styles
+│   │   │   ├── page.tsx              # Audios page component
+│   │   │   └── create/               # Create voiceover subpage
+│   │   │       ├── create.module.css # Create voiceover styles
+│   │   │       └── page.tsx          # Create voiceover component 
+│   │   ├── create/      # Create UGC content
+│   │   │   ├── create.module.css     # Create UGC styles
+│   │   │   └── page.tsx              # Create UGC component
+│   │   ├── lipsync/     # Lip Sync feature
+│   │   │   ├── lipsync.module.css    # Lip Sync styles
+│   │   │   └── page.tsx              # Lip Sync component
 │   │   ├── globals.css  # Global styles
 │   │   ├── layout.tsx   # Root layout component
 │   │   └── page.tsx     # Home page component
 │   └── components/      # React components
+│       ├── layout/      # Layout components
+│       │   ├── DashboardLayout.module.css # Dashboard layout styles
+│       │   └── DashboardLayout.tsx        # Dashboard layout component
 │       ├── marketing/   # Marketing-specific components
 │       │   ├── CTA.module.css        # CTA component styles
 │       │   ├── CTA.tsx               # Call to Action component
@@ -94,157 +133,302 @@
 │           ├── Footer.module.css     # Footer component styles
 │           ├── Footer.tsx            # Footer component
 │           ├── Header.module.css     # Header component styles
-│           └── Header.tsx            # Header component
+│           ├── Header.tsx            # Header component
+│           ├── Sidebar.module.css    # Sidebar component styles
+│           └── Sidebar.tsx           # Sidebar component
 ├── .gitignore           # Git ignore file
 ├── index.html           # Output HTML file
 ├── next-env.d.ts        # Next.js TypeScript declarations
 ├── package-lock.json    # Package lock file
 ├── package.json         # Project dependencies and scripts
 └── tsconfig.json        # TypeScript configuration</pre>
-    
-    <h2>Technology Stack</h2>
-    <ul>
-        <li><strong>Frontend Framework</strong>: Next.js 14.1.0</li>
-        <li><strong>UI Library</strong>: React 18.2.0</li>
-        <li><strong>Language</strong>: TypeScript 5.3.3</li>
-        <li><strong>Styling</strong>: CSS Modules</li>
-        <li><strong>Font</strong>: Poppins (Google Fonts)</li>
-    </ul>
-    
-    <h2>Key Components</h2>
-    
-    <h3>App Components</h3>
-    <ol>
-        <li>
-            <p><strong>Layout (<code>src/app/layout.tsx</code>)</strong>:</p>
+    </div>
+
+    <div class="section">
+        <h2>Technology Stack</h2>
+        <ul>
+            <li><strong>Frontend Framework</strong>: Next.js 14.1.0</li>
+            <li><strong>UI Library</strong>: React 18.2.0</li>
+            <li><strong>Language</strong>: TypeScript 5.3.3</li>
+            <li><strong>Styling</strong>: CSS Modules</li>
+            <li><strong>Font</strong>: Poppins (Google Fonts)</li>
+            <li><strong>Icons</strong>: React Icons (Bi icons)</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Key Components</h2>
+
+        <h3>App Components</h3>
+        <div class="component">
+            <h4>Layout (<code>src/app/layout.tsx</code>)</h4>
             <ul>
                 <li>Root layout component that wraps the entire application</li>
                 <li>Sets up global metadata and fonts</li>
                 <li>Applies the Poppins font to the entire application</li>
             </ul>
-        </li>
-        <li>
-            <p><strong>Home Page (<code>src/app/page.tsx</code>)</strong>:</p>
+        </div>
+
+        <div class="component">
+            <h4>Home Page (<code>src/app/page.tsx</code>)</h4>
             <ul>
                 <li>Main landing page component</li>
                 <li>Composes the page by assembling various marketing components</li>
                 <li>Includes Header, Hero, Features, ROI, Platform, Token, CTA, and Footer sections</li>
             </ul>
-        </li>
-    </ol>
-    
-    <h3>Shared Components</h3>
-    <ol>
-        <li>
-            <p><strong>Header (<code>src/components/shared/Header.tsx</code>)</strong>:</p>
+        </div>
+
+        <div class="component">
+            <h4>Dashboard Page (<code>src/app/dashboard/page.tsx</code>)</h4>
+            <ul>
+                <li>Main dashboard interface</li>
+                <li>Shows recent videos, token metrics, and quick actions</li>
+                <li>Uses the DashboardLayout component with sidebar navigation</li>
+            </ul>
+        </div>
+
+        <div class="component">
+            <h4>Videos Page (<code>src/app/videos/page.tsx</code>)</h4>
+            <ul>
+                <li>Displays a grid of user-generated videos</li>
+                <li>Includes filtering and sorting options</li>
+                <li>Shows video metrics like views, likes, and shares</li>
+            </ul>
+        </div>
+
+        <div class="component">
+            <h4>Tokens Page (<code>src/app/tokens/page.tsx</code>)</h4>
+            <ul>
+                <li>Interface for tracking and analyzing memecoins</li>
+                <li>Features a data table with sorting and filtering</li>
+                <li>Displays key metrics like price, change, volume, and market cap</li>
+            </ul>
+        </div>
+
+        <div class="component">
+            <h4>Audios Page (<code>src/app/audios/page.tsx</code>)</h4>
+            <ul>
+                <li>Manages background music and voiceovers</li>
+                <li>Shows list of audio files with metadata and playback controls</li>
+                <li>Includes link to Create Voiceover feature</li>
+            </ul>
+        </div>
+
+        <div class="component">
+            <h4>Create UGC Page (<code>src/app/create/page.tsx</code>)</h4>
+            <ul>
+                <li>Four-step wizard for creating UGC content</li>
+                <li>Includes hook generation, video selection, audio, and demo sections</li>
+                <li>Features AI-powered content generation</li>
+            </ul>
+        </div>
+
+        <div class="component">
+            <h4>Create Voiceover Page (<code>src/app/audios/create/page.tsx</code>)</h4>
+            <ul>
+                <li>Interface for generating AI voiceovers</li>
+                <li>Includes text input, voice selection, and language options</li>
+                <li>Features real-time preview with waveform visualization</li>
+            </ul>
+        </div>
+
+        <div class="component">
+            <h4>Lip Sync Page (<code>src/app/lipsync/page.tsx</code>)</h4>
+            <ul>
+                <li>Tabbed interface for managing lip sync videos</li>
+                <li>Features tabs for My Lip Syncs, Templates, and Avatars</li>
+                <li>Displays a grid of lip sync videos with thumbnails and metadata</li>
+            </ul>
+        </div>
+
+        <h3>Layout Components</h3>
+        <div class="component">
+            <h4>DashboardLayout (<code>src/components/layout/DashboardLayout.tsx</code>)</h4>
+            <ul>
+                <li>Provides consistent layout for authenticated app pages</li>
+                <li>Features left sidebar navigation</li>
+                <li>Responsive design with collapsible sidebar for mobile</li>
+            </ul>
+        </div>
+
+        <h3>Shared Components</h3>
+        <div class="component">
+            <h4>Header (<code>src/components/shared/Header.tsx</code>)</h4>
             <ul>
                 <li>Navigation bar at the top of the page</li>
-                <li>Contains the logo and navigation links</li>
+                <li>Contains the logo, navigation links, and promotional tagline</li>
+                <li>Features responsive mobile menu</li>
             </ul>
-        </li>
-        <li>
-            <p><strong>Footer (<code>src/components/shared/Footer.tsx</code>)</strong>:</p>
+        </div>
+
+        <div class="component">
+            <h4>Footer (<code>src/components/shared/Footer.tsx</code>)</h4>
             <ul>
                 <li>Footer section at the bottom of the page</li>
                 <li>Contains links, copyright information, and additional navigation</li>
             </ul>
-        </li>
-    </ol>
-    
-    <h3>Marketing Components</h3>
-    <ol>
-        <li>
-            <p><strong>Hero (<code>src/components/marketing/Hero.tsx</code>)</strong>:</p>
+        </div>
+
+        <div class="component">
+            <h4>Sidebar (<code>src/components/shared/Sidebar.tsx</code>)</h4>
+            <ul>
+                <li>Left-side navigation for authenticated pages</li>
+                <li>Contains links to Dashboard, Create UGC, Videos, Tokens, Audios, and Lip Sync</li>
+                <li>Shows active page indicator</li>
+            </ul>
+        </div>
+
+        <h3>Marketing Components</h3>
+        <div class="component">
+            <h4>Hero (<code>src/components/marketing/Hero.tsx</code>)</h4>
             <ul>
                 <li>Main hero section with headline, description, and call-to-action buttons</li>
                 <li>Displays key token metrics (price, market cap, holders)</li>
             </ul>
-        </li>
-        <li>
-            <p><strong>Features (<code>src/components/marketing/Features.tsx</code>)</strong>:</p>
+        </div>
+
+        <div class="component">
+            <h4>Features (<code>src/components/marketing/Features.tsx</code>)</h4>
             <ul>
                 <li>Highlights the key features of the platform</li>
             </ul>
-        </li>
-        <li>
-            <p><strong>ROI (<code>src/components/marketing/ROI.tsx</code>)</strong>:</p>
+        </div>
+
+        <div class="component">
+            <h4>ROI (<code>src/components/marketing/ROI.tsx</code>)</h4>
             <ul>
                 <li>Showcases return on investment information</li>
             </ul>
-        </li>
-        <li>
-            <p><strong>Platform (<code>src/components/marketing/Platform.tsx</code>)</strong>:</p>
+        </div>
+
+        <div class="component">
+            <h4>Platform (<code>src/components/marketing/Platform.tsx</code>)</h4>
             <ul>
                 <li>Describes the platform's capabilities and benefits</li>
             </ul>
-        </li>
-        <li>
-            <p><strong>Token (<code>src/components/marketing/Token.tsx</code>)</strong>:</p>
+        </div>
+
+        <div class="component">
+            <h4>Token (<code>src/components/marketing/Token.tsx</code>)</h4>
             <ul>
                 <li>Provides information about the $FLIX token</li>
             </ul>
-        </li>
-        <li>
-            <p><strong>CTA (<code>src/components/marketing/CTA.tsx</code>)</strong>:</p>
+        </div>
+
+        <div class="component">
+            <h4>CTA (<code>src/components/marketing/CTA.tsx</code>)</h4>
             <ul>
                 <li>Call-to-action section to encourage visitor engagement</li>
             </ul>
-        </li>
-    </ol>
-    
-    <h2>Styling Approach</h2>
-    <ul>
-        <li>The project uses CSS Modules for component-specific styling</li>
-        <li>Each component has its own <code>.module.css</code> file</li>
-        <li>Global styles are defined in <code>src/app/globals.css</code> and <code>css/styles.css</code></li>
-    </ul>
-    
-    <h2>Navigation Structure</h2>
-    <p>The main navigation is defined in the Header component with links to:</p>
-    <ul>
-        <li>Value (#value)</li>
-        <li>ROI (#roi)</li>
-        <li>Platform (#platform)</li>
-        <li>Token (#token)</li>
-    </ul>
-    
-    <h2>Project Dependencies</h2>
-    
-    <h3>Production Dependencies</h3>
-    <ul>
-        <li>next: 14.1.0</li>
-        <li>react: 18.2.0</li>
-        <li>react-dom: 18.2.0</li>
-    </ul>
-    
-    <h3>Development Dependencies</h3>
-    <ul>
-        <li>@types/node: 20.11.19</li>
-        <li>@types/react: 18.2.57</li>
-        <li>@types/react-dom: 18.2.19</li>
-        <li>typescript: 5.3.3</li>
-    </ul>
-    
-    <h2>Application Metadata</h2>
-    <ul>
-        <li><strong>Title</strong>: HyperFlix - The Ultimate Memecoin Marketing Platform</li>
-        <li><strong>Description</strong>: AI-powered platform for creating viral TikTok content for memecoins.</li>
-    </ul>
-    
-    <h2>Build and Development Scripts</h2>
-    <ul>
-        <li><code>npm run dev</code>: Start development server</li>
-        <li><code>npm run build</code>: Build for production</li>
-        <li><code>npm run start</code>: Start production server</li>
-        <li><code>npm run lint</code>: Run linting</li>
-    </ul>
-    
-    <h2>Key Marketing Messages</h2>
-    <ul>
-        <li>AI-powered platform for creating viral TikTok content</li>
-        <li>Specifically designed for memecoin marketing</li>
-        <li>$FLIX utility token</li>
-        <li>Revolutionary approach to crypto marketing</li>
-    </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Styling Approach</h2>
+        <ul>
+            <li>The project uses CSS Modules for component-specific styling</li>
+            <li>Each component has its own <code>.module.css</code> file</li>
+            <li>Global styles are defined in <code>src/app/globals.css</code> and <code>css/styles.css</code></li>
+            <li>Consistent color scheme using orange gradients (#FF6B00 to #FF9E00)</li>
+            <li>Responsive design for all screen sizes</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Navigation Structure</h2>
+        
+        <h3>Marketing Site Navigation (Header)</h3>
+        <ul>
+            <li>Value (#value)</li>
+            <li>ROI (#roi)</li>
+            <li>Platform (#platform)</li>
+            <li>Token (#token)</li>
+        </ul>
+
+        <h3>App Navigation (Sidebar)</h3>
+        <ul>
+            <li>Dashboard</li>
+            <li>Create UGC</li>
+            <li>Videos</li>
+            <li>Tokens</li>
+            <li>Audios</li>
+            <li>Lip Sync</li>
+            <li>Account</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Key Features</h2>
+        
+        <h3>Content Creation</h3>
+        <ul>
+            <li>AI-powered UGC content generation</li>
+            <li>Four-step creation wizard</li>
+            <li>Voice generation with customizable parameters</li>
+            <li>Lip sync with AI avatars</li>
+        </ul>
+
+        <h3>Token Management</h3>
+        <ul>
+            <li>Track memecoin metrics</li>
+            <li>Sort and filter token data</li>
+            <li>Analyze performance metrics</li>
+        </ul>
+
+        <h3>Media Management</h3>
+        <ul>
+            <li>Organize videos by status and platform</li>
+            <li>Manage audio files (music and voiceovers)</li>
+            <li>Preview and use media in content creation</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Project Dependencies</h2>
+        
+        <h3>Production Dependencies</h3>
+        <ul>
+            <li>next: 14.1.0</li>
+            <li>react: 18.2.0</li>
+            <li>react-dom: 18.2.0</li>
+            <li>react-icons: For UI icons</li>
+        </ul>
+
+        <h3>Development Dependencies</h3>
+        <ul>
+            <li>@types/node: 20.11.19</li>
+            <li>@types/react: 18.2.57</li>
+            <li>@types/react-dom: 18.2.19</li>
+            <li>typescript: 5.3.3</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Application Metadata</h2>
+        <ul>
+            <li><strong>Title</strong>: HyperFlix - The Ultimate Memecoin Marketing Platform</li>
+            <li><strong>Description</strong>: AI-powered platform for creating viral TikTok content for memecoins.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Build and Development Scripts</h2>
+        <ul>
+            <li><code>npm run dev</code>: Start development server</li>
+            <li><code>npm run build</code>: Build for production</li>
+            <li><code>npm run start</code>: Start production server</li>
+            <li><code>npm run lint</code>: Run linting</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Key Marketing Messages</h2>
+        <ul>
+            <li>AI-powered platform for creating viral TikTok content</li>
+            <li>Specifically designed for memecoin marketing</li>
+            <li>$FLIX utility token</li>
+            <li>Revolutionary approach to crypto marketing</li>
+        </ul>
+    </div>
 </body>
 </html> 

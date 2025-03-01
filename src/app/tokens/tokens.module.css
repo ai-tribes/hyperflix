@@ -1,0 +1,439 @@
+/* Tokens page styles */
+.tokensPage {
+  padding: 24px;
+  width: 100%;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.pageHeader h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.pageHeader p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.addTokenButton {
+  background: linear-gradient(90deg, #FF6B00, #FF9E00);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.addTokenButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.2);
+}
+
+/* Filters */
+.filters {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filterControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.searchBox {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.searchBox input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 1rem;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterGroup label {
+  font-size: 0.9rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+.filterGroup select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 0.9rem;
+  min-width: 120px;
+  color: #333;
+}
+
+.refreshButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+  margin-left: auto;
+  transition: background-color 0.2s;
+}
+
+.refreshButton:hover {
+  background-color: #e9ecef;
+}
+
+/* Tokens Table */
+.tokensTable {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.tableHeader > div {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.tableHeader > div:hover {
+  color: #FF6B00;
+}
+
+.sortIcon {
+  margin-left: 4px;
+  font-size: 0.85rem;
+}
+
+.tableBody {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.tableRow:hover {
+  background-color: #f8f9fa;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+/* Token Cell */
+.tokenCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tokenLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoPlaceholder {
+  font-weight: bold;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.tokenInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.tokenName {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.tokenSymbol {
+  font-size: 0.85rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.networkIcon {
+  margin-left: 8px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Price cells */
+.priceCell, .volumeCell, .marketCapCell {
+  display: flex;
+  flex-direction: column;
+}
+
+.mainValue {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+.subValue {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* Change cell */
+.changeCell {
+  font-weight: 600;
+}
+
+.positive {
+  color: #22c55e;
+}
+
+.negative {
+  color: #ef4444;
+}
+
+/* Hype Score */
+.hypeScoreCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hypeScoreBar {
+  flex-grow: 1;
+  height: 8px;
+  background-color: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.hypeScoreFill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.hypeScoreValue {
+  font-weight: 600;
+  color: #333;
+  min-width: 24px;
+  text-align: right;
+}
+
+/* Actions */
+.actionsCell {
+  display: flex;
+  gap: 8px;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background-color: #f5f7fa;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: #555;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actionButton:hover {
+  background-color: #e4e7eb;
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: 60px 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-top: 24px;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.emptyState h3 {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.emptyState p {
+  color: #777;
+  margin-bottom: 24px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .tableHeader, .tableRow {
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+  }
+  
+  .marketCapCell {
+    display: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .tableHeader, .tableRow {
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  }
+  
+  .marketCapCell, .volumeCell {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .filterControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .searchBox {
+    max-width: none;
+  }
+  
+  .filterGroup {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .filterGroup select {
+    width: 100%;
+  }
+  
+  .refreshButton {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .tableHeader, .tableRow {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  
+  .hypeScoreCell, .changeCell, .priceCell:not(:first-child) {
+    display: none;
+  }
+  
+  .tableHeader .tokenCell, .tableHeader .actionsCell {
+    grid-column: span 1;
+  }
+  
+  .actionsCell {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .tableHeader, .tableRow {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .tableHeader {
+    display: none;
+  }
+  
+  .tokenCell, .priceCell, .changeCell, .volumeCell, .marketCapCell, .hypeScoreCell, .actionsCell {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .tokenInfo {
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .tokenName, .tokenSymbol {
+    margin-bottom: 0;
+  }
+} 
