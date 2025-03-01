@@ -173,4 +173,52 @@
   .sidebar {
     z-index: 1001;
   }
+}
+
+/* Dropdown styling */
+.dropdownItem {
+  position: relative;
+}
+
+.dropdownHeader {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  cursor: pointer;
+  color: #718096;
+  transition: color 0.3s, background-color 0.3s;
+  border-radius: 8px;
+}
+
+.dropdownHeader:hover {
+  background-color: rgba(66, 153, 225, 0.08);
+  color: #4299e1;
+}
+
+.dropdownContent {
+  margin-left: 32px;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dropdownContent a {
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  color: #718096;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdownContent a:hover {
+  background-color: rgba(66, 153, 225, 0.08);
+  color: #4299e1;
+}
+
+.dropdownContent a.active {
+  background-color: rgba(66, 153, 225, 0.15);
+  color: #4299e1;
+  font-weight: 500;
 } 
