@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FaUser, FaEnvelope, FaLock, FaSignOutAlt, FaCamera } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaSignOutAlt, FaCamera, FaLink } from 'react-icons/fa';
 import styles from './profile.module.css';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import TikTokConnection from './tiktok-connection';
 
 export default function ProfilePage() {
   const { user, logout } = useAuth();
@@ -120,6 +121,13 @@ export default function ProfilePage() {
               >
                 <FaLock />
                 <span>Security</span>
+              </button>
+              <button 
+                className={`${styles.tabButton} ${activeTab === 'accounts' ? styles.active : ''}`}
+                onClick={() => setActiveTab('accounts')}
+              >
+                <FaLink />
+                <span>Connected Accounts</span>
               </button>
               <button 
                 className={styles.logoutButton}
@@ -237,6 +245,15 @@ export default function ProfilePage() {
                     {loading ? 'Updating...' : 'Update Password'}
                   </button>
                 </form>
+              </div>
+            )}
+
+            {activeTab === 'accounts' && (
+              <div>
+                <h2>Connected Accounts</h2>
+                <p>Connect your social media accounts to publish content directly from HyperFlix</p>
+                
+                <TikTokConnection />
               </div>
             )}
           </div>

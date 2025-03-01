@@ -48,39 +48,45 @@
         li {
             margin-bottom: 10px;
         }
-        .section {
-            margin-bottom: 30px;
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
         }
-        .component {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .highlight {
+            background-color: #fff5e6;
+            border-left: 4px solid #FF6B00;
             padding: 15px;
-            margin-bottom: 15px;
+            margin: 20px 0;
         }
-        .component h4 {
-            margin-top: 0;
-            color: #FF6B00;
+        .tech-item {
+            display: inline-block;
+            background: #eee;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 5px;
+            font-size: 14px;
         }
-        .gradient-text {
-            background: linear-gradient(90deg, #FF6B00, #FF9E00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
+        .tech-item.primary {
+            background: #FF6B00;
+            color: white;
         }
     </style>
 </head>
 <body>
     <h1>HyperFlix Codebase Documentation</h1>
 
-    <div class="section">
+    <section>
         <h2>Project Overview</h2>
         <p>HyperFlix is an AI-powered platform for creating viral TikTok content for memecoins. The website is built using Next.js with TypeScript and React, following a component-based architecture.</p>
-    </div>
+    </section>
 
-    <div class="section">
+    <section>
         <h2>Project Structure</h2>
-        <pre>HyperFlix/
+        <pre>
+HyperFlix/
 ├── .git/                # Git repository
 ├── .next/               # Next.js build directory
 ├── css/                 # Global CSS
@@ -88,9 +94,26 @@
 ├── node_modules/        # Project dependencies
 ├── src/                 # Source code
 │   ├── app/             # Next.js App Router
+│   │   ├── api/         # API Routes
+│   │   │   └── auth/    # NextAuth API endpoints
+│   │   │       └── [...nextauth]/ # NextAuth configuration
+│   │   │           └── route.ts   # NextAuth handler
+│   │   ├── auth/        # Authentication pages
+│   │   │   ├── signin/  # Sign in page
+│   │   │   │   ├── signin.module.css  # Sign in styles
+│   │   │   │   └── page.tsx           # Sign in component
+│   │   │   ├── signup/  # Sign up page
+│   │   │   │   ├── signup.module.css  # Sign up styles
+│   │   │   │   └── page.tsx           # Sign up component
+│   │   │   └── reset-password/ # Password reset page
+│   │   │       ├── reset-password.module.css # Password reset styles
+│   │   │       └── page.tsx                  # Password reset component
 │   │   ├── dashboard/   # Dashboard page
 │   │   │   ├── dashboard.module.css  # Dashboard styles
 │   │   │   └── page.tsx              # Dashboard component
+│   │   ├── profile/     # User profile page
+│   │   │   ├── profile.module.css    # Profile styles 
+│   │   │   └── page.tsx              # Profile component
 │   │   ├── videos/      # Videos management
 │   │   │   ├── videos.module.css     # Videos page styles
 │   │   │   └── page.tsx              # Videos page component
@@ -112,229 +135,370 @@
 │   │   ├── globals.css  # Global styles
 │   │   ├── layout.tsx   # Root layout component
 │   │   └── page.tsx     # Home page component
-│   └── components/      # React components
-│       ├── layout/      # Layout components
-│       │   ├── DashboardLayout.module.css # Dashboard layout styles
-│       │   └── DashboardLayout.tsx        # Dashboard layout component
-│       ├── marketing/   # Marketing-specific components
-│       │   ├── CTA.module.css        # CTA component styles
-│       │   ├── CTA.tsx               # Call to Action component
-│       │   ├── Features.module.css   # Features component styles
-│       │   ├── Features.tsx          # Features section component
-│       │   ├── Hero.module.css       # Hero component styles
-│       │   ├── Hero.tsx              # Hero section component
-│       │   ├── Platform.module.css   # Platform component styles
-│       │   ├── Platform.tsx          # Platform section component
-│       │   ├── ROI.module.css        # ROI component styles
-│       │   ├── ROI.tsx               # ROI section component
-│       │   ├── Token.module.css      # Token component styles
-│       │   └── Token.tsx             # Token section component
-│       └── shared/      # Shared components
-│           ├── Footer.module.css     # Footer component styles
-│           ├── Footer.tsx            # Footer component
-│           ├── Header.module.css     # Header component styles
-│           ├── Header.tsx            # Header component
-│           ├── Sidebar.module.css    # Sidebar component styles
-│           └── Sidebar.tsx           # Sidebar component
+│   ├── components/      # React components
+│   │   ├── auth/        # Authentication components
+│   │   │   └── AuthSessionProvider.tsx # NextAuth session provider
+│   │   ├── layout/      # Layout components
+│   │   │   ├── DashboardLayout.module.css # Dashboard layout styles
+│   │   │   └── DashboardLayout.tsx        # Dashboard layout component
+│   │   ├── marketing/   # Marketing-specific components
+│   │   │   ├── CTA.module.css        # CTA component styles
+│   │   │   ├── CTA.tsx               # Call to Action component
+│   │   │   ├── Features.module.css   # Features component styles
+│   │   │   ├── Features.tsx          # Features section component
+│   │   │   ├── Hero.module.css       # Hero component styles
+│   │   │   ├── Hero.tsx              # Hero section component
+│   │   │   ├── Platform.module.css   # Platform component styles
+│   │   │   ├── Platform.tsx          # Platform section component
+│   │   │   ├── ROI.module.css        # ROI component styles
+│   │   │   ├── ROI.tsx               # ROI section component
+│   │   │   ├── Token.module.css      # Token component styles
+│   │   │   └── Token.tsx             # Token section component
+│   │   └── shared/      # Shared components
+│   │       ├── Footer.module.css     # Footer component styles
+│   │       ├── Footer.tsx            # Footer component
+│   │       ├── Header.module.css     # Header component styles
+│   │       ├── Header.tsx            # Header component
+│   │       ├── Sidebar.module.css    # Sidebar component styles
+│   │       └── Sidebar.tsx           # Sidebar component
+│   ├── contexts/        # React Context providers
+│   │   └── AuthContext.tsx # Authentication context provider
+│   ├── lib/             # Utility libraries
+│   │   └── firebase.ts  # Firebase configuration
+│   └── types/           # TypeScript type definitions
+│       └── next-auth.d.ts # NextAuth type extensions
+├── .env.local           # Environment variables
 ├── .gitignore           # Git ignore file
 ├── index.html           # Output HTML file
 ├── next-env.d.ts        # Next.js TypeScript declarations
 ├── package-lock.json    # Package lock file
 ├── package.json         # Project dependencies and scripts
-└── tsconfig.json        # TypeScript configuration</pre>
-    </div>
+└── tsconfig.json        # TypeScript configuration
+        </pre>
+    </section>
 
-    <div class="section">
+    <section>
         <h2>Technology Stack</h2>
-        <ul>
-            <li><strong>Frontend Framework</strong>: Next.js 14.1.0</li>
-            <li><strong>UI Library</strong>: React 18.2.0</li>
-            <li><strong>Language</strong>: TypeScript 5.3.3</li>
-            <li><strong>Styling</strong>: CSS Modules</li>
-            <li><strong>Font</strong>: Poppins (Google Fonts)</li>
-            <li><strong>Icons</strong>: React Icons (Bi icons)</li>
-        </ul>
-    </div>
+        <div class="card">
+            <span class="tech-item primary">Next.js 14.1.0</span>
+            <span class="tech-item primary">React 18.2.0</span>
+            <span class="tech-item primary">TypeScript 5.3.3</span>
+            <span class="tech-item">CSS Modules</span>
+            <span class="tech-item">NextAuth.js</span>
+            <span class="tech-item">Firebase Authentication</span>
+            <span class="tech-item">Firebase Firestore</span>
+            <span class="tech-item">Firebase Storage</span>
+            <span class="tech-item">Poppins (Google Fonts)</span>
+            <span class="tech-item">React Icons (Fa icons)</span>
+        </div>
+    </section>
 
-    <div class="section">
+    <section>
         <h2>Key Components</h2>
-
+        
         <h3>App Components</h3>
-        <div class="component">
-            <h4>Layout (<code>src/app/layout.tsx</code>)</h4>
-            <ul>
-                <li>Root layout component that wraps the entire application</li>
-                <li>Sets up global metadata and fonts</li>
-                <li>Applies the Poppins font to the entire application</li>
-            </ul>
-        </div>
+        <ol>
+            <li>
+                <strong>Layout (<code>src/app/layout.tsx</code>)</strong>: 
+                <ul>
+                    <li>Root layout component that wraps the entire application</li>
+                    <li>Sets up global metadata and fonts</li>
+                    <li>Provides authentication context via AuthProvider and AuthSessionProvider</li>
+                    <li>Applies the Poppins font to the entire application</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Home Page (<code>src/app/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>Main landing page component</li>
+                    <li>Composes the page by assembling various marketing components</li>
+                    <li>Includes Header, Hero, Features, ROI, Platform, Token, CTA, and Footer sections</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Dashboard Page (<code>src/app/dashboard/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>Main dashboard interface</li>
+                    <li>Shows recent videos, token metrics, and quick actions</li>
+                    <li>Uses the DashboardLayout component with sidebar navigation</li>
+                    <li>Protected by authentication middleware</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Videos Page (<code>src/app/videos/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>Displays a grid of user-generated videos</li>
+                    <li>Includes filtering and sorting options</li>
+                    <li>Shows video metrics like views, likes, comments, and shares</li>
+                    <li>Protected by authentication middleware</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Tokens Page (<code>src/app/tokens/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>Interface for tracking and analyzing memecoins</li>
+                    <li>Features a data table with sorting and filtering</li>
+                    <li>Displays key metrics like price, change, volume, and market cap</li>
+                    <li>Protected by authentication middleware</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Audios Page (<code>src/app/audios/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>Manages background music and voiceovers</li>
+                    <li>Shows list of audio files with metadata and playback controls</li>
+                    <li>Includes link to Create Voiceover feature</li>
+                    <li>Protected by authentication middleware</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Create UGC Page (<code>src/app/create/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>Four-step wizard for creating UGC content</li>
+                    <li>Includes hook generation, video selection, audio, and demo sections</li>
+                    <li>Features AI-powered content generation</li>
+                    <li>Protected by authentication middleware</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Create Voiceover Page (<code>src/app/audios/create/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>Interface for generating AI voiceovers</li>
+                    <li>Includes text input, voice selection, and language options</li>
+                    <li>Features real-time preview with waveform visualization</li>
+                    <li>Protected by authentication middleware</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Lip Sync Page (<code>src/app/lipsync/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>Tabbed interface for managing lip sync videos</li>
+                    <li>Features tabs for My Lip Syncs, Templates, and Avatars</li>
+                    <li>Displays a grid of lip sync videos with thumbnails and metadata</li>
+                    <li>Protected by authentication middleware</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Sign In Page (<code>src/app/auth/signin/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>User authentication interface</li>
+                    <li>Includes email/password login form</li>
+                    <li>Provides social login options (Google and Twitter)</li>
+                    <li>Features promotional banner highlighting platform benefits</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Sign Up Page (<code>src/app/auth/signup/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>User registration interface</li>
+                    <li>Includes form with name, email, and password fields</li>
+                    <li>Provides social registration options (Google and Twitter)</li>
+                    <li>Features promotional banner explaining platform benefits</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Password Reset Page (<code>src/app/auth/reset-password/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>Password recovery interface</li>
+                    <li>Allows users to request password reset emails</li>
+                    <li>Includes instructions for the reset process</li>
+                    <li>Features informational sidebar with step-by-step guidance</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Profile Page (<code>src/app/profile/page.tsx</code>)</strong>: 
+                <ul>
+                    <li>User profile management interface</li>
+                    <li>Allows users to update profile information</li>
+                    <li>Provides password change functionality</li>
+                    <li>Includes logout option</li>
+                    <li>Protected by authentication middleware</li>
+                </ul>
+            </li>
+        </ol>
 
-        <div class="component">
-            <h4>Home Page (<code>src/app/page.tsx</code>)</h4>
-            <ul>
-                <li>Main landing page component</li>
-                <li>Composes the page by assembling various marketing components</li>
-                <li>Includes Header, Hero, Features, ROI, Platform, Token, CTA, and Footer sections</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Dashboard Page (<code>src/app/dashboard/page.tsx</code>)</h4>
-            <ul>
-                <li>Main dashboard interface</li>
-                <li>Shows recent videos, token metrics, and quick actions</li>
-                <li>Uses the DashboardLayout component with sidebar navigation</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Videos Page (<code>src/app/videos/page.tsx</code>)</h4>
-            <ul>
-                <li>Displays a grid of user-generated videos</li>
-                <li>Includes filtering and sorting options</li>
-                <li>Shows video metrics like views, likes, and shares</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Tokens Page (<code>src/app/tokens/page.tsx</code>)</h4>
-            <ul>
-                <li>Interface for tracking and analyzing memecoins</li>
-                <li>Features a data table with sorting and filtering</li>
-                <li>Displays key metrics like price, change, volume, and market cap</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Audios Page (<code>src/app/audios/page.tsx</code>)</h4>
-            <ul>
-                <li>Manages background music and voiceovers</li>
-                <li>Shows list of audio files with metadata and playback controls</li>
-                <li>Includes link to Create Voiceover feature</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Create UGC Page (<code>src/app/create/page.tsx</code>)</h4>
-            <ul>
-                <li>Four-step wizard for creating UGC content</li>
-                <li>Includes hook generation, video selection, audio, and demo sections</li>
-                <li>Features AI-powered content generation</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Create Voiceover Page (<code>src/app/audios/create/page.tsx</code>)</h4>
-            <ul>
-                <li>Interface for generating AI voiceovers</li>
-                <li>Includes text input, voice selection, and language options</li>
-                <li>Features real-time preview with waveform visualization</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Lip Sync Page (<code>src/app/lipsync/page.tsx</code>)</h4>
-            <ul>
-                <li>Tabbed interface for managing lip sync videos</li>
-                <li>Features tabs for My Lip Syncs, Templates, and Avatars</li>
-                <li>Displays a grid of lip sync videos with thumbnails and metadata</li>
-            </ul>
-        </div>
+        <h3>Authentication Components</h3>
+        <ol>
+            <li>
+                <strong>AuthContext (<code>src/contexts/AuthContext.tsx</code>)</strong>: 
+                <ul>
+                    <li>React context provider for authentication state</li>
+                    <li>Manages user authentication state across the application</li>
+                    <li>Provides methods for login, registration, logout, and password reset</li>
+                    <li>Integrates with Firebase Authentication</li>
+                </ul>
+            </li>
+            <li>
+                <strong>AuthSessionProvider (<code>src/components/auth/AuthSessionProvider.tsx</code>)</strong>: 
+                <ul>
+                    <li>NextAuth session provider</li>
+                    <li>Manages authentication session state</li>
+                    <li>Makes session data available throughout the application</li>
+                </ul>
+            </li>
+            <li>
+                <strong>NextAuth Configuration (<code>src/app/api/auth/[...nextauth]/route.ts</code>)</strong>: 
+                <ul>
+                    <li>API route for NextAuth.js</li>
+                    <li>Configures authentication providers (credentials, Google, Twitter)</li>
+                    <li>Defines callbacks for JWT and session handling</li>
+                    <li>Specifies custom pages for various authentication flows</li>
+                </ul>
+            </li>
+        </ol>
 
         <h3>Layout Components</h3>
-        <div class="component">
-            <h4>DashboardLayout (<code>src/components/layout/DashboardLayout.tsx</code>)</h4>
-            <ul>
-                <li>Provides consistent layout for authenticated app pages</li>
-                <li>Features left sidebar navigation</li>
-                <li>Responsive design with collapsible sidebar for mobile</li>
-            </ul>
-        </div>
+        <ol>
+            <li>
+                <strong>DashboardLayout (<code>src/components/layout/DashboardLayout.tsx</code>)</strong>: 
+                <ul>
+                    <li>Provides consistent layout for authenticated app pages</li>
+                    <li>Features left sidebar navigation</li>
+                    <li>Responsive design with collapsible sidebar for mobile</li>
+                </ul>
+            </li>
+        </ol>
 
         <h3>Shared Components</h3>
-        <div class="component">
-            <h4>Header (<code>src/components/shared/Header.tsx</code>)</h4>
-            <ul>
-                <li>Navigation bar at the top of the page</li>
-                <li>Contains the logo, navigation links, and promotional tagline</li>
-                <li>Features responsive mobile menu</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Footer (<code>src/components/shared/Footer.tsx</code>)</h4>
-            <ul>
-                <li>Footer section at the bottom of the page</li>
-                <li>Contains links, copyright information, and additional navigation</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Sidebar (<code>src/components/shared/Sidebar.tsx</code>)</h4>
-            <ul>
-                <li>Left-side navigation for authenticated pages</li>
-                <li>Contains links to Dashboard, Create UGC, Videos, Tokens, Audios, and Lip Sync</li>
-                <li>Shows active page indicator</li>
-            </ul>
-        </div>
+        <ol>
+            <li>
+                <strong>Header (<code>src/components/shared/Header.tsx</code>)</strong>: 
+                <ul>
+                    <li>Navigation bar at the top of the page</li>
+                    <li>Contains the logo, navigation links, and promotional tagline</li>
+                    <li>Features responsive mobile menu</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Footer (<code>src/components/shared/Footer.tsx</code>)</strong>: 
+                <ul>
+                    <li>Footer section at the bottom of the page</li>
+                    <li>Contains links, copyright information, and additional navigation</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Sidebar (<code>src/components/shared/Sidebar.tsx</code>)</strong>: 
+                <ul>
+                    <li>Left-side navigation for authenticated pages</li>
+                    <li>Contains links to Dashboard, Create UGC, Videos, Tokens, Audios, and Lip Sync</li>
+                    <li>Shows active page indicator</li>
+                </ul>
+            </li>
+        </ol>
 
         <h3>Marketing Components</h3>
-        <div class="component">
-            <h4>Hero (<code>src/components/marketing/Hero.tsx</code>)</h4>
+        <ol>
+            <li>
+                <strong>Hero (<code>src/components/marketing/Hero.tsx</code>)</strong>: 
+                <ul>
+                    <li>Main hero section with headline, description, and call-to-action buttons</li>
+                    <li>Displays key token metrics (price, market cap, holders)</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Features (<code>src/components/marketing/Features.tsx</code>)</strong>: 
+                <ul>
+                    <li>Highlights the key features of the platform</li>
+                </ul>
+            </li>
+            <li>
+                <strong>ROI (<code>src/components/marketing/ROI.tsx</code>)</strong>: 
+                <ul>
+                    <li>Showcases return on investment information</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Platform (<code>src/components/marketing/Platform.tsx</code>)</strong>: 
+                <ul>
+                    <li>Describes the platform's capabilities and benefits</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Token (<code>src/components/marketing/Token.tsx</code>)</strong>: 
+                <ul>
+                    <li>Provides information about the $FLIX token</li>
+                </ul>
+            </li>
+            <li>
+                <strong>CTA (<code>src/components/marketing/CTA.tsx</code>)</strong>: 
+                <ul>
+                    <li>Call-to-action section to encourage visitor engagement</li>
+                </ul>
+            </li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>Authentication System</h2>
+        <div class="highlight">
+            <h3>User Authentication Flow</h3>
+            <ol>
+                <li>
+                    <strong>Registration</strong>:
+                    <ul>
+                        <li>Users can register with email/password</li>
+                        <li>Name, email, and password validation</li>
+                        <li>Social registration via Google or Twitter</li>
+                        <li>Firebase Authentication for credentials management</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Login</strong>:
+                    <ul>
+                        <li>Email/password authentication</li>
+                        <li>Social login via Google or Twitter</li>
+                        <li>Error handling for invalid credentials</li>
+                        <li>Redirects to dashboard after successful login</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Password Reset</strong>:
+                    <ul>
+                        <li>Email-based password reset flow</li>
+                        <li>Reset email sent via Firebase</li>
+                        <li>Detailed instructions provided to users</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>User Profile</strong>:
+                    <ul>
+                        <li>Profile information management</li>
+                        <li>Password change functionality</li>
+                        <li>Account settings</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Security</strong>:
+                    <ul>
+                        <li>JWT-based authentication</li>
+                        <li>Secure password handling</li>
+                        <li>Protected routes via middleware</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Authentication Technologies</h3>
             <ul>
-                <li>Main hero section with headline, description, and call-to-action buttons</li>
-                <li>Displays key token metrics (price, market cap, holders)</li>
+                <li><strong>NextAuth.js</strong>: For session management and OAuth providers</li>
+                <li><strong>Firebase Authentication</strong>: For user credentials and account management</li>
+                <li><strong>Middleware</strong>: To protect restricted routes</li>
+                <li><strong>JWT</strong>: For secure token-based authentication</li>
             </ul>
         </div>
+    </section>
 
-        <div class="component">
-            <h4>Features (<code>src/components/marketing/Features.tsx</code>)</h4>
-            <ul>
-                <li>Highlights the key features of the platform</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>ROI (<code>src/components/marketing/ROI.tsx</code>)</h4>
-            <ul>
-                <li>Showcases return on investment information</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Platform (<code>src/components/marketing/Platform.tsx</code>)</h4>
-            <ul>
-                <li>Describes the platform's capabilities and benefits</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>Token (<code>src/components/marketing/Token.tsx</code>)</h4>
-            <ul>
-                <li>Provides information about the $FLIX token</li>
-            </ul>
-        </div>
-
-        <div class="component">
-            <h4>CTA (<code>src/components/marketing/CTA.tsx</code>)</h4>
-            <ul>
-                <li>Call-to-action section to encourage visitor engagement</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="section">
+    <section>
         <h2>Styling Approach</h2>
         <ul>
             <li>The project uses CSS Modules for component-specific styling</li>
             <li>Each component has its own <code>.module.css</code> file</li>
-            <li>Global styles are defined in <code>src/app/globals.css</code> and <code>css/styles.css</code></li>
+            <li>Global styles are defined in <code>src/app/globals.css</code></li>
             <li>Consistent color scheme using orange gradients (#FF6B00 to #FF9E00)</li>
             <li>Responsive design for all screen sizes</li>
         </ul>
-    </div>
+    </section>
 
-    <div class="section">
+    <section>
         <h2>Navigation Structure</h2>
         
         <h3>Marketing Site Navigation (Header)</h3>
@@ -353,12 +517,20 @@
             <li>Tokens</li>
             <li>Audios</li>
             <li>Lip Sync</li>
-            <li>Account</li>
+            <li>Profile</li>
         </ul>
-    </div>
+    </section>
 
-    <div class="section">
+    <section>
         <h2>Key Features</h2>
+
+        <h3>Authentication & User Management</h3>
+        <ul>
+            <li>User registration and login</li>
+            <li>Social authentication (Google & Twitter)</li>
+            <li>Password reset functionality</li>
+            <li>User profile management</li>
+        </ul>
         
         <h3>Content Creation</h3>
         <ul>
@@ -381,9 +553,9 @@
             <li>Manage audio files (music and voiceovers)</li>
             <li>Preview and use media in content creation</li>
         </ul>
-    </div>
+    </section>
 
-    <div class="section">
+    <section>
         <h2>Project Dependencies</h2>
         
         <h3>Production Dependencies</h3>
@@ -391,6 +563,8 @@
             <li>next: 14.1.0</li>
             <li>react: 18.2.0</li>
             <li>react-dom: 18.2.0</li>
+            <li>next-auth: For authentication</li>
+            <li>firebase: For Firebase services</li>
             <li>react-icons: For UI icons</li>
         </ul>
 
@@ -401,17 +575,17 @@
             <li>@types/react-dom: 18.2.19</li>
             <li>typescript: 5.3.3</li>
         </ul>
-    </div>
+    </section>
 
-    <div class="section">
+    <section>
         <h2>Application Metadata</h2>
-        <ul>
-            <li><strong>Title</strong>: HyperFlix - The Ultimate Memecoin Marketing Platform</li>
-            <li><strong>Description</strong>: AI-powered platform for creating viral TikTok content for memecoins.</li>
-        </ul>
-    </div>
+        <div class="card">
+            <p><strong>Title</strong>: HyperFlix - The Ultimate Memecoin Marketing Platform</p>
+            <p><strong>Description</strong>: AI-powered platform for creating viral TikTok content for memecoins.</p>
+        </div>
+    </section>
 
-    <div class="section">
+    <section>
         <h2>Build and Development Scripts</h2>
         <ul>
             <li><code>npm run dev</code>: Start development server</li>
@@ -419,9 +593,9 @@
             <li><code>npm run start</code>: Start production server</li>
             <li><code>npm run lint</code>: Run linting</li>
         </ul>
-    </div>
+    </section>
 
-    <div class="section">
+    <section>
         <h2>Key Marketing Messages</h2>
         <ul>
             <li>AI-powered platform for creating viral TikTok content</li>
@@ -429,6 +603,6 @@
             <li>$FLIX utility token</li>
             <li>Revolutionary approach to crypto marketing</li>
         </ul>
-    </div>
+    </section>
 </body>
 </html> 

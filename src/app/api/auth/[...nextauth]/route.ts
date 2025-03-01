@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import TwitterProvider from "next-auth/providers/twitter";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import TikTokProvider from "@/lib/tiktok-provider";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -48,6 +49,11 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.TWITTER_CLIENT_ID || "",
       clientSecret: process.env.TWITTER_CLIENT_SECRET || "",
       version: "2.0",
+    }),
+    TikTokProvider({
+      clientId: process.env.TIKTOK_CLIENT_KEY || "",
+      clientSecret: process.env.TIKTOK_CLIENT_SECRET || "",
+      callbackUrl: process.env.NEXTAUTH_URL + "/api/auth/callback/tiktok",
     })
   ],
   pages: {
@@ -58,15 +64,30 @@ export const authOptions: NextAuthOptions = {
     newUser: '/auth/new-user',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
+      }
+      // Store the access token and provider in the token
+      if (account && account.provider === "tiktok") {
+        token.tiktokAccessToken = account.access_token;
+        token.tiktokRefreshToken = account.refresh_token;
+        token.tiktokExpiresAt = account.expires_at;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        
+        // Add TikTok-specific properties to the session
+        if (token.tiktokAccessToken) {
+          session.tiktok = {
+            accessToken: token.tiktokAccessToken,
+            refreshToken: token.tiktokRefreshToken,
+            expiresAt: token.tiktokExpiresAt,
+          };
+        }
       }
       return session;
     },

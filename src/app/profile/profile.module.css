@@ -239,6 +239,176 @@
   box-shadow: none;
 }
 
+/* TikTok Connection Styles */
+.tiktokConnectionCard {
+  margin-top: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  border: 1px solid #eee;
+}
+
+.tiktokHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  color: #000;
+}
+
+.tiktokHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.tiktokUserInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.tiktokAvatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.tiktokUserDetails {
+  flex: 1;
+}
+
+.tiktokUserDetails h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.tiktokStats {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.tiktokStat {
+  display: flex;
+  flex-direction: column;
+}
+
+.tiktokStat strong {
+  font-size: 1rem;
+  color: #333;
+}
+
+.tiktokStat span {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.tiktokProfileLink {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: #FF6B00;
+  text-decoration: none;
+}
+
+.tiktokProfileLink:hover {
+  text-decoration: underline;
+}
+
+.tiktokActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tiktokButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.connectButton {
+  background: #000;
+  color: white;
+}
+
+.connectButton:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+.disconnectButton {
+  background: #f8f9fa;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+}
+
+.disconnectButton:hover {
+  background: #fff5f5;
+}
+
+.tiktokButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.connectAccount p {
+  margin-bottom: 1.5rem;
+}
+
+.tiktokPermissions {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.tiktokPermissionsTitle {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.tiktokPermissionsList {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.tiktokPermissionsList li {
+  margin-bottom: 0.25rem;
+}
+
+.tiktokDisclaimer {
+  font-style: italic;
+  color: #666;
+  margin-bottom: 0;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #666;
+  padding: 1rem 0;
+}
+
+.loadingIcon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 @media (max-width: 768px) {
   .content {
     flex-direction: column;
@@ -255,5 +425,9 @@
   
   .mainContent {
     padding: 1.5rem;
+  }
+  
+  .tiktokStats {
+    gap: 1rem;
   }
 } 

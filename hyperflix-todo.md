@@ -6,7 +6,7 @@ This document outlines the necessary steps to develop HyperFlix - an AI-powered 
 ## 1. Project Setup & Infrastructure
 
 - [  ] Update project metadata in package.json with HyperFlix-specific information
-- [  ] Configure environment variables for API keys and external services
+- [x] Configure environment variables for API keys and external services
 - [  ] Set up continuous integration/deployment pipeline
 - [  ] Create development, staging, and production environments
 - [  ] Configure domain and SSL
@@ -24,12 +24,12 @@ This document outlines the necessary steps to develop HyperFlix - an AI-powered 
 
 ### 2.2 User Authentication
 
-- [  ] Implement user registration system
-- [  ] Develop login functionality
-- [  ] Create password reset flow
-- [  ] Set up user roles and permissions
-- [  ] Implement account settings page
-- [  ] Add TikTok OAuth integration for platform publishing
+- [x] Implement user registration system
+- [x] Develop login functionality
+- [x] Create password reset flow
+- [x] Set up user roles and permissions
+- [x] Implement account settings page
+- [x] Add TikTok OAuth integration for platform publishing
 
 ## 3. Main Pages & Features
 
@@ -165,20 +165,20 @@ This document outlines the necessary steps to develop HyperFlix - an AI-powered 
 
 ## 8. Account Management
 
-- [  ] Build account settings page:
-  - [  ] Name and email management
-  - [  ] Connected TikTok accounts section
+- [x] Build account settings page:
+  - [x] Name and email management
+  - [x] Connected TikTok accounts section
   - [  ] Subscription plan management
-  - [  ] Sign out functionality
-- [  ] Implement TikTok authorization flow
+  - [x] Sign out functionality
+- [x] Implement TikTok authorization flow
 
 ## 9. Technical Integrations
 
-- [  ] Implement TikTok API integration:
-  - [  ] OAuth authentication
-  - [  ] Profile access
-  - [  ] Content posting capabilities
-  - [  ] Draft uploading
+- [x] Implement TikTok API integration:
+  - [x] OAuth authentication
+  - [x] Profile access
+  - [x] Content posting capabilities
+  - [x] Draft uploading
 - [x] Set up AI systems:
   - [x] Character/avatar generation
   - [x] Voice generation

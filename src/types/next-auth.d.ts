@@ -9,6 +9,11 @@ declare module "next-auth" {
     user: {
       id: string;
     } & DefaultSession["user"]
+    tiktok?: {
+      accessToken: string;
+      refreshToken: string;
+      expiresAt: number;
+    }
   }
 
   /**
@@ -25,5 +30,8 @@ declare module "next-auth/jwt" {
    */
   interface JWT {
     id: string;
+    tiktokAccessToken?: string;
+    tiktokRefreshToken?: string;
+    tiktokExpiresAt?: number;
   }
 } 
