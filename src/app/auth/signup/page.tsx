@@ -12,13 +12,15 @@ export default function SignUpPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   
   const { registerWithEmail, loginWithProvider } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError(null);
+    setSuccessMessage(null);
     
     if (!name || !email || !password || !confirmPassword) {
       setError('Please fill in all fields');
@@ -38,13 +40,20 @@ export default function SignUpPage() {
     try {
       setLoading(true);
       await registerWithEmail(name, email, password);
+      setSuccessMessage('Account created successfully! Redirecting to dashboard...');
+      // Redirect is handled by the context
     } catch (err: any) {
+      console.error('Registration error:', err);
+      
       if (err.code === 'auth/email-already-in-use') {
         setError('Email is already in use. Please use a different email or sign in.');
+      } else if (err.code === 'auth/invalid-email') {
+        setError('Invalid email address');
+      } else if (err.code === 'auth/weak-password') {
+        setError('Password is too weak. Please use a stronger password.');
       } else {
-        setError('Failed to create account. Please try again.');
+        setError(err.message || 'Failed to create account. Please try again.');
       }
-      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -53,18 +62,25 @@ export default function SignUpPage() {
   const handleSocialLogin = async (provider: 'google' | 'twitter') => {
     try {
       setLoading(true);
-      setError('');
+      setError(null);
+      setSuccessMessage(null);
+      console.log(`Initiating ${provider} login...`);
       await loginWithProvider(provider);
+      console.log(`${provider} login process completed`);
     } catch (err: any) {
       console.error(`Social login error (${provider}):`, err);
       
       // Display more specific error messages based on the error type
-      if (err.message && err.message.includes('popup')) {
-        setError(`Sign-up popup was closed or blocked. Please allow popups for this site and try again.`);
-      } else if (err.code === 'auth/account-exists-with-different-credential') {
-        setError(`An account already exists with the same email. Please use a different ${provider} account or sign in with your existing account.`);
+      if (err.code === 'auth/popup-closed-by-user') {
+        setError(`Sign-up window was closed. Please try again.`);
+      } else if (err.code === 'auth/popup-blocked') {
+        setError(`Sign-up popup was blocked. Please allow popups for this site.`);
+      } else if (err.code === 'auth/unauthorized-domain') {
+        setError(`This website is not authorized for authentication. Please contact support.`);
       } else if (err.code === 'auth/cancelled-popup-request') {
         setError(`Sign-up was cancelled. Please try again.`);
+      } else if (err.code === 'auth/account-exists-with-different-credential') {
+        setError(`An account already exists with the same email. Try another sign-up method.`);
       } else if (err.code === 'auth/network-request-failed') {
         setError(`Network error. Please check your internet connection and try again.`);
       } else {
@@ -97,6 +113,7 @@ export default function SignUpPage() {
         </div>
         
         {error && <div className={styles.error}>{error}</div>}
+        {successMessage && <div className={styles.success}>{successMessage}</div>}
         
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
@@ -159,8 +176,8 @@ export default function SignUpPage() {
             <Link href="/privacy"> Privacy Policy</Link>
           </div>
           
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className={styles.signUpButton}
             disabled={loading}
           >

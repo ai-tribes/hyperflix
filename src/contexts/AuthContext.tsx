@@ -114,6 +114,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         provider.setCustomParameters({
           prompt: 'select_account'
         });
+        console.log('Google provider initialized with parameters:', JSON.stringify({
+          scopes: ['profile', 'email'],
+          customParams: { prompt: 'select_account' }
+        }));
       } else if (providerName === 'twitter') {
         provider = new TwitterAuthProvider();
       } else {
@@ -121,32 +125,45 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
       
       console.log(`Attempting to sign in with ${providerName}...`);
-      const result = await signInWithPopup(auth, provider);
-      console.log(`Successfully signed in with ${providerName}`, result.user.uid);
-      router.push('/dashboard');
+      console.log('Current auth configuration:', {
+        authDomain: auth.app.options.authDomain,
+        apiKey: auth.app.options.apiKey?.substring(0, 5) + '...',
+        projectId: auth.app.options.projectId
+      });
+      
+      try {
+        const result = await signInWithPopup(auth, provider);
+        console.log(`Successfully signed in with ${providerName}`, result.user.uid);
+        router.push('/dashboard');
+      } catch (popupError: any) {
+        console.error(`Popup error with ${providerName}:`, popupError);
+        console.error('Error code:', popupError.code);
+        console.error('Error message:', popupError.message);
+        
+        if (popupError.code === 'auth/popup-closed-by-user') {
+          console.log('User closed the popup window');
+        } else if (popupError.code === 'auth/popup-blocked') {
+          console.log('Popup was blocked by the browser');
+        } else if (popupError.code === 'auth/cancelled-popup-request') {
+          console.log('Authentication popup request was cancelled');
+        } else if (popupError.code === 'auth/unauthorized-domain') {
+          console.error('CRITICAL: This domain is not authorized in Firebase Console');
+          console.log('Please add this domain to Firebase Console → Authentication → Settings → Authorized domains');
+        }
+        
+        if (popupError.customData?.email) {
+          console.log('Email associated with error:', popupError.customData.email);
+        }
+        
+        throw popupError;
+      }
     } catch (error: any) {
       console.error(`${providerName} login error:`, error);
       console.error('Error code:', error.code);
       console.error('Error message:', error.message);
       
-      // Log Firebase error details if available
-      if (error.customData && error.customData._tokenResponse) {
-        console.error('Token response error:', error.customData._tokenResponse);
-      }
-      
-      // Provide more specific error messages based on Firebase error codes
-      if (error.code === 'auth/popup-closed-by-user') {
-        throw new Error('Sign-in was cancelled. Please try again.');
-      } else if (error.code === 'auth/popup-blocked') {
-        throw new Error('Sign-in popup was blocked by your browser. Please allow popups for this site.');
-      } else if (error.code === 'auth/cancelled-popup-request') {
-        throw new Error('The sign-in operation was cancelled. Please try again.');
-      } else if (error.code === 'auth/account-exists-with-different-credential') {
-        throw new Error('An account already exists with the same email address but different sign-in credentials. Please sign in using the original provider.');
-      } else {
-        // Throw the original error for other cases
-        throw error;
-      }
+      setLoading(false);
+      throw error;
     } finally {
       setLoading(false);
     }

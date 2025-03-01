@@ -6,261 +6,232 @@
     <title>HyperFlix Developer Todo List</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
+            line-height: 1.6;
             color: #333;
         }
-        h1 {
-            color: #FF6B00;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #FF9E00;
-            margin-top: 30px;
-        }
-        ul {
-            padding-left: 20px;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        .task-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        .task-list li {
-            margin-bottom: 15px;
-            padding-left: 30px;
-            position: relative;
-        }
-        .task-list li:before {
-            content: "☐";
-            position: absolute;
-            left: 0;
-            font-size: 20px;
-            color: #FF6B00;
-        }
-        .task-list li.completed:before {
-            content: "☑";
-            color: #4CAF50;
-        }
-        .note {
-            background-color: #FFF8E1;
-            border-left: 4px solid #FFC107;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        code {
-            background-color: #f5f5f5;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
+        h1, h2, h3 {
+            color: #0062cc;
         }
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #f9f9f9;
         }
-        /* New styles for completed task lists */
-        .task-list.completed li:before {
-            content: "☑";
-            color: #4CAF50;
+        .section h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #0062cc;
+            padding-bottom: 10px;
+        }
+        .task {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        .task:before {
+            content: "•";
+            position: absolute;
+            left: 5px;
+            color: #0062cc;
+        }
+        .priority {
+            font-weight: bold;
+            color: #e63946;
+        }
+        .code {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin: 15px 0;
+        }
+        .file-path {
+            font-style: italic;
+            color: #666;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .note {
+            background-color: #fffde7;
+            padding: 10px;
+            border-left: 4px solid #ffd600;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-    <h1>HyperFlix Developer Todo List: Fix Google Authentication</h1>
+    <h1>HyperFlix Developer Todo List</h1>
     
-    <div class="note">
-        <strong>Priority:</strong> High - Users are currently unable to sign up or sign in using Google authentication.
-    </div>
-
     <div class="section">
-        <h2>1. Firebase Configuration</h2>
-        <ul class="task-list">
-            <li>Create a Firebase project or use an existing one from <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
-            <li>Enable Authentication in Firebase and set up Google as a sign-in provider</li>
-            <li>Update the <code>.env.local</code> file with real Firebase credentials:
-                <ul>
-                    <li>NEXT_PUBLIC_FIREBASE_API_KEY</li>
-                    <li>NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN</li>
-                    <li>NEXT_PUBLIC_FIREBASE_PROJECT_ID</li>
-                    <li>NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET</li>
-                    <li>NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID</li>
-                    <li>NEXT_PUBLIC_FIREBASE_APP_ID</li>
-                    <li>NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>2. Google Cloud OAuth Configuration</h2>
-        <ul class="task-list">
-            <li>Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console → APIs & Services → Credentials</a></li>
-            <li>Create an OAuth 2.0 Client ID (Web application)</li>
-            <li>Add authorized JavaScript origins:
-                <ul>
-                    <li><code>http://localhost:3000</code> (for local development)</li>
-                    <li>Your production domain if applicable</li>
-                </ul>
-            </li>
-            <li>Add authorized redirect URIs:
-                <ul>
-                    <li><code>http://localhost:3000/api/auth/callback/google</code> (for NextAuth)</li>
-                    <li><code>http://localhost:3000/__/auth/handler</code> (for Firebase Auth)</li>
-                    <li>Production equivalents if applicable</li>
-                </ul>
-            </li>
-            <li>Copy the Client ID and Client Secret</li>
-            <li>Update <code>.env.local</code> with real Google credentials:
-                <ul>
-                    <li>GOOGLE_CLIENT_ID</li>
-                    <li>GOOGLE_CLIENT_SECRET</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>3. Firebase Authentication Setup</h2>
-        <ul class="task-list">
-            <li>In Firebase Console, go to Authentication → Sign-in method</li>
-            <li>Enable Google provider</li>
-            <li>Set up the OAuth configuration in Firebase Auth:
-                <ul>
-                    <li>Add your Google Cloud Client ID as the Web SDK configuration</li>
-                    <li>Configure authorized domains to include <code>localhost</code> and your production domain</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>4. Testing & Verification</h2>
-        <ul class="task-list">
-            <li>Start the development server with <code>npm run dev</code></li>
-            <li>Open browser developer tools to the Console tab</li>
-            <li>Attempt to sign up with Google</li>
-            <li>If there are errors, check the console for specific error messages</li>
-            <li>Verify successful sign-up by checking:
-                <ul>
-                    <li>Firebase Authentication console for new users</li>
-                    <li>Successful redirect to the dashboard</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>5. Common Issues & Troubleshooting</h2>
-        <ul>
-            <li><strong>Popup blocked</strong>: Ensure the user has allowed popups for your site</li>
-            <li><strong>Invalid origin</strong>: Double-check that your localhost URL exactly matches what's in Google Cloud Console</li>
-            <li><strong>Configuration mismatch</strong>: Make sure the Google Client ID is the same in both Firebase and .env.local</li>
-            <li><strong>API not enabled</strong>: Ensure the Google Identity API is enabled in Google Cloud Console</li>
-            <li><strong>CORS issues</strong>: Check if there are CORS errors in the console</li>
-        </ul>
-    </div>
-
-    <div class="note">
-        <strong>Testing Note:</strong> You can temporarily add console logs in <code>src/contexts/AuthContext.tsx</code> 
-        within the <code>loginWithProvider</code> function to help diagnose issues. The changes we've already implemented 
-        will give you detailed error information in the console.
-    </div>
-
-    <div class="section">
-        <h2>6. Domain Configuration for Production</h2>
-        <ul class="task-list">
-            <li>Verify the current DNS configuration for hyper-flix.com:
-                <pre><code>Type    Name    Data                            TTL
-A       @       76.76.21.21                     600 seconds
-NS      @       ns35.domaincontrol.com.         1 Hour
-NS      @       ns36.domaincontrol.com.         1 Hour
-CNAME   www     cname.vercel-dns.com.           1 Hour
-CNAME   _dc     _domainconnect.gd.domaincontrol.com. 1 Hour
-SOA     @       Primary: ns35.domaincontrol.com. 1 Hour</code></pre>
-            </li>
-            <li>Add production domain to Google Cloud OAuth settings:
-                <ul>
-                    <li>Add <code>https://hyper-flix.com</code> to authorized JavaScript origins</li>
-                    <li>Add <code>https://hyper-flix.com/api/auth/callback/google</code> to authorized redirect URIs</li>
-                </ul>
-            </li>
-            <li>Add production domain to Firebase Authentication:
-                <ul>
-                    <li>In Firebase Console → Authentication → Settings → Authorized domains</li>
-                    <li>Add <code>hyper-flix.com</code> to the list of authorized domains</li>
-                </ul>
-            </li>
-            <li>Optional Vercel Recommendations:
-                <ul>
-                    <li>Consider switching to Vercel nameservers (ns1.vercel-dns.com, ns2.vercel-dns.com) for better support of Vercel features</li>
-                    <li>Add a TXT record for domain verification if requested by Vercel</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>7. Additional Resources</h2>
-        <ul>
-            <li><a href="https://firebase.google.com/docs/auth/web/google-signin" target="_blank">Firebase Google Sign-In Documentation</a></li>
-            <li><a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console Credentials</a></li>
-            <li><a href="https://next-auth.js.org/providers/google" target="_blank">NextAuth Google Provider Documentation</a></li>
-            <li><a href="https://vercel.com/docs/projects/domains/add-a-domain" target="_blank">Vercel Domain Configuration Guide</a></li>
-            <li><a href="https://vercel.com/docs/projects/domains/troubleshooting" target="_blank">Vercel DNS Troubleshooting</a></li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2>8. Fixed: Vercel Deployment Issues</h2>
-        <div class="note">
-            <strong>Fixed:</strong> Two deployment issues have been resolved to enable successful builds on Vercel.
+        <h2>1. Google OAuth Authentication Setup</h2>
+        <p class="priority">PRIORITY: Fix OAuth client error - "Error 401: invalid_client"</p>
+        
+        <div class="task">
+            <strong>Current Issue:</strong> The Google OAuth client is not being recognized, resulting in "The OAuth client was not found" error when attempting to authenticate with Google.
         </div>
-        <ul class="task-list completed">
-            <li class="completed">Fixed <code>src/app/api/stripe/webhook/route.ts</code> configuration:
-                <ul>
-                    <li>Removed deprecated API config format:
-                    <pre><code>export const config = {
-  api: {
-    bodyParser: false,
-  },
-};</code></pre>
-                    </li>
-                    <li>Added modern Next.js App Router config exports:
-                    <pre><code>export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
-export const bodyParser = false;</code></pre>
-                    </li>
-                </ul>
-            </li>
-            <li class="completed">Fixed CSS Modules syntax in <code>src/app/account/subscription/subscription.module.css</code>:
-                <ul>
-                    <li>Replaced non-pure selector:
-                    <pre><code>button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}</code></pre>
-                    </li>
-                    <li>With class-specific selectors:
-                    <pre><code>.paymentButton:disabled,
-.cancelButton:disabled,
-.resumeButton:disabled,
-.upgradeButton:disabled,
-.viewPlansButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}</code></pre>
-                    </li>
-                </ul>
-            </li>
-            <li>The next Vercel deployment should build successfully</li>
-        </ul>
+        
+        <h3>Steps to Fix:</h3>
+        
+        <div class="task">
+            1. Go to the <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a>
+        </div>
+        
+        <div class="task">
+            2. Select the project "hyper-flix-f2891" or create a new project if needed
+        </div>
+        
+        <div class="task">
+            3. Navigate to "APIs & Services" > "Credentials"
+        </div>
+        
+        <div class="task">
+            4. Create a new OAuth 2.0 Client ID or check existing credentials:
+            <ul>
+                <li>Application type: Web application</li>
+                <li>Name: HyperFlix Web Client</li>
+                <li>Authorized JavaScript origins: 
+                    <ul>
+                        <li>http://localhost:3000</li>
+                        <li>https://hyper-flix.com (if you have a production domain)</li>
+                    </ul>
+                </li>
+                <li>Authorized redirect URIs:
+                    <ul>
+                        <li>http://localhost:3000/api/auth/callback/google</li>
+                        <li>https://hyper-flix.com/api/auth/callback/google (if you have a production domain)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="task">
+            5. Update your <span class="file-path">.env.local</span> file with the actual credentials:
+            <div class="code">
+# OAuth Providers
+GOOGLE_CLIENT_ID=YOUR_ACTUAL_CLIENT_ID.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=YOUR_ACTUAL_CLIENT_SECRET</div>
+        </div>
+        
+        <div class="task">
+            6. Make sure the Google Identity API is enabled:
+            <ul>
+                <li>Go to "APIs & Services" > "Library"</li>
+                <li>Search for "Google Identity"</li>
+                <li>Enable the API if it's not already enabled</li>
+            </ul>
+        </div>
+        
+        <div class="task">
+            7. Verify OAuth consent screen is configured:
+            <ul>
+                <li>Go to "APIs & Services" > "OAuth consent screen"</li>
+                <li>Choose either "External" or "Internal" based on your use case</li>
+                <li>Complete the required fields (App name, user support email, developer contact info)</li>
+                <li>Add necessary scopes (at minimum: .../auth/userinfo.email and .../auth/userinfo.profile)</li>
+            </ul>
+        </div>
+        
         <div class="note">
-            <strong>Note about CSS Modules:</strong> In Next.js CSS Modules (.module.css files), all selectors must contain at least one local class or ID. Generic element selectors like <code>button</code>, <code>input</code>, etc. are not allowed by themselves.
+            <strong>Note:</strong> The error "Error 401: invalid_client" usually occurs when the client ID does not exist or has been misconfigured in the Google Cloud Console. Make sure you're copying the client ID exactly as it appears in the console, including the full domain suffix (.apps.googleusercontent.com).
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>2. NextAuth.js Configuration</h2>
+        
+        <div class="task">
+            Verify the NextAuth configuration in <span class="file-path">src/app/api/auth/[...nextauth]/route.ts</span> has the correct provider setup:
+            <div class="code">
+GoogleProvider({
+  clientId: process.env.GOOGLE_CLIENT_ID || "",
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+}),</div>
+        </div>
+        
+        <div class="task">
+            Make sure the <span class="file-path">.env.local</span> file is being loaded properly by Next.js by checking that it's in the root directory of your project and that your server logs show "- Environments: .env.local"
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>3. Firebase Configuration</h2>
+        
+        <div class="task">
+            If you're using both Firebase Authentication and NextAuth.js simultaneously, ensure your Firebase configuration is also correct in <span class="file-path">.env.local</span>
+        </div>
+        
+        <div class="task">
+            In Firebase Console, make sure Google is enabled as a sign-in method and the OAuth redirect domain is properly configured
+        </div>
+        
+        <div class="note">
+            <strong>Note:</strong> Using both Firebase Authentication and NextAuth.js for Google authentication can lead to conflicts. Consider standardizing on one authentication method or properly integrating them to work together.
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>4. Web Client Configuration</h2>
+        
+        <div class="task">
+            In your signin page at <span class="file-path">src/app/auth/signin/page.tsx</span>, make sure you're using the correct SignIn function call:
+            <div class="code">
+const result = await signIn('google', { 
+  callbackUrl,
+  redirect: false 
+});</div>
+        </div>
+        
+        <div class="task">
+            Ensure your callback handling properly directs users after authentication:
+            <div class="code">
+if (result?.error) {
+  throw new Error(result.error);
+} else if (result?.url) {
+  router.push(result.url);
+}</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>5. Testing &amp; Troubleshooting</h2>
+        
+        <div class="task">
+            After making the changes above, clear your browser cookies and cache before testing again
+        </div>
+        
+        <div class="task">
+            Check server-side logs for more detailed error information
+        </div>
+        
+        <div class="task">
+            Verify network requests in browser developer tools to see the exact authentication flow
+        </div>
+        
+        <div class="note">
+            <strong>Debug Tip:</strong> For detailed NextAuth.js debugging, add <code>DEBUG=next-auth:*</code> to your start command: <code>DEBUG=next-auth:* npm run dev</code>
         </div>
     </div>
 </body>
