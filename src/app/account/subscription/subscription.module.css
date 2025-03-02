@@ -1,0 +1,362 @@
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+/* Status notifications */
+.success,
+.canceled,
+.error,
+.loading {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.success {
+  background-color: rgba(0, 200, 83, 0.1);
+  border: 1px solid rgba(0, 200, 83, 0.3);
+  color: #00a854;
+}
+
+.canceled {
+  background-color: rgba(255, 77, 79, 0.1);
+  border: 1px solid rgba(255, 77, 79, 0.3);
+  color: #f5222d;
+}
+
+.error {
+  background-color: rgba(255, 77, 79, 0.1);
+  border: 1px solid rgba(255, 77, 79, 0.3);
+  color: #f5222d;
+}
+
+.loading {
+  background-color: rgba(24, 144, 255, 0.1);
+  border: 1px solid rgba(24, 144, 255, 0.3);
+  color: #1890ff;
+}
+
+/* Subscription info */
+.subscriptionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 1rem;
+}
+
+.cardHeader h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.activeBadge,
+.cancelBadge {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.activeBadge {
+  background-color: rgba(0, 200, 83, 0.1);
+  color: #00a854;
+}
+
+.cancelBadge {
+  background-color: rgba(255, 77, 79, 0.1);
+  color: #f5222d;
+}
+
+/* Plan details */
+.planDetails {
+  margin-bottom: 2rem;
+}
+
+.planDetails h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0.5rem 0 1.5rem;
+}
+
+.price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0 0;
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+.checkIcon {
+  color: #00a854;
+}
+
+/* Billing info */
+.billingInfo {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.billingInfo h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.billingDetail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.billingDetail:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.billingDetail span:first-child {
+  color: #666;
+}
+
+.billingDetail span:last-child {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Action buttons */
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.paymentButton,
+.cancelButton,
+.resumeButton,
+.upgradeButton,
+.viewPlansButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  font-size: 1rem;
+}
+
+.paymentButton {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.paymentButton:hover {
+  background-color: #e0e0e0;
+}
+
+.cancelButton {
+  background-color: rgba(255, 77, 79, 0.1);
+  color: #f5222d;
+}
+
+.cancelButton:hover {
+  background-color: rgba(255, 77, 79, 0.2);
+}
+
+.resumeButton {
+  background-color: rgba(0, 200, 83, 0.1);
+  color: #00a854;
+}
+
+.resumeButton:hover {
+  background-color: rgba(0, 200, 83, 0.2);
+}
+
+/* Replace the generic button:disabled selector with specific classes */
+.paymentButton:disabled,
+.cancelButton:disabled,
+.resumeButton:disabled,
+.upgradeButton:disabled,
+.viewPlansButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Upgrade section */
+.upgradeSection {
+  margin-top: 1rem;
+}
+
+.upgradeSection h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.upgradeSection > p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.upgradeOptions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.upgradeCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.upgradeCard h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.upgradePrice {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.upgradePrice span {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #888;
+}
+
+.upgradeDescription {
+  color: #666;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.upgradeButton {
+  background-color: #1890ff;
+  color: white;
+  margin-top: auto;
+}
+
+.upgradeButton:hover {
+  background-color: #096dd9;
+}
+
+/* No subscription state */
+.noSubscription {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 3rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.noSubscription h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.noSubscription p {
+  color: #666;
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+.viewPlansButton {
+  background-color: #1890ff;
+  color: white;
+}
+
+.viewPlansButton:hover {
+  background-color: #096dd9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+  
+  .actions button {
+    width: 100%;
+  }
+  
+  .upgradeOptions {
+    grid-template-columns: 1fr;
+  }
+} 

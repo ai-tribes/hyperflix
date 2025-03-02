@@ -1,97 +1,54 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
-import DashboardLayout from '@/components/layout/DashboardLayout';
+import { useAuth } from '@/contexts/AuthContext';
 import styles from './dashboard.module.css';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
-export default function DashboardPage() {
+export default function Dashboard() {
+  const { user, loading } = useAuth();
+
+  // If still loading authentication state, show spinner
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  // If user is not authenticated, they should be redirected by middleware
+  if (!user) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <DashboardLayout>
-      <div className={styles.dashboardPage}>
-        <div className={styles.dashboardHeader}>
-          <h1>Dashboard</h1>
-          <p>Welcome to HyperFlix - Your memecoin marketing platform</p>
+    <div className={styles.dashboard}>
+      <h1>Dashboard</h1>
+      <div className={styles.welcomeCard}>
+        <h2>Welcome, {user?.displayName || 'User'}!</h2>
+        <p>This is your HyperFlix dashboard where you can manage your content and account.</p>
+      </div>
+      
+      <div className={styles.statsGrid}>
+        <div className={styles.statCard}>
+          <h3>Videos Created</h3>
+          <p className={styles.statValue}>0</p>
         </div>
-        
-        <div className={styles.dashboardGrid}>
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h2>Analytics</h2>
-              <span className={styles.badge}>Last 30 days</span>
-            </div>
-            <div className={styles.cardBody}>
-              <div className={styles.statGrid}>
-                <div className={styles.stat}>
-                  <span className={styles.statValue}>0</span>
-                  <span className={styles.statLabel}>Videos Created</span>
-                </div>
-                <div className={styles.stat}>
-                  <span className={styles.statValue}>0</span>
-                  <span className={styles.statLabel}>Views</span>
-                </div>
-                <div className={styles.stat}>
-                  <span className={styles.statValue}>0</span>
-                  <span className={styles.statLabel}>Interactions</span>
-                </div>
-                <div className={styles.stat}>
-                  <span className={styles.statValue}>0</span>
-                  <span className={styles.statLabel}>Conversions</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h2>Token Metrics</h2>
-              <span className={styles.badge}>Live</span>
-            </div>
-            <div className={styles.cardBody}>
-              <p className={styles.emptyState}>No tokens added yet. Add your first token to track metrics.</p>
-              <button className={styles.button}>Add Token</button>
-            </div>
-          </div>
-          
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h2>Recent Videos</h2>
-            </div>
-            <div className={styles.cardBody}>
-              <p className={styles.emptyState}>No videos created yet. Start creating viral content for your memecoins!</p>
-              <Link href="/create">
-                <button className={styles.button}>Create UGC</button>
-              </Link>
-            </div>
-          </div>
-          
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h2>Quick Actions</h2>
-            </div>
-            <div className={styles.cardBody}>
-              <div className={styles.actionGrid}>
-                <Link href="/create" className={styles.action}>
-                  <span className={styles.actionIcon}>🎬</span>
-                  <span className={styles.actionLabel}>Create UGC</span>
-                </Link>
-                <a href="#tokens" className={styles.action}>
-                  <span className={styles.actionIcon}>🪙</span>
-                  <span className={styles.actionLabel}>Add Token</span>
-                </a>
-                <a href="#videos" className={styles.action}>
-                  <span className={styles.actionIcon}>🎥</span>
-                  <span className={styles.actionLabel}>My Videos</span>
-                </a>
-                <a href="#lipsync" className={styles.action}>
-                  <span className={styles.actionIcon}>🗣️</span>
-                  <span className={styles.actionLabel}>Lip Sync</span>
-                </a>
-              </div>
-            </div>
-          </div>
+        <div className={styles.statCard}>
+          <h3>Tokens Remaining</h3>
+          <p className={styles.statValue}>100</p>
+        </div>
+        <div className={styles.statCard}>
+          <h3>Account Status</h3>
+          <p className={styles.statValue}>Active</p>
         </div>
       </div>
-    </DashboardLayout>
+      
+      <div className={styles.actionsSection}>
+        <h2>Quick Actions</h2>
+        <div className={styles.actionButtons}>
+          <button className={styles.actionButton}>Create New Video</button>
+          <button className={styles.actionButton}>Browse Templates</button>
+          <button className={styles.actionButton}>Upload Audio</button>
+        </div>
+      </div>
+    </div>
   );
 } 

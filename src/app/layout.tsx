@@ -1,6 +1,8 @@
 import React from 'react'
 import './globals.css'
 import { Poppins } from 'next/font/google'
+import ClientLayout from '@/components/layout/ClientLayout'
+import { Metadata } from 'next'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -8,9 +10,11 @@ const poppins = Poppins({
   display: 'swap',
 })
 
-export const metadata = {
-  title: 'HyperFlix - The Ultimate Memecoin Marketing Platform',
-  description: 'AI-powered platform for creating viral TikTok content for memecoins.',
+export function generateMetadata(): Metadata {
+  return {
+    title: 'HyperFlix - The Ultimate Memecoin Marketing Platform',
+    description: 'AI-powered platform for creating viral TikTok content for memecoins.',
+  }
 }
 
 export default function RootLayout({
@@ -20,7 +24,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <body className={poppins.className}>
+        <ClientLayout>
+          {children}
+        </ClientLayout>
+      </body>
     </html>
   )
 } 

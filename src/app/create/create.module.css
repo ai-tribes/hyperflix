@@ -1,7 +1,69 @@
 /* Create Page Styles */
 .createPage {
-  padding: 24px;
-  width: 100%;
+  padding: 2rem;
+}
+
+.createPage h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.createPage p {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.createOptionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.createOption {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.createOption:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.createOption h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.createOption p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.createButton {
+  background: linear-gradient(90deg, #FF6B00, #FF9E00);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.createButton:hover {
+  background: linear-gradient(90deg, #E55A00, #E58E00);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .createOptionsGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .createHeader {
