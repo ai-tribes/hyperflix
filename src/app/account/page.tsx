@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
 export default function AccountPage() {
   const router = useRouter();
@@ -10,5 +11,10 @@ export default function AccountPage() {
     router.push('/account/profile');
   }, [router]);
 
-  return null;
+  return (
+    <ProtectedRoute>
+      {/* This will redirect to profile, but ensures authentication first */}
+      <div></div>
+    </ProtectedRoute>
+  );
 } 

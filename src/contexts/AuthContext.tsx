@@ -16,6 +16,7 @@ import {
 } from 'firebase/auth';
 import { app } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
+import { setAuthCookie } from '@/lib/auth-utils';
 
 // Extended User type with image property
 interface User extends FirebaseUser {
@@ -30,11 +31,11 @@ interface UpdateProfileParams {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  loginWithEmail: (email: string, password: string) => Promise<void>;
-  registerWithEmail: (name: string, email: string, password: string) => Promise<void>;
+  loginWithEmail: (email: string, password: string, callbackUrl?: string) => Promise<void>;
+  registerWithEmail: (name: string, email: string, password: string, callbackUrl?: string) => Promise<void>;
   logout: () => Promise<void>;
   signOut: () => Promise<void>; // Alias for logout
-  loginWithProvider: (provider: 'google' | 'twitter') => Promise<void>;
+  loginWithProvider: (provider: 'google' | 'twitter', callbackUrl?: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updateProfile: (params: UpdateProfileParams) => Promise<void>;
 }
@@ -66,8 +67,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const extendedUser = firebaseUser as User;
         extendedUser.image = firebaseUser.photoURL || undefined;
         setUser(extendedUser);
+        
+        // Set auth cookie when user is authenticated
+        setAuthCookie(extendedUser);
       } else {
         setUser(null);
+        
+        // Remove auth cookie when user is not authenticated
+        setAuthCookie(null);
       }
       setLoading(false);
     });
@@ -75,11 +82,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return () => unsubscribe();
   }, [auth]);
 
-  const loginWithEmail = async (email: string, password: string) => {
+  const loginWithEmail = async (email: string, password: string, callbackUrl = '/dashboard') => {
     try {
       setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
-      router.push('/dashboard');
+      router.push(callbackUrl);
     } catch (error) {
       console.error('Email login error:', error);
       throw error;
@@ -88,7 +95,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const registerWithEmail = async (name: string, email: string, password: string) => {
+  const registerWithEmail = async (name: string, email: string, password: string, callbackUrl = '/dashboard') => {
     try {
       setLoading(true);
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -100,7 +107,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         });
       }
       
-      router.push('/dashboard');
+      router.push(callbackUrl);
     } catch (error) {
       console.error('Email registration error:', error);
       throw error;
@@ -146,7 +153,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const loginWithProvider = async (providerName: 'google' | 'twitter') => {
+  const loginWithProvider = async (providerName: 'google' | 'twitter', callbackUrl = '/dashboard') => {
     try {
       setLoading(true);
       let provider;
@@ -171,20 +178,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
       
       console.log(`Attempting to sign in with ${providerName}...`);
-      console.log('Current auth configuration:', {
-        authDomain: auth.app.options.authDomain,
-        apiKey: auth.app.options.apiKey?.substring(0, 5) + '...',
-        projectId: auth.app.options.projectId
-      });
       
       try {
         const result = await signInWithPopup(auth, provider);
         console.log(`Successfully signed in with ${providerName}`, result.user.uid);
-        router.push('/dashboard');
+        router.push(callbackUrl);
       } catch (popupError: any) {
         console.error(`Popup error with ${providerName}:`, popupError);
-        console.error('Error code:', popupError.code);
-        console.error('Error message:', popupError.message);
         
         if (popupError.code === 'auth/popup-closed-by-user') {
           console.log('User closed the popup window');
@@ -197,16 +197,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.log('Please add this domain to Firebase Console → Authentication → Settings → Authorized domains');
         }
         
-        if (popupError.customData?.email) {
-          console.log('Email associated with error:', popupError.customData.email);
-        }
-        
         throw popupError;
       }
     } catch (error: any) {
       console.error(`${providerName} login error:`, error);
-      console.error('Error code:', error.code);
-      console.error('Error message:', error.message);
       
       setLoading(false);
       throw error;

@@ -1,10 +1,17 @@
 "use client";
 
+// Force dynamic rendering for this client component
+export const dynamic = 'force-dynamic'; 
+export const runtime = 'edge';
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { FaGoogle, FaTwitter } from 'react-icons/fa';
 import styles from './signup.module.css';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '@/lib/firebase';
 
 export default function SignUpPage() {
   const [name, setName] = useState('');
@@ -12,38 +19,44 @@ export default function SignUpPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   
-  const { registerWithEmail, loginWithProvider } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams?.get('callbackUrl') || '/dashboard';
+  
+  const { registerWithEmail } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setSuccessMessage(null);
+    setError('');
+    setSuccessMessage('');
+    setLoading(true);
     
     if (!name || !email || !password || !confirmPassword) {
       setError('Please fill in all fields');
+      setLoading(false);
       return;
     }
     
     if (password !== confirmPassword) {
       setError('Passwords do not match');
+      setLoading(false);
       return;
     }
     
     if (password.length < 6) {
       setError('Password must be at least 6 characters long');
+      setLoading(false);
       return;
     }
     
     try {
-      setLoading(true);
-      await registerWithEmail(name, email, password);
-      setSuccessMessage('Account created successfully! Redirecting to dashboard...');
-      // Redirect is handled by the context
+      await registerWithEmail(name, email, password, callbackUrl);
+      setSuccessMessage('Account created successfully! Redirecting...');
     } catch (err: any) {
-      console.error('Registration error:', err);
+      console.error('Sign up error:', err);
       
       if (err.code === 'auth/email-already-in-use') {
         setError('Email is already in use. Please use a different email or sign in.');
@@ -52,43 +65,46 @@ export default function SignUpPage() {
       } else if (err.code === 'auth/weak-password') {
         setError('Password is too weak. Please use a stronger password.');
       } else {
-        setError(err.message || 'Failed to create account. Please try again.');
+        setError('Failed to create account. Please try again.');
       }
     } finally {
       setLoading(false);
     }
   };
   
-  const handleSocialLogin = async (provider: 'google' | 'twitter') => {
+  const handleGoogleSignUp = async () => {
+    setError('');
+    setSuccessMessage('');
+    setLoading(true);
+    
     try {
-      setLoading(true);
-      setError(null);
-      setSuccessMessage(null);
-      console.log(`Initiating ${provider} login...`);
-      await loginWithProvider(provider);
-      console.log(`${provider} login process completed`);
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log('Google sign-up successful:', result.user.uid);
+      router.push(callbackUrl);
     } catch (err: any) {
-      console.error(`Social login error (${provider}):`, err);
+      console.error('Google sign-up error:', err);
       
-      // Display more specific error messages based on the error type
       if (err.code === 'auth/popup-closed-by-user') {
-        setError(`Sign-up window was closed. Please try again.`);
+        console.log('User closed the popup window');
+        // Don't show error for user-initiated cancellation
       } else if (err.code === 'auth/popup-blocked') {
-        setError(`Sign-up popup was blocked. Please allow popups for this site.`);
-      } else if (err.code === 'auth/unauthorized-domain') {
-        setError(`This website is not authorized for authentication. Please contact support.`);
+        setError('Popup was blocked by your browser. Please allow popups for this site.');
       } else if (err.code === 'auth/cancelled-popup-request') {
-        setError(`Sign-up was cancelled. Please try again.`);
-      } else if (err.code === 'auth/account-exists-with-different-credential') {
-        setError(`An account already exists with the same email. Try another sign-up method.`);
+        console.log('Authentication popup request was cancelled');
+        // Don't show error for cancellation
       } else if (err.code === 'auth/network-request-failed') {
-        setError(`Network error. Please check your internet connection and try again.`);
+        setError('Network error. Please check your internet connection and try again.');
       } else {
-        setError(`Failed to sign up with ${provider}. Please try again.`);
+        setError('Failed to sign up with Google. Please try again.');
       }
     } finally {
       setLoading(false);
     }
+  };
+  
+  // Handle Twitter login - currently disabled until configured
+  const handleTwitterSignUp = async () => {
+    setError('Twitter authentication is coming soon!');
   };
 
   return (
@@ -192,7 +208,7 @@ export default function SignUpPage() {
         <div className={styles.socialButtons}>
           <button 
             className={`${styles.socialButton} ${styles.googleButton}`}
-            onClick={() => handleSocialLogin('google')}
+            onClick={handleGoogleSignUp}
             disabled={loading}
           >
             <FaGoogle />
@@ -201,8 +217,8 @@ export default function SignUpPage() {
           
           <button 
             className={`${styles.socialButton} ${styles.twitterButton}`}
-            onClick={() => handleSocialLogin('twitter')}
-            disabled={loading}
+            onClick={handleTwitterSignUp}
+            disabled={loading || true}
           >
             <FaTwitter />
             Sign up with Twitter

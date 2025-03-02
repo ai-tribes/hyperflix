@@ -6,13 +6,15 @@ export const runtime = 'edge';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaGoogle, FaTwitter } from 'react-icons/fa';
+import { FaGoogle, FaTwitter, FaTiktok } from 'react-icons/fa';
 import { SiTiktok } from 'react-icons/si';
 import { FiMail } from 'react-icons/fi';
 import styles from './signin.module.css';
 import { useAuth } from '@/contexts/AuthContext';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '@/lib/firebase';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -21,7 +23,7 @@ export default function SignIn() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams?.get('callbackUrl') || '/';
+  const callbackUrl = searchParams?.get('callbackUrl') || '/dashboard';
 
   const { loginWithEmail, loginWithProvider } = useAuth();
 
@@ -30,116 +32,66 @@ export default function SignIn() {
     setError(null);
     
     if (!email || !password) {
-      setError('Please fill in all fields');
+      setError('Please enter both email and password');
+      setLoading(false);
       return;
     }
     
     try {
       setLoading(true);
-      await loginWithEmail(email, password);
-      // Redirect is handled by the context
+      await loginWithEmail(email, password, callbackUrl);
     } catch (err: any) {
-      console.error('Login error:', err);
+      console.error('Sign in error:', err);
       
       if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
         setError('Invalid email or password');
       } else if (err.code === 'auth/too-many-requests') {
         setError('Too many failed login attempts. Please try again later or reset your password');
       } else {
-        setError(err.message || 'An error occurred during sign in');
+        setError('Failed to sign in. Please try again.');
       }
     } finally {
       setLoading(false);
     }
   };
   
-  const handleSocialLogin = async (provider: 'google' | 'twitter' | 'tiktok') => {
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    setLoading(true);
+    
     try {
-      setLoading(true);
-      setError(null);
-      console.log(`Initiating ${provider} login...`);
-      
-      if (provider === 'google') {
-        console.log('Google provider initialized with parameters: – ' + JSON.stringify({
-          scopes: ['profile', 'email'],
-          customParams: { prompt: 'select_account' }
-        }));
-        
-        console.log('Attempting to sign in with google...');
-        console.log('Current auth configuration: – ' + JSON.stringify({
-          authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-          apiKey: 'AIzaS...',
-          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
-        }));
-        
-        // Use Next Auth's signIn method instead of Firebase directly
-        const result = await signIn('google', { 
-          callbackUrl,
-          redirect: false 
-        });
-        
-        console.log('Successfully signed in with google – "bhWrMZvP6PZyV01qDbaVIA674LI2"');
-        console.log('google login process completed');
-        
-        if (result?.error) {
-          throw new Error(result.error);
-        } else if (result?.url) {
-          router.push(result.url);
-        }
-      } else if (provider === 'tiktok') {
-        // Handle TikTok login differently since it's not supported in the current AuthContext
-        console.log('TikTok login not yet implemented');
-        setError('TikTok login is coming soon!');
-        setLoading(false);
-        return;
-      } else {
-        // For other providers (twitter), continue using Firebase
-        await loginWithProvider(provider as 'google' | 'twitter');
-      }
-      
-      console.log(`${provider} login process completed`);
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log('Google sign-in successful:', result.user.uid);
+      router.push(callbackUrl);
     } catch (err: any) {
-      console.error(`Social login error (${provider}):`, err);
+      console.error('Google sign-in error:', err);
       
-      // Display more specific error messages based on the error type
       if (err.code === 'auth/popup-closed-by-user') {
-        setError(`Sign-in window was closed. Please try again.`);
+        console.log('User closed the popup window');
+        // Don't show error for user-initiated cancellation
       } else if (err.code === 'auth/popup-blocked') {
-        setError(`Sign-in popup was blocked. Please allow popups for this site.`);
-      } else if (err.code === 'auth/unauthorized-domain') {
-        setError(`This website is not authorized for authentication. Please contact support.`);
+        setError('Popup was blocked by your browser. Please allow popups for this site.');
       } else if (err.code === 'auth/cancelled-popup-request') {
-        setError(`Sign-in was cancelled. Please try again.`);
-      } else if (err.code === 'auth/account-exists-with-different-credential') {
-        setError(`An account already exists with the same email. Try another sign-in method.`);
+        console.log('Authentication popup request was cancelled');
+        // Don't show error for cancellation
       } else if (err.code === 'auth/network-request-failed') {
-        setError(`Network error. Please check your internet connection and try again.`);
+        setError('Network error. Please check your internet connection and try again.');
       } else {
-        setError(`Failed to sign in with ${provider}. Please try again.`);
+        setError('Failed to sign in with Google. Please try again.');
       }
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle Twitter login
+  // Handle Twitter login - currently disabled until configured
   const handleTwitterSignIn = async () => {
-    try {
-      await signIn('twitter', { callbackUrl });
-    } catch (error) {
-      console.error('Error during Twitter sign in:', error);
-      setError('Failed to sign in with Twitter. Please try again.');
-    }
+    setError('Twitter authentication is coming soon!');
   };
 
-  // Handle TikTok login
+  // Handle TikTok login - currently disabled until configured
   const handleTikTokSignIn = async () => {
-    try {
-      await signIn('tiktok', { callbackUrl });
-    } catch (error) {
-      console.error('Error during TikTok sign in:', error);
-      setError('Failed to sign in with TikTok. Please try again.');
-    }
+    setError('TikTok authentication is coming soon!');
   };
 
   // Clear error on component mount
@@ -169,13 +121,13 @@ export default function SignIn() {
         
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
+              placeholder="Enter your email"
               disabled={loading}
               required
             />
@@ -188,7 +140,7 @@ export default function SignIn() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="Enter your password"
               disabled={loading}
               required
             />
@@ -214,29 +166,29 @@ export default function SignIn() {
         <div className={styles.socialButtons}>
           <button 
             className={`${styles.socialButton} ${styles.googleButton}`}
-            onClick={() => handleSocialLogin('google')}
+            onClick={handleGoogleSignIn}
             disabled={loading}
           >
             <FaGoogle />
-            Sign in with Google
+            <span>Sign in with Google</span>
           </button>
           
           <button 
             className={`${styles.socialButton} ${styles.twitterButton}`}
-            onClick={() => handleSocialLogin('twitter')}
-            disabled={loading}
+            onClick={handleTwitterSignIn}
+            disabled={loading || true}
           >
             <FaTwitter />
-            Sign in with Twitter
+            <span>Twitter Coming Soon</span>
           </button>
           
           <button 
             className={`${styles.socialButton} ${styles.tiktokButton}`}
-            onClick={() => handleSocialLogin('tiktok')}
-            disabled={loading}
+            onClick={handleTikTokSignIn}
+            disabled={loading || true}
           >
-            <SiTiktok />
-            Sign in with TikTok
+            <FaTiktok />
+            <span>TikTok Coming Soon</span>
           </button>
         </div>
         
@@ -248,12 +200,12 @@ export default function SignIn() {
       <div className={styles.bannerContainer}>
         <div className={styles.bannerContent}>
           <h2>Boost Your Memecoin Marketing</h2>
-          <p>HyperFlix helps you create viral TikTok content that gets results</p>
+          <p>HyperFlix gives you the power to create viral marketing campaigns</p>
           <ul className={styles.featureList}>
-            <li>AI-powered content generator</li>
-            <li>Advanced analytics dashboard</li>
-            <li>One-click deployment to multiple platforms</li>
-            <li>Campaign performance tracking</li>
+            <li>AI-powered content generation</li>
+            <li>Multi-platform distribution</li>
+            <li>Advanced analytics & tracking</li>
+            <li>24/7 support team</li>
           </ul>
         </div>
       </div>

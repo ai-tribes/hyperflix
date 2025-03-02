@@ -16,6 +16,11 @@ const nextConfig = {
   // Disable static optimization for pages that use client-side features
   images: {
     unoptimized: true,
+    domains: [
+      'firebasestorage.googleapis.com',
+      'lh3.googleusercontent.com',
+      'localhost',
+    ],
   },
   
   // Explicitly set the directory where Next.js will write the build output
@@ -31,6 +36,12 @@ const nextConfig = {
     
     // Split chunks for better loading performance
     optimizePackageImports: ['react', 'react-dom', 'next', '@firebase/auth', '@firebase/firestore'],
+    
+    // Improve client-side navigation behavior
+    skipMiddlewareUrlNormalize: true,
+    
+    // Force server components to be dynamic by default to ensure middleware runs
+    serverActions: true,
   },
   
   // Disable static generation for client-side pages

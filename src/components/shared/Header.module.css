@@ -93,16 +93,34 @@
 }
 
 .ctaButton a {
-  background-color: #5865F2;
-  color: white !important;
-  padding: 0.5rem 1rem;
+  background-color: #FF6B00;
+  color: white;
+  padding: 8px 20px;
   border-radius: 4px;
   font-weight: 600;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
 }
 
 .ctaButton a:hover {
-  background-color: #4552EE;
+  background-color: #e45a00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.authButton a {
+  color: #333;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid #ddd;
+  background-color: transparent;
+}
+
+.authButton a:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .mobileMenuButton {
@@ -195,9 +213,12 @@
     margin-top: 1rem;
   }
   
-  .ctaButton a {
+  .ctaButton a,
+  .authButton a {
+    padding: 10px 20px;
     display: block;
     text-align: center;
+    margin: 5px 0;
   }
   
   .open .mobileMenuButton span:nth-child(1) {

@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { getToken } from 'next-auth/jwt'
 
-// Define protected routes that require authentication
+// Define protected paths that require authentication
 const protectedRoutes = [
   '/dashboard',
   '/create',
@@ -13,53 +12,53 @@ const protectedRoutes = [
   '/account',
 ]
 
-// Define routes that should not be accessible when authenticated
-const authRoutes = [
-  '/auth/signin',
-  '/auth/signup',
-]
-
-export async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request })
-  const isAuthenticated = !!token
-  const path = request.nextUrl.pathname
-
-  // Check if the path is a protected route
+export default function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  
+  // Check if the path is protected
   const isProtectedRoute = protectedRoutes.some(route => 
-    path === route || path.startsWith(`${route}/`)
+    pathname === route || pathname.startsWith(`${route}/`)
   )
-
-  // Check if the path is an auth route (login/signup)
-  const isAuthRoute = authRoutes.some(route => 
-    path === route || path.startsWith(`${route}/`)
-  )
-
-  // Redirect to login if accessing protected route without authentication
-  if (isProtectedRoute && !isAuthenticated) {
-    const redirectUrl = new URL('/auth/signin', request.url)
-    redirectUrl.searchParams.set('callbackUrl', encodeURI(request.url))
-    return NextResponse.redirect(redirectUrl)
+  
+  if (isProtectedRoute) {
+    // Check for auth token
+    const hasToken = request.cookies.has('firebase-auth-token') || 
+                     request.cookies.has('next-auth.session-token') || 
+                     request.cookies.has('__session')
+    
+    // If no token, redirect to login
+    if (!hasToken) {
+      console.log(`[Middleware] Redirecting unauthenticated user from ${pathname} to login`)
+      const url = new URL('/auth/signin', request.url)
+      url.searchParams.set('callbackUrl', pathname)
+      return NextResponse.redirect(url)
+    }
+    
+    console.log(`[Middleware] Authenticated user accessing ${pathname}`)
   }
-
-  // Redirect to dashboard if accessing auth routes while authenticated
-  if (isAuthRoute && isAuthenticated) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
-  }
-
+  
   return NextResponse.next()
 }
 
-// Configure which paths the middleware runs on
+// Configure middleware to run on specific paths
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public (public files)
-     * - api (API routes)
+     * Match specific protected routes
      */
-    '/((?!_next/static|_next/image|favicon.ico|public|api).*)',
+    '/dashboard',
+    '/dashboard/:path*',
+    '/create',
+    '/create/:path*',
+    '/videos',
+    '/videos/:path*',
+    '/tokens',
+    '/tokens/:path*',
+    '/audios',
+    '/audios/:path*',
+    '/lipsync',
+    '/lipsync/:path*',
+    '/account',
+    '/account/:path*',
   ],
 } 

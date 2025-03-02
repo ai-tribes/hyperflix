@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix Firebase Google Authentication</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #d14836;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #4285f4;
+            margin-top: 30px;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        .solution {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        ul {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        strong {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fix Firebase Google Authentication</h1>
+    
+    <div class="error">
+        <h3>Current Error</h3>
+        <p>You're experiencing this error:</p>
+        <pre>error=invalid_client&error_description=Unauthorized
+OAuth2 redirect uri is: https://hyper-flix-f2891.firebaseapp.com/__/auth/handler</pre>
+        <p>This means Google doesn't recognize your client application or the redirect URI.</p>
+    </div>
+    
+    <div class="solution">
+        <h3>Solution Summary</h3>
+        <p>The primary issue is that your Google Cloud OAuth configuration does not have the correct redirect URI. You need to add <code>https://hyper-flix-f2891.firebaseapp.com/__/auth/handler</code> to your authorized redirect URIs in the Google Cloud Console.</p>
+    </div>
+    
+    <h2>1. Fix Google Cloud Console Configuration (Critical)</h2>
+    
+    <ol>
+        <li>Go to <a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console</a></li>
+        <li>Find your OAuth 2.0 Client ID that's used for Firebase</li>
+        <li>Click to edit it</li>
+        <li><strong>Most Important:</strong> Under "Authorized redirect URIs", add the exact URL from the error message:
+            <pre>https://hyper-flix-f2891.firebaseapp.com/__/auth/handler</pre>
+        </li>
+        <li>Also ensure these URIs are present for local development:
+            <pre>http://localhost:3000/api/auth/callback/google
+http://localhost:3001/api/auth/callback/google</pre>
+        </li>
+        <li>Click "Save"</li>
+    </ol>
+    
+    <h2>2. Fix Firebase Console Configuration</h2>
+    
+    <ol>
+        <li>Go to <a href="https://console.firebase.google.com/project/hyper-flix-f2891/authentication/providers" target="_blank">Firebase Console</a></li>
+        <li>Click on "Authentication" &gt; "Sign-in method"</li>
+        <li>Find "Google" in the list and click the "Edit" (pencil) icon</li>
+        <li>Make sure the provider is <strong>Enabled</strong></li>
+        <li>For the Project support email, use your email address</li>
+        <li>Under "Web SDK configuration":
+            <ul>
+                <li>Verify the Web Client ID matches your Google OAuth client ID from your <code>.env.local</code> file (<code>965542932710-kgdaghu54uoa3gv5esknh4asrdmtkrpk.apps.googleusercontent.com</code>)</li>
+                <li>Set the Web Client Secret to match your Google OAuth client secret from your <code>.env.local</code> file (<code>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</code>)</li>
+            </ul>
+        </li>
+        <li>Double-check that <strong>Project ID</strong> in the URL matches your <code>.env.local</code> file value for <code>NEXT_PUBLIC_FIREBASE_PROJECT_ID</code></li>
+    </ol>
+    
+    <h2>3. Ensure Domains are Authorized in Firebase</h2>
+    
+    <ol>
+        <li>In Firebase Console, go to "Authentication" &gt; "Settings" &gt; "Authorized domains"</li>
+        <li>Make sure these domains are added:
+            <ul>
+                <li><code>localhost</code></li>
+                <li><code>127.0.0.1</code></li>
+                <li><code>hyper-flix-f2891.firebaseapp.com</code></li>
+                <li>Any custom domains you'll use</li>
+            </ul>
+        </li>
+    </ol>
+    
+    <h2>4. Try the Direct Authentication Method</h2>
+    
+    <p>We've created a simplified test page that uses Firebase directly. This can help isolate if the issue is with NextAuth.js or with Firebase itself:</p>
+    
+    <ol>
+        <li>Go to <a href="/test-auth" target="_blank">/test-auth</a> in your browser</li>
+        <li>Click the "Sign in with Google" button</li>
+        <li>If you see detailed error information, this will help narrow down the issue</li>
+    </ol>
+    
+    <h2>5. Update Your <code>.env.local</code> File</h2>
+    
+    <p>Ensure these values in your <code>.env.local</code> file match exactly what's in Google Cloud Console:</p>
+    
+    <pre>GOOGLE_CLIENT_ID=965542932710-kgdaghu54uoa3gv5esknh4asrdmtkrpk.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=hyper-flix-f2891</pre>
+    
+    <h2>6. Restart and Test</h2>
+    
+    <ol>
+        <li>Stop your development server</li>
+        <li>Start it again with:
+            <pre>npm run dev</pre>
+        </li>
+        <li>Test Google sign-in in an incognito/private browser window</li>
+    </ol>
+    
+    <h2>Advanced Troubleshooting</h2>
+    
+    <p>If you continue to experience problems after making the changes above, try these additional fixes:</p>
+    
+    <ol>
+        <li>
+            <strong>Check Project Ownership:</strong>
+            <p>Make sure the Google Cloud project and the Firebase project are linked and you have proper permissions to both.</p>
+        </li>
+        
+        <li>
+            <strong>Verify Google Cloud API Configuration:</strong>
+            <ul>
+                <li>Go to <a href="https://console.cloud.google.com/apis/dashboard" target="_blank">Google Cloud API Dashboard</a></li>
+                <li>Ensure that the "Google Identity Toolkit API" is enabled</li>
+                <li>Check that there are no API restrictions that could block authentication</li>
+            </ul>
+        </li>
+        
+        <li>
+            <strong>Test with direct Firebase sign-in code:</strong>
+            <pre>// This is implemented in the /test-auth page
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '@/lib/firebase';
+
+const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    console.log("Signed in successfully:", result.user);
+  } catch (error) {
+    console.error("Sign-in error:", error);
+  }
+};</pre>
+        </li>
+        
+        <li>
+            <strong>Try Google Sign-In directly from a blank page:</strong>
+            <p>Sometimes, other page components or integrations can interfere with authentication. Testing from a minimal page can help isolate issues.</p>
+        </li>
+        
+        <li>
+            <strong>Check OAuth consent screen:</strong>
+            <p>Ensure your OAuth consent screen is properly configured with the correct app name, user support email, and authorized domains.</p>
+        </li>
+        
+        <li>
+            <strong>Enable API logging:</strong>
+            <p>Enable detailed API logging in Google Cloud to see the exact requests and responses for authentication attempts.</p>
+        </li>
+    </ol>
+</body>
+</html> 

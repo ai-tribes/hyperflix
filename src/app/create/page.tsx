@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import styles from './create.module.css';
 
 // Define type for the form data
@@ -245,53 +246,55 @@ export default function CreatePage() {
   };
 
   return (
-    <DashboardLayout>
-      <div className={styles.createPage}>
-        <div className={styles.createHeader}>
-          <h1>Create UGC Content</h1>
-          <p>Generate viral TikTok content for your memecoin in a few steps</p>
-        </div>
-        
-        <div className={styles.createContainer}>
-          <div className={styles.stepIndicator}>
-            <div className={`${styles.step} ${currentStep >= 1 ? styles.active : ''}`}>
-              <div className={styles.stepNumber}>1</div>
-              <span className={styles.stepLabel}>Hook</span>
-            </div>
-            <div className={styles.stepConnector}></div>
-            <div className={`${styles.step} ${currentStep >= 2 ? styles.active : ''}`}>
-              <div className={styles.stepNumber}>2</div>
-              <span className={styles.stepLabel}>Video</span>
-            </div>
-            <div className={styles.stepConnector}></div>
-            <div className={`${styles.step} ${currentStep >= 3 ? styles.active : ''}`}>
-              <div className={styles.stepNumber}>3</div>
-              <span className={styles.stepLabel}>Audio</span>
-            </div>
-            <div className={styles.stepConnector}></div>
-            <div className={`${styles.step} ${currentStep >= 4 ? styles.active : ''}`}>
-              <div className={styles.stepNumber}>4</div>
-              <span className={styles.stepLabel}>Demo</span>
-            </div>
+    <ProtectedRoute>
+      <DashboardLayout>
+        <div className={styles.createPage}>
+          <div className={styles.createHeader}>
+            <h1>Create UGC Content</h1>
+            <p>Generate viral TikTok content for your memecoin in a few steps</p>
           </div>
           
-          <div className={styles.contentContainer}>
-            <div className={styles.formContainer}>
-              {renderStepContent()}
+          <div className={styles.createContainer}>
+            <div className={styles.stepIndicator}>
+              <div className={`${styles.step} ${currentStep >= 1 ? styles.active : ''}`}>
+                <div className={styles.stepNumber}>1</div>
+                <span className={styles.stepLabel}>Hook</span>
+              </div>
+              <div className={styles.stepConnector}></div>
+              <div className={`${styles.step} ${currentStep >= 2 ? styles.active : ''}`}>
+                <div className={styles.stepNumber}>2</div>
+                <span className={styles.stepLabel}>Video</span>
+              </div>
+              <div className={styles.stepConnector}></div>
+              <div className={`${styles.step} ${currentStep >= 3 ? styles.active : ''}`}>
+                <div className={styles.stepNumber}>3</div>
+                <span className={styles.stepLabel}>Audio</span>
+              </div>
+              <div className={styles.stepConnector}></div>
+              <div className={`${styles.step} ${currentStep >= 4 ? styles.active : ''}`}>
+                <div className={styles.stepNumber}>4</div>
+                <span className={styles.stepLabel}>Demo</span>
+              </div>
             </div>
             
-            <div className={styles.previewContainer}>
-              <div className={styles.previewHeader}>
-                <h3>Live Preview</h3>
+            <div className={styles.contentContainer}>
+              <div className={styles.formContainer}>
+                {renderStepContent()}
               </div>
-              <div className={styles.previewContent}>
-                <div className={styles.previewPlaceholder}>
-                  <p>Your video preview will appear here</p>
-                  <div className={styles.phoneFrame}>
-                    <div className={styles.phoneScreen}>
-                      {formData.hook && (
-                        <div className={styles.previewHook}>{formData.hook}</div>
-                      )}
+              
+              <div className={styles.previewContainer}>
+                <div className={styles.previewHeader}>
+                  <h3>Live Preview</h3>
+                </div>
+                <div className={styles.previewContent}>
+                  <div className={styles.previewPlaceholder}>
+                    <p>Your video preview will appear here</p>
+                    <div className={styles.phoneFrame}>
+                      <div className={styles.phoneScreen}>
+                        {formData.hook && (
+                          <div className={styles.previewHook}>{formData.hook}</div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -299,7 +302,7 @@ export default function CreatePage() {
             </div>
           </div>
         </div>
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </ProtectedRoute>
   );
 } 

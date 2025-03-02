@@ -8,6 +8,7 @@ import { BiSearch, BiGrid, BiListUl, BiPlus } from 'react-icons/bi';
 import { FaTwitter, FaYoutube, FaTiktok, FaInstagram } from 'react-icons/fa';
 import { BsEmojiFrown } from 'react-icons/bs';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
 // Define types for video items
 interface VideoItem {
@@ -167,217 +168,219 @@ const VideosPage = () => {
   };
 
   return (
-    <DashboardLayout>
-      <div className={styles.videosPage}>
-        <div className={styles.pageHeader}>
-          <div>
-            <h1>Your Videos</h1>
-            <p>Manage and analyze your AI-generated marketing videos</p>
-          </div>
-          <Link href="/create" className={styles.createButton}>
-            <span><BiPlus /></span>
-            Create New Video
-          </Link>
-        </div>
-
-        <div className={styles.filters}>
-          <div className={styles.filterControls}>
-            <div className={styles.searchBox}>
-              <span className={styles.searchIcon}><BiSearch /></span>
-              <input
-                type="text"
-                placeholder="Search videos..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+    <ProtectedRoute>
+      <DashboardLayout>
+        <div className={styles.videosPage}>
+          <div className={styles.pageHeader}>
+            <div>
+              <h1>Your Videos</h1>
+              <p>Manage and analyze your AI-generated marketing videos</p>
             </div>
-
-            <div className={styles.filterGroup}>
-              <label>Status:</label>
-              <select 
-                value={statusFilter} 
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="all">All</option>
-                <option value="published">Published</option>
-                <option value="processing">Processing</option>
-                <option value="draft">Draft</option>
-              </select>
-            </div>
-
-            <div className={styles.filterGroup}>
-              <label>Platform:</label>
-              <select 
-                value={platformFilter} 
-                onChange={(e) => setPlatformFilter(e.target.value)}
-              >
-                <option value="all">All</option>
-                <option value="twitter">Twitter</option>
-                <option value="youtube">YouTube</option>
-                <option value="tiktok">TikTok</option>
-                <option value="instagram">Instagram</option>
-              </select>
-            </div>
-
-            <div className={styles.filterGroup}>
-              <label>Sort By:</label>
-              <select 
-                value={sortBy} 
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value="date">Newest</option>
-                <option value="views">Most Views</option>
-                <option value="likes">Most Likes</option>
-                <option value="shares">Most Shares</option>
-              </select>
-            </div>
-
-            <div className={styles.viewToggle}>
-              <button 
-                className={`${styles.viewButton} ${viewMode === 'grid' ? styles.active : ''}`}
-                onClick={() => setViewMode('grid')}
-              >
-                <BiGrid />
-              </button>
-              <button 
-                className={`${styles.viewButton} ${viewMode === 'list' ? styles.active : ''}`}
-                onClick={() => setViewMode('list')}
-              >
-                <BiListUl />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {sortedVideos.length === 0 ? (
-          <div className={styles.emptyState}>
-            <div className={styles.emptyIcon}><BsEmojiFrown /></div>
-            <h3>No videos found</h3>
-            <p>Try adjusting your filters or create a new video</p>
             <Link href="/create" className={styles.createButton}>
               <span><BiPlus /></span>
               Create New Video
             </Link>
           </div>
-        ) : viewMode === 'grid' ? (
-          <div className={styles.videosGrid}>
-            {sortedVideos.map((video) => (
-              <div key={video.id} className={styles.videoCard}>
-                <div className={styles.thumbnailContainer}>
-                  {/* We'd normally use real thumbnails here */}
-                  <div style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    backgroundColor: '#f0f0f0', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    fontSize: '0.8rem',
-                    color: '#777'
-                  }}>
-                    {video.thumbnail}
-                  </div>
-                  <div className={styles.videoOverlay}>
-                    <span className={`${styles.statusBadge} ${getStatusClass(video.status)}`}>
-                      {video.status}
-                    </span>
-                    <span className={styles.platformBadge}>
-                      {getPlatformIcon(video.platform)}
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.videoInfo}>
-                  <h3 className={styles.videoTitle}>{video.title}</h3>
-                  <div className={styles.videoStats}>
-                    <span>
-                      <strong>{formatNumber(video.views)}</strong>
-                      Views
-                    </span>
-                    <span>
-                      <strong>{formatNumber(video.likes)}</strong>
-                      Likes
-                    </span>
-                    <span>
-                      <strong>{formatNumber(video.comments)}</strong>
-                      Comments
-                    </span>
-                    <span>
-                      <strong>{formatNumber(video.shares)}</strong>
-                      Shares
-                    </span>
-                  </div>
-                  <div className={styles.videoDate}>{new Date(video.date).toLocaleDateString()}</div>
-                  <div className={styles.videoActions}>
-                    <button className={styles.actionButton}>Edit</button>
-                    <button className={styles.actionButton}>Share</button>
-                    <button className={styles.actionButton}>Analytics</button>
-                    <button className={styles.actionButtonDanger}>Delete</button>
-                  </div>
-                </div>
+
+          <div className={styles.filters}>
+            <div className={styles.filterControls}>
+              <div className={styles.searchBox}>
+                <span className={styles.searchIcon}><BiSearch /></span>
+                <input
+                  type="text"
+                  placeholder="Search videos..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className={styles.videosList}>
-            {sortedVideos.map((video) => (
-              <div key={video.id} className={styles.videoRow}>
-                <div className={styles.thumbnailContainer}>
-                  {/* We'd normally use real thumbnails here */}
-                  <div style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    backgroundColor: '#f0f0f0', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    fontSize: '0.8rem',
-                    color: '#777'
-                  }}>
-                    {video.thumbnail}
-                  </div>
-                  <div className={styles.videoOverlay}>
-                    <span className={`${styles.statusBadge} ${getStatusClass(video.status)}`}>
-                      {video.status}
-                    </span>
-                    <span className={styles.platformBadge}>
-                      {getPlatformIcon(video.platform)}
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.videoInfo}>
-                  <h3 className={styles.videoTitle}>{video.title}</h3>
-                  <div className={styles.videoStats}>
-                    <span>
-                      <strong>{formatNumber(video.views)}</strong>
-                      Views
-                    </span>
-                    <span>
-                      <strong>{formatNumber(video.likes)}</strong>
-                      Likes
-                    </span>
-                    <span>
-                      <strong>{formatNumber(video.comments)}</strong>
-                      Comments
-                    </span>
-                    <span>
-                      <strong>{formatNumber(video.shares)}</strong>
-                      Shares
-                    </span>
-                  </div>
-                  <div className={styles.videoDate}>{new Date(video.date).toLocaleDateString()}</div>
-                  <div className={styles.videoActions}>
-                    <button className={styles.actionButton}>Edit</button>
-                    <button className={styles.actionButton}>Share</button>
-                    <button className={styles.actionButton}>Analytics</button>
-                    <button className={styles.actionButtonDanger}>Delete</button>
-                  </div>
-                </div>
+
+              <div className={styles.filterGroup}>
+                <label>Status:</label>
+                <select 
+                  value={statusFilter} 
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                >
+                  <option value="all">All</option>
+                  <option value="published">Published</option>
+                  <option value="processing">Processing</option>
+                  <option value="draft">Draft</option>
+                </select>
               </div>
-            ))}
+
+              <div className={styles.filterGroup}>
+                <label>Platform:</label>
+                <select 
+                  value={platformFilter} 
+                  onChange={(e) => setPlatformFilter(e.target.value)}
+                >
+                  <option value="all">All</option>
+                  <option value="twitter">Twitter</option>
+                  <option value="youtube">YouTube</option>
+                  <option value="tiktok">TikTok</option>
+                  <option value="instagram">Instagram</option>
+                </select>
+              </div>
+
+              <div className={styles.filterGroup}>
+                <label>Sort By:</label>
+                <select 
+                  value={sortBy} 
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="date">Newest</option>
+                  <option value="views">Most Views</option>
+                  <option value="likes">Most Likes</option>
+                  <option value="shares">Most Shares</option>
+                </select>
+              </div>
+
+              <div className={styles.viewToggle}>
+                <button 
+                  className={`${styles.viewButton} ${viewMode === 'grid' ? styles.active : ''}`}
+                  onClick={() => setViewMode('grid')}
+                >
+                  <BiGrid />
+                </button>
+                <button 
+                  className={`${styles.viewButton} ${viewMode === 'list' ? styles.active : ''}`}
+                  onClick={() => setViewMode('list')}
+                >
+                  <BiListUl />
+                </button>
+              </div>
+            </div>
           </div>
-        )}
-      </div>
-    </DashboardLayout>
+
+          {sortedVideos.length === 0 ? (
+            <div className={styles.emptyState}>
+              <div className={styles.emptyIcon}><BsEmojiFrown /></div>
+              <h3>No videos found</h3>
+              <p>Try adjusting your filters or create a new video</p>
+              <Link href="/create" className={styles.createButton}>
+                <span><BiPlus /></span>
+                Create New Video
+              </Link>
+            </div>
+          ) : viewMode === 'grid' ? (
+            <div className={styles.videosGrid}>
+              {sortedVideos.map((video) => (
+                <div key={video.id} className={styles.videoCard}>
+                  <div className={styles.thumbnailContainer}>
+                    {/* We'd normally use real thumbnails here */}
+                    <div style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      backgroundColor: '#f0f0f0', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      fontSize: '0.8rem',
+                      color: '#777'
+                    }}>
+                      {video.thumbnail}
+                    </div>
+                    <div className={styles.videoOverlay}>
+                      <span className={`${styles.statusBadge} ${getStatusClass(video.status)}`}>
+                        {video.status}
+                      </span>
+                      <span className={styles.platformBadge}>
+                        {getPlatformIcon(video.platform)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.videoInfo}>
+                    <h3 className={styles.videoTitle}>{video.title}</h3>
+                    <div className={styles.videoStats}>
+                      <span>
+                        <strong>{formatNumber(video.views)}</strong>
+                        Views
+                      </span>
+                      <span>
+                        <strong>{formatNumber(video.likes)}</strong>
+                        Likes
+                      </span>
+                      <span>
+                        <strong>{formatNumber(video.comments)}</strong>
+                        Comments
+                      </span>
+                      <span>
+                        <strong>{formatNumber(video.shares)}</strong>
+                        Shares
+                      </span>
+                    </div>
+                    <div className={styles.videoDate}>{new Date(video.date).toLocaleDateString()}</div>
+                    <div className={styles.videoActions}>
+                      <button className={styles.actionButton}>Edit</button>
+                      <button className={styles.actionButton}>Share</button>
+                      <button className={styles.actionButton}>Analytics</button>
+                      <button className={styles.actionButtonDanger}>Delete</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.videosList}>
+              {sortedVideos.map((video) => (
+                <div key={video.id} className={styles.videoRow}>
+                  <div className={styles.thumbnailContainer}>
+                    {/* We'd normally use real thumbnails here */}
+                    <div style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      backgroundColor: '#f0f0f0', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      fontSize: '0.8rem',
+                      color: '#777'
+                    }}>
+                      {video.thumbnail}
+                    </div>
+                    <div className={styles.videoOverlay}>
+                      <span className={`${styles.statusBadge} ${getStatusClass(video.status)}`}>
+                        {video.status}
+                      </span>
+                      <span className={styles.platformBadge}>
+                        {getPlatformIcon(video.platform)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.videoInfo}>
+                    <h3 className={styles.videoTitle}>{video.title}</h3>
+                    <div className={styles.videoStats}>
+                      <span>
+                        <strong>{formatNumber(video.views)}</strong>
+                        Views
+                      </span>
+                      <span>
+                        <strong>{formatNumber(video.likes)}</strong>
+                        Likes
+                      </span>
+                      <span>
+                        <strong>{formatNumber(video.comments)}</strong>
+                        Comments
+                      </span>
+                      <span>
+                        <strong>{formatNumber(video.shares)}</strong>
+                        Shares
+                      </span>
+                    </div>
+                    <div className={styles.videoDate}>{new Date(video.date).toLocaleDateString()}</div>
+                    <div className={styles.videoActions}>
+                      <button className={styles.actionButton}>Edit</button>
+                      <button className={styles.actionButton}>Share</button>
+                      <button className={styles.actionButton}>Analytics</button>
+                      <button className={styles.actionButtonDanger}>Delete</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </DashboardLayout>
+    </ProtectedRoute>
   );
 };
 
