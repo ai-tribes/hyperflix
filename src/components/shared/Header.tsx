@@ -10,6 +10,9 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { user, loading } = useAuth();
+  
+  // Check if we're on the landing page
+  const isLandingPage = pathname === '/';
 
   // Don't show navigation links during authentication loading
   // This prevents the flicker between unauthenticated and authenticated states
@@ -36,6 +39,22 @@ const Header = () => {
 
   // Simple navigation links setup - only render once loading is complete
   const getNavLinks = () => {
+    // If we're on the landing page, always show auth buttons
+    if (isLandingPage) {
+      return (
+        <>
+          <li><Link href="/pricing">Pricing</Link></li>
+          {/* Always show sign-up and sign-in buttons on landing page */}
+          <li className={styles.authButton}><Link href="/auth/signin">Sign In</Link></li>
+          <li className={styles.ctaButton}><Link href="/auth/signup">Sign Up</Link></li>
+          {/* Show dashboard button for authenticated users */}
+          {user && (
+            <li><Link href="/dashboard" className={styles.dashboardButton}>Dashboard</Link></li>
+          )}
+        </>
+      );
+    }
+    
     if (user) {
       // Authenticated user - show full navigation
       return (

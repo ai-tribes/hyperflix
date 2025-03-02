@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperFlix Developer Todo List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0062cc;
+        }
+        .section {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .section h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #0062cc;
+            padding-bottom: 10px;
+        }
+        .task {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        .task:before {
+            content: "•";
+            position: absolute;
+            left: 5px;
+            color: #0062cc;
+        }
+        .priority {
+            font-weight: bold;
+            color: #e63946;
+        }
+        .code {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin: 15px 0;
+        }
+        .file-path {
+            font-style: italic;
+            color: #666;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .note {
+            background-color: #fffde7;
+            padding: 10px;
+            border-left: 4px solid #ffd600;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>HyperFlix Developer Todo List</h1>
+    
+    <div class="section">
+        <h2>1. Google OAuth Authentication Setup</h2>
+        <p class="priority">PRIORITY: Fix OAuth client error - "Error 401: invalid_client"</p>
+        
+        <div class="task">
+            <strong>Current Issue:</strong> The Google OAuth client is not being recognized, resulting in "The OAuth client was not found" error when attempting to authenticate with Google.
+        </div>
+        
+        <h3>Steps to Fix:</h3>
+        
+        <div class="task">
+            1. Go to the <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a>
+        </div>
+        
+        <div class="task">
+            2. Select the project "hyper-flix-f2891" or create a new project if needed
+        </div>
+        
+        <div class="task">
+            3. Navigate to "APIs & Services" > "Credentials"
+        </div>
+        
+        <div class="task">
+            4. Create a new OAuth 2.0 Client ID or check existing credentials:
+            <ul>
+                <li>Application type: Web application</li>
+                <li>Name: HyperFlix Web Client</li>
+                <li>Authorized JavaScript origins: 
+                    <ul>
+                        <li>http://localhost:3000</li>
+                        <li>https://hyper-flix.com (if you have a production domain)</li>
+                    </ul>
+                </li>
+                <li>Authorized redirect URIs:
+                    <ul>
+                        <li>http://localhost:3000/api/auth/callback/google</li>
+                        <li>https://hyper-flix.com/api/auth/callback/google (if you have a production domain)</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="task">
+            5. Update your <span class="file-path">.env.local</span> file with the actual credentials:
+            <div class="code">
+# OAuth Providers
+GOOGLE_CLIENT_ID=YOUR_ACTUAL_CLIENT_ID.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=YOUR_ACTUAL_CLIENT_SECRET</div>
+        </div>
+        
+        <div class="task">
+            6. Make sure the Google Identity API is enabled:
+            <ul>
+                <li>Go to "APIs & Services" > "Library"</li>
+                <li>Search for "Google Identity"</li>
+                <li>Enable the API if it's not already enabled</li>
+            </ul>
+        </div>
+        
+        <div class="task">
+            7. Verify OAuth consent screen is configured:
+            <ul>
+                <li>Go to "APIs & Services" > "OAuth consent screen"</li>
+                <li>Choose either "External" or "Internal" based on your use case</li>
+                <li>Complete the required fields (App name, user support email, developer contact info)</li>
+                <li>Add necessary scopes (at minimum: .../auth/userinfo.email and .../auth/userinfo.profile)</li>
+            </ul>
+        </div>
+        
+        <div class="note">
+            <strong>Note:</strong> The error "Error 401: invalid_client" usually occurs when the client ID does not exist or has been misconfigured in the Google Cloud Console. Make sure you're copying the client ID exactly as it appears in the console, including the full domain suffix (.apps.googleusercontent.com).
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>2. NextAuth.js Configuration</h2>
+        
+        <div class="task">
+            Verify the NextAuth configuration in <span class="file-path">src/app/api/auth/[...nextauth]/route.ts</span> has the correct provider setup:
+            <div class="code">
+GoogleProvider({
+  clientId: process.env.GOOGLE_CLIENT_ID || "",
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+}),</div>
+        </div>
+        
+        <div class="task">
+            Make sure the <span class="file-path">.env.local</span> file is being loaded properly by Next.js by checking that it's in the root directory of your project and that your server logs show "- Environments: .env.local"
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>3. Firebase Configuration</h2>
+        
+        <div class="task">
+            If you're using both Firebase Authentication and NextAuth.js simultaneously, ensure your Firebase configuration is also correct in <span class="file-path">.env.local</span>
+        </div>
+        
+        <div class="task">
+            In Firebase Console, make sure Google is enabled as a sign-in method and the OAuth redirect domain is properly configured
+        </div>
+        
+        <div class="note">
+            <strong>Note:</strong> Using both Firebase Authentication and NextAuth.js for Google authentication can lead to conflicts. Consider standardizing on one authentication method or properly integrating them to work together.
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>4. Web Client Configuration</h2>
+        
+        <div class="task">
+            In your signin page at <span class="file-path">src/app/auth/signin/page.tsx</span>, make sure you're using the correct SignIn function call:
+            <div class="code">
+const result = await signIn('google', { 
+  callbackUrl,
+  redirect: false 
+});</div>
+        </div>
+        
+        <div class="task">
+            Ensure your callback handling properly directs users after authentication:
+            <div class="code">
+if (result?.error) {
+  throw new Error(result.error);
+} else if (result?.url) {
+  router.push(result.url);
+}</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>5. Testing &amp; Troubleshooting</h2>
+        
+        <div class="task">
+            After making the changes above, clear your browser cookies and cache before testing again
+        </div>
+        
+        <div class="task">
+            Check server-side logs for more detailed error information
+        </div>
+        
+        <div class="task">
+            Verify network requests in browser developer tools to see the exact authentication flow
+        </div>
+        
+        <div class="note">
+            <strong>Debug Tip:</strong> For detailed NextAuth.js debugging, add <code>DEBUG=next-auth:*</code> to your start command: <code>DEBUG=next-auth:* npm run dev</code>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>6. Stripe Payment Integration</h2>
+        
+        <div class="task">
+            <strong>Current Issue:</strong> Missing Stripe API keys causing an error: "Neither apiKey nor config.authenticator provided" on the pricing page.
+        </div>
+        
+        <h3>Steps to Fix:</h3>
+        
+        <div class="task">
+            1. Create a Stripe account if you don't have one already at <a href="https://dashboard.stripe.com/register" target="_blank">Stripe Dashboard</a>
+        </div>
+        
+        <div class="task">
+            2. Get your API keys from the Stripe Dashboard:
+            <ul>
+                <li>Go to <a href="https://dashboard.stripe.com/test/apikeys" target="_blank">Stripe API Keys</a> (test mode)</li>
+                <li>Copy your "Publishable key" and "Secret key"</li>
+            </ul>
+        </div>
+        
+        <div class="task">
+            3. Update your <span class="file-path">.env.local</span> file with the actual Stripe credentials:
+            <div class="code">
+# Stripe API Keys
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key
+STRIPE_SECRET_KEY=sk_test_your_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+
+# Stripe Price IDs
+STRIPE_PRICE_ID_STARTER=price_your_starter_price_id
+STRIPE_PRICE_ID_GROWTH=price_your_growth_price_id
+STRIPE_PRICE_ID_SCALE=price_your_scale_price_id</div>
+        </div>
+        
+        <div class="task">
+            4. Create Stripe Products and Prices:
+            <ul>
+                <li>Go to <a href="https://dashboard.stripe.com/test/products" target="_blank">Stripe Products</a></li>
+                <li>Create products for each subscription tier (Starter, Growth, Scale)</li>
+                <li>For each product, create prices with the appropriate amount and recurrence</li>
+                <li>Copy the price IDs (they start with "price_") and update them in your <span class="file-path">.env.local</span> file</li>
+            </ul>
+        </div>
+        
+        <div class="note">
+            <strong>Note:</strong> The application has been updated to handle missing Stripe API keys gracefully, so the error won't appear even without adding real keys. However, for actual payment processing to work, you will need to add valid Stripe API keys.
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>7. Additional Resources</h2>
+        
+        <div class="task">
+            <a href="https://firebase.google.com/docs/auth/web/google-signin" target="_blank">Firebase Google Sign-In Documentation</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console Credentials</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://next-auth.js.org/providers/google" target="_blank">NextAuth Google Provider Documentation</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://vercel.com/docs/projects/domains/add-a-domain" target="_blank">Vercel Domain Configuration Guide</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://stripe.com/docs/payments/checkout" target="_blank">Stripe Checkout Documentation</a>
+        </div>
+        
+        <div class="task">
+            <a href="https://stripe.com/docs/billing/subscriptions/overview" target="_blank">Stripe Subscription Documentation</a>
+        </div>
+    </div>
+</body>
+</html> 

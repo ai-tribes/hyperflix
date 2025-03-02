@@ -1,0 +1,112 @@
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin-bottom: 30px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.section h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.status {
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.loading {
+  padding: 10px 15px;
+  border-radius: 6px;
+  background-color: #e9f5ff;
+  color: #0074cc;
+  font-weight: 500;
+}
+
+.pre {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 10px 16px;
+  background-color: var(--primary, #ff3366);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.button:hover {
+  background-color: #e52c5c;
+}
+
+.button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.refreshButton {
+  background-color: #4a9eff;
+  margin-top: 10px;
+}
+
+.refreshButton:hover {
+  background-color: #3b7dcc;
+}
+
+.statusContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.debugLog {
+  background-color: #1e1e1e;
+  color: #ddd;
+  padding: 15px;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.logEntry {
+  border-bottom: 1px solid #333;
+  padding: 6px 0;
+}
+
+.logEntry:last-child {
+  border-bottom: none;
+} 

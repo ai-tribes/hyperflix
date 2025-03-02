@@ -26,7 +26,7 @@ export default function SignUpPage() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams?.get('callbackUrl') || '/dashboard';
   
-  const { registerWithEmail } = useAuth();
+  const { registerWithEmail, loginWithProvider } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,9 +78,8 @@ export default function SignUpPage() {
     setLoading(true);
     
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log('Google sign-up successful:', result.user.uid);
-      router.push(callbackUrl);
+      await loginWithProvider('google', callbackUrl);
+      setSuccessMessage('Google sign-up successful! Redirecting...');
     } catch (err: any) {
       console.error('Google sign-up error:', err);
       
@@ -94,6 +93,8 @@ export default function SignUpPage() {
         // Don't show error for cancellation
       } else if (err.code === 'auth/network-request-failed') {
         setError('Network error. Please check your internet connection and try again.');
+      } else if (err.code === 'auth/unauthorized-domain') {
+        setError('This domain is not authorized for Google authentication. Please contact support.');
       } else {
         setError('Failed to sign up with Google. Please try again.');
       }
@@ -214,6 +215,14 @@ export default function SignUpPage() {
             <FaGoogle />
             Sign up with Google
           </button>
+          
+          <Link 
+            href="/auth/signup/google" 
+            className={styles.alternativeLink}
+            style={{ marginTop: '0.5rem', fontSize: '0.85rem', textAlign: 'center' }}
+          >
+            Go to dedicated Google sign-up page
+          </Link>
           
           <button 
             className={`${styles.socialButton} ${styles.twitterButton}`}

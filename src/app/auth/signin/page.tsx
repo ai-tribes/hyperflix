@@ -173,6 +173,14 @@ export default function SignIn() {
             <span>Sign in with Google</span>
           </button>
           
+          <Link 
+            href="/auth/signup/google" 
+            className={styles.alternativeLink}
+            style={{ marginTop: '0.5rem', fontSize: '0.85rem', textAlign: 'center' }}
+          >
+            Sign up with Google instead
+          </Link>
+          
           <button 
             className={`${styles.socialButton} ${styles.twitterButton}`}
             onClick={handleTwitterSignIn}

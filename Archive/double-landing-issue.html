@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperFlix - Double Landing Page Issue Analysis</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f9fc;
+        }
+        h1, h2, h3 {
+            color: #2563eb;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .problem-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .solution-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .diagram {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .code-block {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .highlight {
+            background-color: #fef3c7;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .impact {
+            background-color: #fee2e2;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .solution {
+            background-color: #dcfce7;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f3f4f6;
+        }
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+        }
+        .flow-step {
+            background-color: #dbeafe;
+            border-radius: 8px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+            position: relative;
+        }
+        .flow-step:not(:last-child):after {
+            content: "→";
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>HyperFlix Double Landing Page Issue</h1>
+        <p>Technical Analysis and Solution</p>
+    </div>
+
+    <div class="problem-container">
+        <h2>The Problem: Double Landing Page</h2>
+        <p>The application is experiencing an issue where the landing page appears to load twice, creating a jarring user experience. This manifests as:</p>
+        <ul>
+            <li>The page flickers during initial load</li>
+            <li>The header changes abruptly from showing unauthenticated navigation to authenticated navigation (or vice versa)</li>
+            <li>The UI feels unstable with content shifting</li>
+        </ul>
+
+        <div class="diagram">
+            <h3>Visualization of the Double Landing Page Issue</h3>
+            <div class="flow-diagram">
+                <div class="flow-step">Initial Load</div>
+                <div class="flow-step">First Navigation State<br>(Unauthenticated)</div>
+                <div class="flow-step">Auth Check<br>(Loading)</div>
+                <div class="flow-step">Second Navigation State<br>(Based on auth)</div>
+            </div>
+        </div>
+
+        <h3>Root Causes of the Issue</h3>
+        <p>After analyzing the codebase, we've identified multiple overlapping authentication mechanisms that are creating this double rendering behavior:</p>
+
+        <h4>1. Multiple Auth Checks in Different Places</h4>
+        <p>We currently have three overlapping systems for checking authentication:</p>
+        <ul>
+            <li><strong>Middleware</strong>: Server-side checks in <code>middleware.ts</code></li>
+            <li><strong>ProtectedRoute Component</strong>: Client-side checks in React components</li>
+            <li><strong>Next.js Config Redirects</strong>: Configuration-based redirects in <code>next.config.js</code></li>
+        </ul>
+
+        <h4>2. Client-Side Header Rendering</h4>
+        <p>The <code>Header.tsx</code> component uses the authentication state to determine which navigation links to show, causing it to re-render when auth state changes:</p>
+        <div class="code-block">
+            // In Header.tsx
+            const getNavLinks = () => {
+              if (user) {
+                // Authenticated user - show full navigation
+                return (
+                  // authenticated links
+                );
+              }
+              // Non-authenticated user - show auth buttons and pricing
+              return (
+                // non-authenticated links
+              );
+            };
+        </div>
+
+        <h4>3. Race Condition in Auth State</h4>
+        <p>The authentication state is determined asynchronously, causing a race condition:</p>
+        <ol>
+            <li>Page loads with initial state (unauthenticated)</li>
+            <li>Auth state is checked (loading state)</li>
+            <li>Authentication is determined (authenticated or unauthenticated)</li>
+            <li>Page re-renders with the correct navigation</li>
+        </ol>
+    </div>
+
+    <div class="solution-container">
+        <h2>The Solution</h2>
+        
+        <p>To fix the double landing page issue, we need to implement a coordinated approach to authentication that prevents multiple redirects and UI flickering:</p>
+
+        <h3>1. Consolidated Authentication Flow</h3>
+        <div class="solution">
+            <p><strong>Key Change:</strong> Use middleware as the primary authentication check for protected routes, and remove redundant checks.</p>
+            <ul>
+                <li>Keep the server-side middleware for route protection (already implemented)</li>
+                <li>Use the ProtectedRoute component <em>only</em> for protected pages content, not for redirection</li>
+                <li>Remove redundant redirects from next.config.js</li>
+            </ul>
+        </div>
+
+        <h3>2. Improved Loading State Management</h3>
+        <div class="solution">
+            <p><strong>Key Change:</strong> Add a global loading state with proper UI feedback.</p>
+            <ul>
+                <li>Create a global loading state in a top-level layout component</li>
+                <li>Show consistent loading UI during authentication checks</li>
+                <li>Only render content after authentication state is determined</li>
+            </ul>
+        </div>
+
+        <h3>3. Server-Side Authentication Check</h3>
+        <div class="solution">
+            <p><strong>Key Change:</strong> Move authentication checks to the server side where possible.</p>
+            <ul>
+                <li>Use Server Components for initial page loads where possible</li>
+                <li>Pass authentication state to client components to avoid re-fetching</li>
+            </ul>
+        </div>
+
+        <h3>Technical Implementation Plan</h3>
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Current Issue</th>
+                <th>Solution</th>
+            </tr>
+            <tr>
+                <td>Middleware</td>
+                <td>Correctly protecting routes but may conflict with client-side checks</td>
+                <td>Keep as primary auth check, but ensure it handles all protected routes consistently</td>
+            </tr>
+            <tr>
+                <td>next.config.js</td>
+                <td>Contains redundant redirects for auth-only pages</td>
+                <td>Remove the redirects section as middleware is handling this already</td>
+            </tr>
+            <tr>
+                <td>ProtectedRoute component</td>
+                <td>Creates additional redirects after middleware already redirected</td>
+                <td>Modify to only show loading spinner and protected content, not handle redirects</td>
+            </tr>
+            <tr>
+                <td>Header component</td>
+                <td>Re-renders when auth state changes</td>
+                <td>Add a loading state to prevent showing wrong navigation state</td>
+            </tr>
+            <tr>
+                <td>Auth Context</td>
+                <td>Loading state might not be properly propagated</td>
+                <td>Ensure loading state is properly managed and accessible to all components</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="impact">
+        <h3>Key Issue: Header Flickering</h3>
+        <p>The most visible aspect of this problem is that the Header component renders twice:</p>
+        <ol>
+            <li>First with unauthenticated state (showing login/signup links)</li>
+            <li>Then with authenticated state (showing dashboard, create, etc. links)</li>
+        </ol>
+        <p>This happens because:</p>
+        <ul>
+            <li>The Header component is a client component (<code>"use client";</code>)</li>
+            <li>It initially renders before authentication state is determined</li>
+            <li>Then it renders again once the auth state is known</li>
+        </ul>
+    </div>
+
+    <div class="solution-container">
+        <h2>Immediate Fix</h2>
+        <p>Here's a step-by-step plan to immediately fix the issue:</p>
+
+        <h3>Step 1: Remove redundant redirects in next.config.js</h3>
+        <p>Delete the redirects section from next.config.js as these are already handled by the middleware.</p>
+
+        <h3>Step 2: Update the Header component to handle loading state</h3>
+        <div class="code-block">
+            // In Header.tsx
+            const Header = () => {
+              const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+              const pathname = usePathname();
+              const { user, loading } = useAuth();
+
+              // Don't show navigation links during authentication loading
+              // This prevents the flicker between states
+              if (loading) {
+                return (
+                  <header className={styles.header}>
+                    <div className="container">
+                      <div className={styles.headerContainer}>
+                        <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>
+                        <div className={styles.tagline}>
+                          <span>HyperFlix - Generate Viral TikTok Content for Memecoins</span>
+                        </div>
+                        {/* Show minimal header during loading */}
+                      </div>
+                    </div>
+                  </header>
+                );
+              }
+
+              // Simple navigation links setup - only render once loading is complete
+              const getNavLinks = () => {
+                if (user) {
+                  // Authenticated links
+                } else {
+                  // Non-authenticated links
+                }
+              };
+
+              // Rest of component...
+            }
+        </div>
+
+        <h3>Step 3: Modify ProtectedRoute component to focus on content protection</h3>
+        <p>Update the ProtectedRoute component to focus on displaying protected content rather than handling redirects:</p>
+        <div class="code-block">
+            // In ProtectedRoute.tsx
+            export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+              const { user, loading } = useAuth();
+              
+              // Show loading spinner during auth check
+              if (loading) {
+                return <LoadingSpinner />;
+              }
+              
+              // Middleware should have already redirected if not authenticated
+              // This is just a fallback protection
+              if (!user) {
+                return <LoadingSpinner />;
+              }
+              
+              // User is authenticated, render the protected content
+              return <>{children}</>;
+            }
+        </div>
+        
+        <h3>Step 4: Add auth state persistence with cookies</h3>
+        <p>Ensure the auth state is persisted with cookies to avoid unnecessary rechecks:</p>
+        <p>This is already implemented in the auth-utils.ts file and integrated with the AuthContext.</p>
+    </div>
+
+    <div class="solution-container">
+        <h2>Conclusion</h2>
+        <p>The double landing page issue is caused by multiple overlapping authentication mechanisms and improper handling of loading states. By consolidating the authentication flow and improving loading state management, we can provide a smoother user experience.</p>
+        
+        <p>The immediate fix involves:</p>
+        <ol>
+            <li>Removing redundant redirects from next.config.js</li>
+            <li>Updating the Header component to handle loading states properly</li>
+            <li>Modifying the ProtectedRoute component to focus on content protection</li>
+        </ol>
+        
+        <p>These changes will ensure that users see a consistent UI during authentication checks and prevent the jarring experience of seeing the page render twice with different navigation options.</p>
+    </div>
+</body>
+</html> 

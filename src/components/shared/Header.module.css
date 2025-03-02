@@ -49,6 +49,7 @@
   margin: 0;
   padding: 0;
   gap: 1.5rem;
+  align-items: center;
 }
 
 .navLinks li a {
@@ -144,6 +145,21 @@
   transition: transform 0.3s, opacity 0.3s;
 }
 
+.dashboardButton {
+  background-color: #5865F2;
+  color: white !important;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.dashboardButton:hover {
+  background-color: #4752c4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* Responsive styles */
 @media (min-width: 1024px) {
   .tagline {
@@ -209,12 +225,19 @@
     bottom: 0;
   }
   
-  .ctaButton {
-    margin-top: 1rem;
+  .navLinks li:has(.dashboardButton) {
+    margin-top: 0.5rem;
+  }
+  
+  /* Ensure proper spacing between buttons on mobile */
+  .navLinks li.authButton,
+  .navLinks li.ctaButton {
+    margin: 0.25rem 0;
   }
   
   .ctaButton a,
-  .authButton a {
+  .authButton a,
+  .dashboardButton {
     padding: 10px 20px;
     display: block;
     text-align: center;
@@ -231,5 +254,12 @@
   
   .open .mobileMenuButton span:nth-child(3) {
     transform: translateY(-10px) rotate(-45deg);
+  }
+}
+
+/* Landing page specific styles */
+@media (min-width: 769px) {
+  .navLinks li:has(.dashboardButton) {
+    margin-left: 0.5rem;
   }
 } 

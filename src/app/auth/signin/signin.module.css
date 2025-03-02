@@ -236,6 +236,18 @@
   font-weight: bold;
 }
 
+.alternativeLink {
+  color: var(--primary-color);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.alternativeLink:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
