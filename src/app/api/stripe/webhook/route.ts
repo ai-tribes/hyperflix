@@ -3,6 +3,10 @@ import Stripe from 'stripe';
 import { headers } from 'next/headers';
 import stripe from '@/lib/stripe';
 
+// Modern route segment config for App Router - see: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest) {
   const body = await request.text();
   const signature = headers().get('stripe-signature') as string;
@@ -10,6 +14,11 @@ export async function POST(request: NextRequest) {
   // Skip signature verification in development to allow testing
   if (!signature && process.env.NODE_ENV !== 'development') {
     return NextResponse.json({ error: 'No signature provided' }, { status: 400 });
+  }
+
+  // Ensure stripe is initialized
+  if (!stripe) {
+    return NextResponse.json({ error: 'Stripe not initialized' }, { status: 500 });
   }
 
   let event: Stripe.Event;
@@ -84,11 +93,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-// Modern config approach for App Router
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
-// This tells Next.js to not parse the body automatically
-// since we'll handle the raw body with Stripe's webhooks
-export const bodyParser = false; 
+} 

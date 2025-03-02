@@ -82,9 +82,15 @@ export default function SignIn() {
         } else if (result?.url) {
           router.push(result.url);
         }
+      } else if (provider === 'tiktok') {
+        // Handle TikTok login differently since it's not supported in the current AuthContext
+        console.log('TikTok login not yet implemented');
+        setError('TikTok login is coming soon!');
+        setLoading(false);
+        return;
       } else {
-        // For other providers, continue using Firebase
-        await loginWithProvider(provider);
+        // For other providers (twitter), continue using Firebase
+        await loginWithProvider(provider as 'google' | 'twitter');
       }
       
       console.log(`${provider} login process completed`);

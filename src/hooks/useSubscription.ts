@@ -156,13 +156,13 @@ export function useSubscription() {
   };
 
   // Redirect to Stripe checkout for new subscription or upgrade
-  const redirectToCheckout = async (priceId: string) => {
+  const redirectToCheckout = async (priceId: string, isYearly?: boolean) => {
     if (!user) return;
     
     try {
       setLoading(true);
       // In a real app, this would create a checkout session and redirect to Stripe
-      alert(`In a real app, this would redirect to Stripe Checkout for price ID: ${priceId}`);
+      alert(`In a real app, this would redirect to Stripe Checkout for price ID: ${priceId} (${isYearly ? 'yearly' : 'monthly'} plan)`);
       setLoading(false);
     } catch (err) {
       console.error('Error redirecting to checkout:', err);

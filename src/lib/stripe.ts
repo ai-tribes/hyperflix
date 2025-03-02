@@ -38,6 +38,7 @@ export interface SubscriptionPlan {
   priceId: string; // Stripe price ID
   features: string[];
   popular?: boolean;
+  interval?: 'month' | 'year';
 }
 
 // Subscription plans
@@ -48,6 +49,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
     description: 'Perfect for small-scale content creators',
     price: 19,
     priceId: 'price_starter_monthly',
+    interval: 'month',
     features: [
       'Up to 10 UGC videos per month',
       'Basic AI editing tools',
@@ -62,6 +64,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
     description: 'Ideal for growing your content strategy',
     price: 49,
     priceId: 'price_growth_monthly',
+    interval: 'month',
     features: [
       'Up to 30 UGC videos per month',
       'Advanced AI editing tools',
@@ -79,6 +82,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
     description: 'For professional content teams',
     price: 99,
     priceId: 'price_scale_monthly',
+    interval: 'month',
     features: [
       'Unlimited UGC videos',
       'Premium AI editing suite',
