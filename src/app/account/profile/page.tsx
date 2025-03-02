@@ -1,5 +1,9 @@
 "use client";
 
+// Force dynamic rendering for this client component
+export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';

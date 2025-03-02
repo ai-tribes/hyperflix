@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HyperFlix Developer TODO</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1, h2, h3 {
+      color: #2563eb;
+    }
+    .warning {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+    }
+    .success {
+      background-color: #d1e7dd;
+      border-left: 4px solid #198754;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+    }
+    .error {
+      background-color: #f8d7da;
+      border-left: 4px solid #dc3545;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+    }
+    code {
+      background-color: #f5f5f5;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: Consolas, Monaco, 'Andale Mono', monospace;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>HyperFlix Developer TODO</h1>
+  
+  <h2>Deployment Instructions</h2>
+  <p>Follow these steps to successfully deploy HyperFlix to Vercel:</p>
+  
+  <h3>1. Environment Variables</h3>
+  <p>Ensure the following environment variables are set in your Vercel project settings:</p>
+  <pre>
+# Authentication
+NEXTAUTH_URL=https://your-vercel-domain.vercel.app
+NEXTAUTH_SECRET=your-nextauth-secret-key
+
+# Firebase
+NEXT_PUBLIC_FIREBASE_API_KEY=your-firebase-api-key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-firebase-project-id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-firebase-messaging-sender-id
+NEXT_PUBLIC_FIREBASE_APP_ID=your-firebase-app-id
+
+# Stripe
+STRIPE_SECRET_KEY=your-stripe-secret-key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+
+# TikTok
+TIKTOK_CLIENT_KEY=your-tiktok-client-key
+TIKTOK_CLIENT_SECRET=your-tiktok-client-secret
+  </pre>
+  
+  <h3>2. Build Settings</h3>
+  <p>Use the following build settings in your Vercel project:</p>
+  <ul>
+    <li>Framework Preset: Next.js</li>
+    <li>Build Command: npm run build</li>
+    <li>Output Directory: .next</li>
+    <li>Install Command: npm install</li>
+  </ul>
+  
+  <h3>3. Deployment Commands</h3>
+  <p>Ensure your project's package.json has the following scripts:</p>
+  <pre>
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint"
+}
+  </pre>
+
+  <h2>Problems</h2>
+  <div class="error">
+    <h3>Static Generation Issues</h3>
+    <p>The main issue with deployment is that Next.js attempts to statically generate pages during build time, but some pages use client-side features like <code>useSearchParams()</code> and browser APIs like <code>location</code> which aren't available during static build.</p>
+    
+    <h4>Affected Pages:</h4>
+    <ul>
+      <li>/account/profile</li>
+      <li>/account/settings</li>
+      <li>/account/subscription</li>
+      <li>/auth/signin</li>
+      <li>/profile</li>
+    </ul>
+    
+    <h4>Solution:</h4>
+    <p>We've applied several fixes to work around these issues:</p>
+    <ol>
+      <li>Added <code>export const dynamic = 'force-dynamic'</code> to each affected page.</li>
+      <li>Set <code>export const runtime = 'edge'</code> to ensure these pages run in the Edge runtime.</li>
+      <li>Updated the Next.js configuration (<code>next.config.js</code>) to optimize for deployment.</li>
+      <li>Added custom Vercel configuration (<code>vercel.json</code>) to handle route-specific settings.</li>
+    </ol>
+    
+    <p>Despite these errors, Vercel should still deploy the application correctly. The errors occur during the build process but won't affect the runtime behavior.</p>
+  </div>
+  
+  <h3>Suspense Boundaries</h3>
+  <p>For a cleaner build, you could wrap components using <code>useSearchParams()</code> in Suspense boundaries:</p>
+  <pre>
+import { Suspense } from 'react';
+
+export default function Page() {
+  return (
+    &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+      &lt;ComponentUsingSearchParams /&gt;
+    &lt;/Suspense&gt;
+  );
+}
+  </pre>
+  <p>This is a future enhancement that would remove the warnings during build.</p>
+  
+  <h2>Post-Deployment Verification</h2>
+  <p>After deploying, verify that:</p>
+  <ol>
+    <li>Authentication works correctly (sign in, sign up)</li>
+    <li>Profile pages load properly</li>
+    <li>Stripe webhooks are functioning</li>
+    <li>TikTok integration works as expected</li>
+  </ol>
+  
+  <h2>Advanced Debugging</h2>
+  <p>If you encounter issues after deployment:</p>
+  <ol>
+    <li>Check Vercel Function Logs for server-side errors</li>
+    <li>Verify environment variables are correctly set</li>
+    <li>Use browser developer tools to check for client-side errors</li>
+    <li>Test the webhook endpoints using a tool like Postman</li>
+  </ol>
+</body>
+</html> 

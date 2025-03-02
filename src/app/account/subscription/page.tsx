@@ -1,5 +1,9 @@
 "use client";
 
+// Force dynamic rendering for this client component
+export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
+
 import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FaCheckCircle, FaTimesCircle, FaCreditCard, FaExchangeAlt } from 'react-icons/fa';

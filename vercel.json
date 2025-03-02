@@ -15,6 +15,27 @@
         "Access-Control-Allow-Headers": "Content-Type, stripe-signature"
       }
     },
+    {
+      "src": "/account/(.*)",
+      "dest": "/account/$1",
+      "headers": {
+        "Cache-Control": "no-store, max-age=0"
+      }
+    },
+    {
+      "src": "/auth/(.*)",
+      "dest": "/auth/$1",
+      "headers": {
+        "Cache-Control": "no-store, max-age=0"
+      }
+    },
+    {
+      "src": "/profile",
+      "dest": "/profile",
+      "headers": {
+        "Cache-Control": "no-store, max-age=0"
+      }
+    },
     { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/" }
   ],

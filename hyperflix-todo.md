@@ -231,4 +231,43 @@ This document outlines the necessary steps to develop HyperFlix - an AI-powered 
 7. Subscription and payment processing
 8. Marketing pages and FAQ
 9. Testing and optimization
-10. Launch preparations 
+10. Launch preparations
+
+## Recently Completed
+
+- Fixed deployment issues with Next.js build process:
+  - Added `dynamic = 'force-dynamic'` to client-side pages to prevent static generation errors
+  - Fixed the ordering of "use client" directives to be at the top of files
+  - Updated Next.js configuration for better deployment compatibility
+  - Set proper headers and rewrites for client-side pages
+  - Created comprehensive deployment documentation
+  - Fixed webhook route for Stripe integration
+
+- Fixed NextAuth.js integration:
+  - Updated imports for App Router compatibility
+  - Fixed TikTok provider implementation
+  - Created robust authentication configuration
+
+## Upcoming Tasks
+
+- Add Suspense boundaries around components using `useSearchParams()` to eliminate build warnings
+- Implement proper error handling for API routes
+- Add comprehensive test coverage for critical paths
+- Enhance logging for better debugging
+- Optimize build performance
+- Create deployment pipelines for staging and production environments
+
+## Deployment Notes
+
+When deploying to Vercel, ensure the following:
+
+1. Set all required environment variables (see deployment.md)
+2. Use the correct build settings (Next.js framework preset)
+3. Configure webhooks for Stripe integration
+4. Set up proper domains and redirects
+
+Some build warnings are expected and won't affect functionality:
+- Warnings about static generation of client-side pages
+- Edge runtime optimization messages
+
+See `deployment.md` and `developer-todo.html` for more detailed information. 

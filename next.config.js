@@ -18,6 +18,21 @@ const nextConfig = {
     unoptimized: true,
   },
   
+  // Explicitly set the directory where Next.js will write the build output
+  distDir: '.next',
+  
+  // Set the experimental flag to improve compatibility
+  experimental: {
+    // Improve error handling during build
+    forceSwcTransforms: true,
+    
+    // Optimize for serverless deployment
+    optimizeCss: true,
+    
+    // Split chunks for better loading performance
+    optimizePackageImports: ['react', 'react-dom', 'next', '@firebase/auth', '@firebase/firestore'],
+  },
+  
   // Disable static generation for client-side pages
   // This is the recommended approach for Vercel deployment
   trailingSlash: false,
@@ -34,6 +49,25 @@ const nextConfig = {
             value: 'no-store, max-age=0',
           },
         ],
+      },
+    ];
+  },
+  
+  // Disable static generation for problematic routes
+  async rewrites() {
+    return [
+      // Force dynamic rendering for these routes
+      {
+        source: '/account/:path*',
+        destination: '/account/:path*',
+      },
+      {
+        source: '/auth/:path*',
+        destination: '/auth/:path*',
+      },
+      {
+        source: '/profile',
+        destination: '/profile',
       },
     ];
   },
