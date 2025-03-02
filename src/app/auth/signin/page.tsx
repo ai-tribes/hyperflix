@@ -1,3 +1,5 @@
+import { dynamic } from '@/app/dynamicPages';
+
 "use client";
 
 import React, { useState, useEffect } from 'react';
