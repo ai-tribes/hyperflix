@@ -13,7 +13,7 @@ export default function DashboardPage() {
         <div className={styles.dashboardPage}>
           <div className={styles.dashboardHeader}>
             <h1>Dashboard</h1>
-            <p>Welcome to HyperFlix - Your memecoin marketing platform</p>
+            <p>Welcome to Your memecoin marketing platform</p>
           </div>
           
           <div className={styles.dashboardGrid}>

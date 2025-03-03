@@ -14,7 +14,7 @@ const Hero = () => {
       <div className="container">
         <div className={styles.heroContent}>
           <h1>Revolutionize Memecoin Marketing with AI</h1>
-          <p>$FLIX - The utility token powering the first AI-driven platform designed specifically for memecoins to create viral TikTok content. Join the future of crypto marketing.</p>
+          <p>Hyper-Flix.com - The utility token powering the first AI-driven platform designed specifically for memecoins to create viral TikTok content. Join the future of crypto marketing.</p>
           <div className={styles.heroButtons}>
             <a href="#" className="btn">Buy $FLIX Token</a>
             {isAuthenticated ? (

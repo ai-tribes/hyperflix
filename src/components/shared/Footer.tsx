@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="container">
         <div className={styles.footerContent}>
           <div className={styles.footerCol}>
-            <h3>About HyperFlix</h3>
+            <h3>About Hyper-Flix.com</h3>
             <p>The first AI-powered platform revolutionizing memecoin marketing through viral TikTok content creation. Join thousands of projects already growing their communities.</p>
             <div className={styles.socialLinks}>
               <a href="#"><span>🐦</span></a>
@@ -55,7 +55,7 @@ const Footer = () => {
           </div>
         </div>
         <div className={styles.footerBottom}>
-          <p>&copy; 2024 HyperFlix. All rights reserved. $FLIX is a utility token. Trading cryptocurrencies carries risk.</p>
+          <p>&copy; 2024 Hyper-Flix.com. All rights reserved. $FLIX is a utility token. Trading cryptocurrencies carries risk.</p>
         </div>
       </div>
     </footer>
