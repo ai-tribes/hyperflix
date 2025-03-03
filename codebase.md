@@ -299,6 +299,252 @@ HyperFlix/
    - Provides utility functions for Stripe operations
    - Handles checkout session creation and customer portal redirect
 
+## TikTok Integration
+
+### Overview
+The TikTok integration in HyperFlix is built using a robust, class-based architecture that handles authentication, content management, and API interactions. The integration is designed to be type-safe, error-resistant, and maintainable.
+
+### Key Components
+
+#### 1. TikTok Provider (`src/lib/tiktok-provider.ts`)
+- OAuth2 provider for NextAuth.js
+- Handles authentication flow and token management
+- Stores tokens securely in the session
+- Implements proper scope handling
+- Manages token refresh mechanism
+
+#### 2. TikTok API Class (`src/lib/tiktok-api.ts`)
+- Core API wrapper class
+- Implements all TikTok API endpoints
+- Handles error management
+- Provides type safety
+- Manages request/response lifecycle
+
+#### 3. Video Uploader Component (`src/components/TikTokVideoUploader.tsx`)
+- User interface for video uploads
+- Progress tracking
+- File validation
+- Draft mode support
+- Error handling
+- Success/failure callbacks
+
+### Authentication Flow
+
+1. User initiates TikTok connection
+2. OAuth2 flow redirects to TikTok
+3. User authorizes application
+4. Tokens stored in session
+5. Automatic token refresh when needed
+
+### Content Management
+
+#### Video Upload Process
+1. Initialize upload
+2. Upload video file
+3. Publish or save as draft
+4. Handle response
+5. Update UI with status
+
+#### Error Handling
+- Network errors
+- API errors
+- Validation errors
+- Authorization errors
+- Rate limiting
+
+### Type Definitions
+
+```typescript
+interface TikTokTokens {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: number;
+  refreshExpiresAt: number;
+  scope: string;
+}
+
+interface TikTokVideoMetadata {
+  title?: string;
+  privacy_level: 'PUBLIC' | 'SELF_ONLY';
+  disable_duet?: boolean;
+  disable_comment?: boolean;
+  disable_stitch?: boolean;
+  video_cover_timestamp_ms?: number;
+}
+
+interface TikTokResponse<T> {
+  data: T;
+  error?: {
+    code: string;
+    message: string;
+  };
+}
+```
+
+### Usage Examples
+
+#### Uploading a Video
+```typescript
+const api = await TikTokAPI.create();
+if (api) {
+  const response = await api.uploadVideo(file, {
+    title: "My Video",
+    isDraft: false,
+    disable_comment: false,
+    disable_duet: false,
+    disable_stitch: false,
+  });
+}
+```
+
+#### Getting User Info
+```typescript
+const api = await TikTokAPI.create();
+if (api) {
+  const userInfo = await api.getUserInfo();
+}
+```
+
+### Future Enhancements
+
+1. Content Scheduling
+   - Schedule posts for future dates
+   - Manage scheduled content
+   - Cancel/edit scheduled posts
+
+2. Batch Operations
+   - Upload multiple videos
+   - Bulk status updates
+   - Mass drafts management
+
+3. Analytics Integration
+   - View performance metrics
+   - Track engagement
+   - Generate reports
+
+4. Advanced Features
+   - Comment management
+   - Hashtag suggestions
+   - Trending analysis
+
+### Security Considerations
+
+1. Token Storage
+   - Encrypted at rest
+   - Secure transmission
+   - Regular rotation
+
+2. Rate Limiting
+   - API call throttling
+   - Quota management
+   - Error handling
+
+3. Access Control
+   - Role-based permissions
+   - Action auditing
+   - Security logging
+
+### Testing Strategy
+
+1. Unit Tests
+   - API wrapper methods
+   - Component functionality
+   - Error scenarios
+
+2. Integration Tests
+   - Authentication flow
+   - Upload process
+   - Error handling
+
+3. End-to-End Tests
+   - Complete user flows
+   - Edge cases
+   - Performance testing
+
+### Monitoring and Maintenance
+
+1. Error Tracking
+   - Automatic error reporting
+   - Stack trace collection
+   - User impact analysis
+
+2. Performance Monitoring
+   - API response times
+   - Upload success rates
+   - Token refresh metrics
+
+3. Usage Analytics
+   - Feature adoption
+   - Error patterns
+   - User behavior
+
+### Documentation
+
+1. API Documentation
+   - Endpoint descriptions
+   - Request/response formats
+   - Error codes
+
+2. Component Documentation
+   - Props and methods
+   - Usage examples
+   - Best practices
+
+3. Integration Guide
+   - Setup instructions
+   - Configuration options
+   - Troubleshooting
+
+### Dependencies
+
+- next-auth: Authentication framework
+- react: UI components
+- typescript: Type safety
+- tailwindcss: Styling
+
+### Environment Variables
+
+```env
+NEXT_PUBLIC_TIKTOK_CLIENT_ID=your_client_id
+TIKTOK_CLIENT_SECRET=your_client_secret
+NEXTAUTH_URL=your_auth_url
+NEXTAUTH_SECRET=your_secret
+```
+
+### Known Issues and Limitations
+
+1. Rate Limits
+   - API call quotas
+   - Upload size limits
+   - Concurrent upload limits
+
+2. Browser Support
+   - File size restrictions
+   - Upload limitations
+   - Performance considerations
+
+3. Platform Restrictions
+   - Content guidelines
+   - API limitations
+   - Feature availability
+
+### Support and Resources
+
+1. Official Documentation
+   - TikTok API docs
+   - NextAuth.js docs
+   - React documentation
+
+2. Community Resources
+   - Stack Overflow
+   - GitHub issues
+   - Developer forums
+
+3. Internal Support
+   - Team documentation
+   - Code comments
+   - Architecture diagrams
+
 ## Authentication System
 
 ### User Authentication Flow
