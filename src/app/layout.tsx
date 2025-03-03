@@ -11,7 +11,7 @@ const poppins = Poppins({
 })
 
 export const metadata = {
-  title: 'HyperFlix - The Ultimate Memecoin Marketing Platform',
+  title: 'Hyper-Flix.com - The Ultimate Memecoin Marketing Platform',
   description: 'AI-powered platform for creating viral TikTok content for memecoins.',
 }
 

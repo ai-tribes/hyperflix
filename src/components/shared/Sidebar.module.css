@@ -36,6 +36,13 @@
 .logoImage {
   height: 32px;
   width: auto;
+  margin-right: 10px;
+}
+
+.brandText {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
 }
 
 .logo span {

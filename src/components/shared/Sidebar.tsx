@@ -18,13 +18,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         <div className={styles.sidebarHeader}>
           <Link href="/" className={styles.logo}>
             <Image
-              src="/hyperflix-logo.jpg"
-              alt="HyperFlix"
+              src="/hyperflix-logo.png"
+              alt="Hyper-Flix.com"
               width={32}
               height={32}
               priority
               className={styles.logoImage}
             />
+            <span className={styles.brandText}>Hyper-Flix.com</span>
           </Link>
           <button className={styles.closeButton} onClick={toggleSidebar} aria-label="Close sidebar">
             ×

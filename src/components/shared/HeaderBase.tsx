@@ -13,17 +13,18 @@ export default function HeaderBase() {
         <div className={styles.headerContainer}>
           <Link href="/" className={styles.logo}>
             <Image
-              src="/hyperflix-logo.jpg"
-              alt="HyperFlix"
+              src="/hyperflix-logo.png"
+              alt="Hyper-Flix.com"
               width={40}
               height={40}
               priority
               className={styles.logoImage}
             />
+            <span className={styles.brandText}>Hyper-Flix.com</span>
           </Link>
           
           <div className={styles.tagline}>
-            <span>HyperFlix - Generate Viral TikTok Content for Memecoins</span>
+            <span>Generate Viral TikTok Content for Memecoins</span>
           </div>
           
           {/* Client-side Navigation with auth state handling */}
