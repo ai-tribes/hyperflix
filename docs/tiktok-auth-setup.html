@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Authentication Setup - HyperFlix</title>
+    <style>
+        :root {
+            --primary-color: #00DC82;
+            --secondary-color: #003543;
+            --text-color: #2C3E50;
+            --code-bg: #F7F9FA;
+            --border-color: #E5E7EB;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #FFFFFF;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-top: 2.5rem;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin-top: 1.5rem;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        ul, ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        .info-box {
+            background: #E8F4FD;
+            border-left: 4px solid #3498DB;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .warning-box {
+            background: #FDF7E8;
+            border-left: 4px solid #F1C40F;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .credentials-box {
+            background: #FCE8E8;
+            border: 1px dashed #E74C3C;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        a {
+            color: #2563EB;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Setting up TikTok Authentication</h1>
+    <p>This guide will help you set up TikTok authentication for your HyperFlix application.</p>
+
+    <div class="section">
+        <h2>Prerequisites</h2>
+        <ul>
+            <li>A TikTok Developer account</li>
+            <li>Access to the TikTok Developer Portal</li>
+            <li>Your application's domain (e.g., hyper-flix.com)</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>TikTok Developer Portal Configuration</h2>
+        <ol>
+            <li>Go to <a href="https://developers.tiktok.com/doc/login-kit-web" target="_blank">TikTok Developer Portal</a></li>
+            <li>Navigate to your app settings</li>
+        </ol>
+
+        <h3>Basic Information</h3>
+        <ul>
+            <li><strong>App Name</strong>: HyperFlix</li>
+            <li><strong>Category</strong>: Business</li>
+            <li><strong>Description</strong>: HyperFlix gives you the power to create viral marketing campaigns with AI-powered content generation and multi-platform distribution.</li>
+            <li><strong>Platform</strong>: Web</li>
+        </ul>
+
+        <h3>URL Configuration</h3>
+        <p>Add the following URLs to your app configuration:</p>
+        <ul>
+            <li><strong>Terms of Service URL</strong>: <code>https://hyper-flix.com/terms</code></li>
+            <li><strong>Privacy Policy URL</strong>: <code>https://hyper-flix.com/privacy</code></li>
+            <li><strong>Web/Desktop URL</strong>: <code>https://hyper-flix.com</code></li>
+        </ul>
+
+        <h3>Credentials</h3>
+        <div class="credentials-box">
+            <p>Your app credentials are:</p>
+            <pre><code>TIKTOK_CLIENT_KEY=awhpr1dpajln8v3l
+TIKTOK_CLIENT_SECRET=UpPFhuCrwXXVPKgYRQbsIwrENDf3RlJV</code></pre>
+        </div>
+
+        <h3>Required Scopes</h3>
+        <p>The following scopes are required for HyperFlix functionality:</p>
+        <ul>
+            <li><code>user.info.basic</code> - Basic user information (display name and avatar)</li>
+            <li><code>video.list</code> - Read-only access to user's public TikTok videos</li>
+        </ul>
+
+        <h3>Callback URLs</h3>
+        <p>Add the following callback URLs to your app configuration:</p>
+        
+        <p>Production:</p>
+        <pre><code>https://hyper-flix.com/api/auth/callback/tiktok</code></pre>
+        
+        <p>Development:</p>
+        <pre><code>http://localhost:3000/api/auth/callback/tiktok</code></pre>
+    </div>
+
+    <div class="section">
+        <h2>Local Development Setup</h2>
+        <ol>
+            <li>
+                <p>Update your <code>.env.local</code> file with the TikTok credentials:</p>
+                <pre><code>TIKTOK_CLIENT_KEY=awhpr1dpajln8v3l
+TIKTOK_CLIENT_SECRET=UpPFhuCrwXXVPKgYRQbsIwrENDf3RlJV</code></pre>
+            </li>
+            <li>Add <code>localhost:3000</code> to your TikTok app's allowed domains</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>Production Setup</h2>
+        <ol>
+            <li>Add your production domain (<code>hyper-flix.com</code>) to the allowed domains in TikTok Developer Portal</li>
+            <li>Update your production environment variables with the same credentials</li>
+            <li>Ensure your site is served over HTTPS (required for TikTok Login Kit)</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>Testing</h2>
+        <ol>
+            <li>Run the application locally</li>
+            <li>Try signing in with TikTok</li>
+            <li>
+                Verify that the following data is received:
+                <ul>
+                    <li>User's TikTok ID</li>
+                    <li>Display name</li>
+                    <li>Avatar URL</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>Troubleshooting</h2>
+        <p>Common issues and solutions:</p>
+        <div class="info-box">
+            <ol>
+                <li><strong>Popup Blocked</strong>: Ensure popups are allowed for your domain</li>
+                <li><strong>Invalid Redirect URI</strong>: Double-check the callback URLs in TikTok Developer Portal</li>
+                <li><strong>Scope Not Authorized</strong>: Verify all required scopes are added in the app configuration</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Security Considerations</h2>
+        <div class="warning-box">
+            <ol>
+                <li>Never commit your TikTok credentials to version control</li>
+                <li>Use environment variables for all sensitive information</li>
+                <li>Implement proper CSRF protection (handled by NextAuth.js)</li>
+                <li>Store tokens securely (handled by NextAuth.js)</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Additional Resources</h2>
+        <ul>
+            <li><a href="https://developers.tiktok.com/doc/login-kit-web" target="_blank">TikTok Login Kit Documentation</a></li>
+            <li><a href="https://next-auth.js.org" target="_blank">NextAuth.js Documentation</a></li>
+            <li><a href="https://developers.tiktok.com" target="_blank">TikTok Developer Portal</a></li>
+        </ul>
+    </div>
+</body>
+</html> 

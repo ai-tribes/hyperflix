@@ -33,7 +33,7 @@ export default function TikTok(options: OAuthUserConfig<any>): OAuthConfig<any> 
       url: "https://www.tiktok.com/v2/auth/authorize/",
       params: {
         client_key: options.clientId,
-        scope: "user.info.basic,video.upload,video.list",
+        scope: "user.info.basic,video.list",
         response_type: "code",
         state: "state", // Required for CSRF protection
       }
