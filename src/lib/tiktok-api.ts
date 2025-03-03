@@ -3,6 +3,161 @@
  * Contains functions for interacting with the TikTok API
  */
 
+import { getSession } from "next-auth/react";
+import { Session } from "next-auth";
+
+interface ExtendedSession extends Session {
+  accessToken?: string;
+}
+
+interface TikTokContentResponse {
+  data: {
+    publish_id?: string;
+    upload_url?: string;
+    error?: string;
+  };
+  error?: {
+    code: string;
+    message: string;
+  };
+}
+
+interface TikTokTokens {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: number;
+  refreshExpiresAt: number;
+  scope: string;
+}
+
+interface TikTokVideoMetadata {
+  title?: string;
+  privacy_level: 'PUBLIC' | 'SELF_ONLY';
+  disable_duet?: boolean;
+  disable_comment?: boolean;
+  disable_stitch?: boolean;
+  video_cover_timestamp_ms?: number;
+}
+
+interface TikTokResponse<T> {
+  data: T;
+  error?: {
+    code: string;
+    message: string;
+  };
+}
+
+export class TikTokAPI {
+  private static readonly API_BASE_URL = 'https://open.tiktokapis.com/v2';
+  private readonly accessToken: string;
+
+  constructor(accessToken: string) {
+    this.accessToken = accessToken;
+  }
+
+  private async request<T>(
+    endpoint: string,
+    options: RequestInit = {}
+  ): Promise<TikTokResponse<T>> {
+    const response = await fetch(`${TikTokAPI.API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`TikTok API error: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  async getUserInfo() {
+    return this.request<{
+      open_id: string;
+      union_id: string;
+      avatar_url: string;
+      display_name: string;
+    }>('/user/info/');
+  }
+
+  async getVideos(fields: string[] = ['id', 'cover_image_url', 'share_url', 'title', 'create_time']) {
+    return this.request<{ videos: any[] }>('/video/list/', {
+      method: 'POST',
+      body: JSON.stringify({ fields }),
+    });
+  }
+
+  async uploadVideo(file: File, metadata: Omit<TikTokVideoMetadata, 'privacy_level'> & { isDraft?: boolean }) {
+    try {
+      // Step 1: Initialize upload
+      const initResponse = await this.request<{
+        upload_url: string;
+        publish_id: string;
+      }>('/post/publish/video/init/', {
+        method: 'POST',
+        body: JSON.stringify({
+          post_info: {
+            ...metadata,
+            privacy_level: metadata.isDraft ? 'SELF_ONLY' : 'PUBLIC',
+          },
+        }),
+      });
+
+      if (!initResponse.data.upload_url) {
+        throw new Error('Failed to get upload URL');
+      }
+
+      // Step 2: Upload video
+      const uploadResponse = await fetch(initResponse.data.upload_url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'video/*',
+        },
+        body: file,
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload video');
+      }
+
+      // Step 3: Publish video
+      return this.request<{
+        publish_id: string;
+        share_url?: string;
+      }>('/post/publish/video/', {
+        method: 'POST',
+        body: JSON.stringify({
+          publish_id: initResponse.data.publish_id,
+        }),
+      });
+    } catch (error) {
+      console.error('Error uploading video:', error);
+      throw error;
+    }
+  }
+
+  async getVideoStatus(publishId: string) {
+    return this.request<{
+      status: string;
+      share_url?: string;
+      error_code?: string;
+    }>(`/video/query/status/?publish_id=${publishId}`);
+  }
+
+  static async create(): Promise<TikTokAPI | null> {
+    const session = await getSession();
+    if (!session?.tiktok?.accessToken) {
+      return null;
+    }
+
+    return new TikTokAPI(session.tiktok.accessToken);
+  }
+}
+
 /**
  * Get user information from TikTok
  * @param accessToken The user's TikTok access token
@@ -190,6 +345,73 @@ export async function refreshTikTokToken(refreshToken: string) {
     };
   } catch (error) {
     console.error('Error refreshing TikTok token:', error);
+    throw error;
+  }
+}
+
+export async function createTikTokContentAPI(file: File, isDraft: boolean = false) {
+  try {
+    const session = await getSession() as ExtendedSession;
+    if (!session?.accessToken) {
+      throw new Error("No access token found");
+    }
+
+    // Step 1: Create video
+    const createResponse = await fetch("https://open.tiktokapis.com/v2/post/publish/video/init/", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${session.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        post_info: {
+          title: file.name,
+          privacy_level: isDraft ? "SELF_ONLY" : "PUBLIC",
+          disable_duet: false,
+          disable_comment: false,
+          disable_stitch: false,
+        },
+      }),
+    });
+
+    const createData = (await createResponse.json()) as TikTokContentResponse;
+    if (!createData.data.upload_url) {
+      throw new Error(createData.error?.message || "Failed to get upload URL");
+    }
+
+    // Step 2: Upload video
+    const uploadResponse = await fetch(createData.data.upload_url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "video/*",
+      },
+      body: file,
+    });
+
+    if (!uploadResponse.ok) {
+      throw new Error("Failed to upload video");
+    }
+
+    // Step 3: Publish video
+    const publishResponse = await fetch("https://open.tiktokapis.com/v2/post/publish/video/", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${session.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        publish_id: createData.data.publish_id,
+      }),
+    });
+
+    const publishData = (await publishResponse.json()) as TikTokContentResponse;
+    if (publishData.error) {
+      throw new Error(publishData.error.message);
+    }
+
+    return publishData;
+  } catch (error) {
+    console.error("Error uploading video to TikTok:", error);
     throw error;
   }
 } 

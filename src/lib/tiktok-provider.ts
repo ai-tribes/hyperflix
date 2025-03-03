@@ -33,7 +33,7 @@ export default function TikTok(options: OAuthUserConfig<any>): OAuthConfig<any> 
       url: "https://www.tiktok.com/v2/auth/authorize/",
       params: {
         client_key: options.clientId,
-        scope: "user.info.basic,video.list",
+        scope: "user.info.basic,video.list,video.upload,video.publish",
         response_type: "code",
         state: "state", // Required for CSRF protection
       }
@@ -55,7 +55,13 @@ export default function TikTok(options: OAuthUserConfig<any>): OAuthConfig<any> 
         });
         
         const tokens: TikTokTokens = await response.json();
-        return { tokens };
+        return {
+          tokens: {
+            ...tokens,
+            expires_at: Date.now() + tokens.expires_in * 1000,
+            refresh_expires_at: Date.now() + tokens.refresh_expires_in * 1000,
+          }
+        };
       },
     },
     userinfo: {
@@ -69,12 +75,19 @@ export default function TikTok(options: OAuthUserConfig<any>): OAuthConfig<any> 
         return await response.json();
       },
     },
-    profile(profile: TikTokProfile) {
+    profile(profile: TikTokProfile, tokens: TikTokTokens) {
       return {
         id: profile.open_id,
         name: profile.display_name,
         email: null, // TikTok doesn't provide email
         image: profile.avatar_url,
+        tiktok: {
+          accessToken: tokens.access_token,
+          refreshToken: tokens.refresh_token,
+          expiresAt: Date.now() + tokens.expires_in * 1000,
+          refreshExpiresAt: Date.now() + tokens.refresh_expires_in * 1000,
+          scope: tokens.scope,
+        }
       };
     },
     style: {
