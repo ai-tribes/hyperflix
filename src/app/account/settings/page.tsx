@@ -3,7 +3,7 @@
 // Force dynamic rendering for this client component
 export const dynamic = 'force-dynamic';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -18,10 +18,20 @@ export default function SettingsPage() {
   const [isSigningOut, setIsSigningOut] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [isClient, setIsClient] = useState(false);
 
-  if (!user) {
-    router.push('/auth/signin?callbackUrl=/account/settings');
-    return null;
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && !user) {
+      router.push('/auth/signin?callbackUrl=/account/settings');
+    }
+  }, [isClient, user, router]);
+
+  if (!isClient) {
+    return null; // Return nothing during server-side rendering
   }
 
   const handleSaveSettings = async (e: React.FormEvent) => {
@@ -45,7 +55,7 @@ export default function SettingsPage() {
   };
 
   const handleSignOutFromAllDevices = async () => {
-    if (confirm('Are you sure you want to sign out from all devices? You will need to sign in again on all your devices.')) {
+    if (typeof window !== 'undefined' && window.confirm('Are you sure you want to sign out from all devices? You will need to sign in again on all your devices.')) {
       setIsSigningOut(true);
       setError('');
       
@@ -62,7 +72,9 @@ export default function SettingsPage() {
   const handleDeleteAccount = () => {
     // In a real implementation, this would show a confirmation dialog
     // and then delete the user's account upon confirmation
-    alert('Account deletion is not implemented in this demo.');
+    if (typeof window !== 'undefined') {
+      window.alert('Account deletion is not implemented in this demo.');
+    }
   };
 
   return (
