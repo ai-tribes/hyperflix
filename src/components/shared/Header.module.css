@@ -15,18 +15,23 @@
 }
 
 .logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #333;
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  transition: color 0.3s;
-}
-
-.logo span {
-  color: #5865F2;
+  transition: opacity 0.3s;
 }
 
 .logo:hover {
+  opacity: 0.9;
+}
+
+.logoImage {
+  width: auto;
+  height: 40px;
+  object-fit: contain;
+}
+
+.logo span {
   color: #5865F2;
 }
 
@@ -254,6 +259,10 @@
   
   .open .mobileMenuButton span:nth-child(3) {
     transform: translateY(-10px) rotate(-45deg);
+  }
+  
+  .logoImage {
+    height: 32px;
   }
 }
 

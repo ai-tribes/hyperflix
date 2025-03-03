@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Header.module.css';
 import HeaderNavigation from './HeaderNavigation';
 
@@ -10,7 +11,16 @@ export default function HeaderBase() {
     <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.headerContainer}>
-          <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>
+          <Link href="/" className={styles.logo}>
+            <Image
+              src="/hyperflix-logo.jpg"
+              alt="HyperFlix"
+              width={150}
+              height={150}
+              priority
+              className={styles.logoImage}
+            />
+          </Link>
           
           <div className={styles.tagline}>
             <span>HyperFlix - Generate Viral TikTok Content for Memecoins</span>

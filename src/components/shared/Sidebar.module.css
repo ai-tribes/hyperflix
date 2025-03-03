@@ -25,10 +25,20 @@
 }
 
 .logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #333;
+  display: flex;
+  align-items: center;
   text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.logo:hover {
+  opacity: 0.9;
+}
+
+.logoImage {
+  width: auto;
+  height: 32px;
+  object-fit: contain;
 }
 
 .logo span {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Sidebar.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 interface SidebarProps {
@@ -15,7 +16,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     <>
       <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
         <div className={styles.sidebarHeader}>
-          <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>
+          <Link href="/" className={styles.logo}>
+            <Image
+              src="/hyperflix-logo.jpg"
+              alt="HyperFlix"
+              width={120}
+              height={120}
+              priority
+              className={styles.logoImage}
+            />
+          </Link>
           <button className={styles.closeButton} onClick={toggleSidebar} aria-label="Close sidebar">
             ×
           </button>
