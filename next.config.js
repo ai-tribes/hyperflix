@@ -36,12 +36,6 @@ const nextConfig = {
     
     // Split chunks for better loading performance
     optimizePackageImports: ['react', 'react-dom', 'next', '@firebase/auth', '@firebase/firestore'],
-    
-    // Improve client-side navigation behavior
-    skipMiddlewareUrlNormalize: true,
-    
-    // Force server components to be dynamic by default to ensure middleware runs
-    serverActions: true,
   },
   
   // Disable static generation for client-side pages

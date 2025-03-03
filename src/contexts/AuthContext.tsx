@@ -38,6 +38,7 @@ interface AuthContextType {
   loginWithProvider: (provider: 'google' | 'twitter', callbackUrl?: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updateProfile: (params: UpdateProfileParams) => Promise<void>;
+  signOutFromAllDevices: () => Promise<void>; // New function to sign out from all devices
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -122,6 +123,44 @@ export function AuthProvider({ children }: AuthProviderProps) {
       router.push('/');
     } catch (error) {
       console.error('Logout error:', error);
+      throw error;
+    }
+  };
+
+  // Sign out from all devices by revoking all refresh tokens
+  const signOutFromAllDevices = async () => {
+    try {
+      if (!user) {
+        throw new Error('No user logged in');
+      }
+      
+      // Get the current user's ID token
+      const idToken = await user.getIdToken(true);
+      
+      // Call the Firebase Auth REST API to revoke all refresh tokens
+      const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${process.env.NEXT_PUBLIC_FIREBASE_API_KEY}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          idToken,
+          validSince: Math.floor(Date.now() / 1000), // Current time in seconds
+        }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Failed to revoke tokens: ${errorData.error.message}`);
+      }
+      
+      // Sign out from the current device
+      await firebaseSignOut(auth);
+      
+      // Redirect to home page
+      router.push('/');
+    } catch (error) {
+      console.error('Sign out from all devices error:', error);
       throw error;
     }
   };
@@ -227,7 +266,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     signOut: logout, // Alias for logout
     loginWithProvider,
     resetPassword,
-    updateProfile
+    updateProfile,
+    signOutFromAllDevices // Add the new function to the context value
   };
 
   return (

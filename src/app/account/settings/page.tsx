@@ -2,7 +2,6 @@
 
 // Force dynamic rendering for this client component
 export const dynamic = 'force-dynamic';
-export const runtime = 'edge';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -12,10 +11,11 @@ import styles from './settings.module.css';
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { user, signOut } = useAuth();
+  const { user, signOut, signOutFromAllDevices } = useAuth();
   const [darkMode, setDarkMode] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
@@ -41,6 +41,21 @@ export default function SettingsPage() {
       setError(err.message || 'An error occurred while saving settings');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleSignOutFromAllDevices = async () => {
+    if (confirm('Are you sure you want to sign out from all devices? You will need to sign in again on all your devices.')) {
+      setIsSigningOut(true);
+      setError('');
+      
+      try {
+        await signOutFromAllDevices();
+        // No need to set success state as we'll be redirected to the home page
+      } catch (err: any) {
+        setError(err.message || 'Failed to sign out from all devices');
+        setIsSigningOut(false);
+      }
     }
   };
 
@@ -129,8 +144,12 @@ export default function SettingsPage() {
                 This will sign you out from all devices where you're currently logged in
               </p>
             </div>
-            <button className={styles.secondaryButton}>
-              Sign Out Everywhere
+            <button 
+              className={styles.secondaryButton}
+              onClick={handleSignOutFromAllDevices}
+              disabled={isSigningOut}
+            >
+              {isSigningOut ? 'Signing Out...' : 'Sign Out Everywhere'}
             </button>
           </div>
           
