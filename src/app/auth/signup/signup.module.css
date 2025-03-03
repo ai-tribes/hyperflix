@@ -180,6 +180,16 @@
   transform: translateY(-2px);
 }
 
+.tiktokButton {
+  background-color: white;
+  color: #000000;
+}
+
+.tiktokButton:hover {
+  background-color: #f1f1f1;
+  transform: translateY(-2px);
+}
+
 .twitterButton {
   background-color: white;
   color: #1DA1F2;

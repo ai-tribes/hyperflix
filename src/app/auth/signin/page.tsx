@@ -212,7 +212,7 @@ export default function SignIn() {
             onClick={handleTikTokSignIn}
             disabled={loading}
           >
-            <FaTiktok />
+            <SiTiktok />
             <span>Sign in with TikTok</span>
           </button>
         </div>

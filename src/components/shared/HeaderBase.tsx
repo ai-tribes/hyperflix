@@ -15,8 +15,8 @@ export default function HeaderBase() {
             <Image
               src="/hyperflix-logo.jpg"
               alt="HyperFlix"
-              width={150}
-              height={150}
+              width={40}
+              height={40}
               priority
               className={styles.logoImage}
             />

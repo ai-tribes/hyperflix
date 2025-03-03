@@ -20,8 +20,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <Image
               src="/hyperflix-logo.jpg"
               alt="HyperFlix"
-              width={120}
-              height={120}
+              width={32}
+              height={32}
               priority
               className={styles.logoImage}
             />

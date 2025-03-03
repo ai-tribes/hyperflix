@@ -7,11 +7,13 @@ export const runtime = 'edge';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { FaGoogle, FaTwitter } from 'react-icons/fa';
+import { SiTiktok } from 'react-icons/si';
 import styles from './signup.module.css';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '@/lib/firebase';
+import { signIn } from 'next-auth/react';
 
 export default function SignUpPage() {
   const [name, setName] = useState('');
@@ -106,6 +108,29 @@ export default function SignUpPage() {
   // Handle Twitter login - currently disabled until configured
   const handleTwitterSignUp = async () => {
     setError('Twitter authentication is coming soon!');
+  };
+
+  // Handle TikTok signup
+  const handleTikTokSignUp = async () => {
+    setError('');
+    setLoading(true);
+    
+    try {
+      const result = await signIn('tiktok', {
+        callbackUrl,
+        redirect: true,
+      });
+      
+      // Note: This code won't execute because of the redirect
+      if (result?.error) {
+        setError(result.error);
+      }
+    } catch (err: any) {
+      console.error('TikTok sign-up error:', err);
+      setError('Failed to sign up with TikTok. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -223,6 +248,15 @@ export default function SignUpPage() {
           >
             Go to dedicated Google sign-up page
           </Link>
+          
+          <button 
+            className={`${styles.socialButton} ${styles.tiktokButton}`}
+            onClick={handleTikTokSignUp}
+            disabled={loading}
+          >
+            <SiTiktok />
+            Sign up with TikTok
+          </button>
           
           <button 
             className={`${styles.socialButton} ${styles.twitterButton}`}
