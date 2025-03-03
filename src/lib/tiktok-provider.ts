@@ -1,5 +1,6 @@
 // TikTok provider for NextAuth.js
 // This is a simplified version that doesn't rely on the next-auth/providers import
+import type { OAuthConfig, OAuthUserConfig } from 'next-auth/providers/oauth';
 
 export interface TikTokProfile {
   open_id: string;
@@ -9,12 +10,21 @@ export interface TikTokProfile {
   [key: string]: any;
 }
 
+interface TikTokTokens {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+  refresh_expires_in: number;
+  scope: string;
+  token_type: string;
+}
+
 /**
  * TikTok OAuth provider for NextAuth.js
  * Uses the TikTok Login Kit for authentication
  * @see https://developers.tiktok.com/doc/login-kit-web
  */
-export default function TikTok(options: any) {
+export default function TikTok(options: OAuthUserConfig<any>): OAuthConfig<any> {
   return {
     id: "tiktok",
     name: "TikTok",
@@ -25,10 +35,40 @@ export default function TikTok(options: any) {
         client_key: options.clientId,
         scope: "user.info.basic,video.upload,video.list",
         response_type: "code",
+        state: "state", // Required for CSRF protection
       }
     },
-    token: "https://open.tiktokapis.com/v2/oauth/token/",
-    userinfo: "https://open.tiktokapis.com/v2/user/info/",
+    token: {
+      url: "https://open.tiktokapis.com/v2/oauth/token/",
+      async request({ client, params, checks, provider }: any) {
+        const response = await fetch(provider.token.url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            client_key: options.clientId,
+            client_secret: options.clientSecret,
+            code: params.code,
+            grant_type: 'authorization_code',
+          }),
+        });
+        
+        const tokens: TikTokTokens = await response.json();
+        return { tokens };
+      },
+    },
+    userinfo: {
+      url: "https://open.tiktokapis.com/v2/user/info/",
+      async request({ tokens, client, provider }: { tokens: TikTokTokens; client: any; provider: any }) {
+        const response = await fetch(provider.userinfo.url, {
+          headers: {
+            'Authorization': `Bearer ${tokens.access_token}`,
+          },
+        });
+        return await response.json();
+      },
+    },
     profile(profile: TikTokProfile) {
       return {
         id: profile.open_id,

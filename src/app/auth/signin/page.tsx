@@ -89,9 +89,26 @@ export default function SignIn() {
     setError('Twitter authentication is coming soon!');
   };
 
-  // Handle TikTok login - currently disabled until configured
+  // Handle TikTok login
   const handleTikTokSignIn = async () => {
-    setError('TikTok authentication is coming soon!');
+    setError(null);
+    setLoading(true);
+    
+    try {
+      const result = await signIn('tiktok', {
+        callbackUrl,
+        redirect: true,
+      });
+      
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+    } catch (err: any) {
+      console.error('TikTok sign-in error:', err);
+      setError('Failed to sign in with TikTok. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Clear error on component mount
@@ -193,10 +210,10 @@ export default function SignIn() {
           <button 
             className={`${styles.socialButton} ${styles.tiktokButton}`}
             onClick={handleTikTokSignIn}
-            disabled={loading || true}
+            disabled={loading}
           >
             <FaTiktok />
-            <span>TikTok Coming Soon</span>
+            <span>Sign in with TikTok</span>
           </button>
         </div>
         
