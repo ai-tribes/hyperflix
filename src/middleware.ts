@@ -12,8 +12,30 @@ const protectedRoutes = [
   '/account',
 ]
 
+// Define allowed origins for CORS
+const allowedOrigins = [
+  'https://hyperflix.vercel.app',
+  'https://hyperflix-njjwcecgx-ai-tribes.vercel.app',
+  'https://hyper-flix-f2891.firebaseapp.com',
+]
+
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const origin = request.headers.get('origin') || ''
+  
+  // Handle CORS preflight requests
+  if (request.method === 'OPTIONS') {
+    const response = new NextResponse(null, { status: 204 })
+    
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', allowedOrigins.includes(origin) ? origin : allowedOrigins[0])
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    response.headers.set('Access-Control-Allow-Credentials', 'true')
+    response.headers.set('Access-Control-Max-Age', '86400') // 24 hours
+    
+    return response
+  }
   
   // Check if the path is protected
   const isProtectedRoute = protectedRoutes.some(route => 
@@ -37,7 +59,16 @@ export default function middleware(request: NextRequest) {
     console.log(`[Middleware] Authenticated user accessing ${pathname}`)
   }
   
-  return NextResponse.next()
+  // Add CORS headers to all responses
+  const response = NextResponse.next()
+  
+  // Add CORS headers
+  if (origin) {
+    response.headers.set('Access-Control-Allow-Origin', allowedOrigins.includes(origin) ? origin : allowedOrigins[0])
+    response.headers.set('Access-Control-Allow-Credentials', 'true')
+  }
+  
+  return response
 }
 
 // Configure middleware to run on specific paths
@@ -60,5 +91,7 @@ export const config = {
     '/lipsync/:path*',
     '/account',
     '/account/:path*',
+    // Also match API routes for CORS
+    '/api/:path*',
   ],
 } 

@@ -28,13 +28,13 @@ if (typeof window !== 'undefined') {
       if (user) {
         const token = await user.getIdToken();
         // Set cookie for server-side auth checks with HttpOnly false to allow JS access
-        document.cookie = `firebase-auth-token=${token}; path=/; max-age=3600; SameSite=Lax`;
+        document.cookie = `firebase-auth-token=${token}; path=/; max-age=3600; SameSite=Lax; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`;
         
         // Save auth state to localStorage for redundancy
         localStorage.setItem('firebase-user-authenticated', 'true');
       } else {
         // Clear the cookie when user is signed out
-        document.cookie = 'firebase-auth-token=; path=/; max-age=0';
+        document.cookie = 'firebase-auth-token=; path=/; max-age=0; SameSite=Lax;';
         localStorage.removeItem('firebase-user-authenticated');
       }
     } catch (error) {
@@ -57,7 +57,7 @@ if (typeof window !== 'undefined') {
         if (currentUser) {
           try {
             const newToken = await currentUser.getIdToken(true);
-            document.cookie = `firebase-auth-token=${newToken}; path=/; max-age=3600; SameSite=Lax`;
+            document.cookie = `firebase-auth-token=${newToken}; path=/; max-age=3600; SameSite=Lax; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''}`;
           } catch (error) {
             console.error('Error refreshing authentication token:', error);
           }

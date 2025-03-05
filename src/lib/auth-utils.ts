@@ -11,7 +11,7 @@ export const COOKIE_OPTIONS = {
   expires: 7, // 7 days
   path: '/',
   secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict' as const
+  sameSite: 'lax' as const
 };
 
 /**
