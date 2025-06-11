@@ -143,6 +143,26 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
+.signOutButton {
+  background: none;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.signOutButton:hover {
+  background-color: #dc3545;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
 .mobileMenuButton {
   display: none;
   background: none;
@@ -261,6 +281,14 @@
     display: block;
     text-align: center;
     margin: 5px 0;
+  }
+
+  .signOutButton {
+    padding: 10px 20px;
+    display: block;
+    text-align: center;
+    margin: 5px 0;
+    width: 100%;
   }
   
   .open .mobileMenuButton span:nth-child(1) {

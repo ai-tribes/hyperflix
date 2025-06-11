@@ -10,6 +10,7 @@
   flex-direction: column;
   transition: margin-left 0.3s ease;
   width: 100%;
+  min-height: 100vh; /* Ensure full viewport height */
 }
 
 .contentWithSidebar {
@@ -18,8 +19,21 @@
 
 .main {
   flex: 1;
-  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
   background-color: #f9fafb;
+  /* Ensure main content takes up space between header and footer */
+  min-height: calc(100vh - 140px); /* Adjust based on header/footer height */
+}
+
+.mainContent {
+  flex: 1;
+  padding: 2rem 1.5rem;
+}
+
+.footerWrapper {
+  margin-top: auto; /* Push footer to bottom */
+  width: 100%;
 }
 
 .sidebarToggle {
@@ -52,20 +66,20 @@
 /* Responsive styles */
 @media (min-width: 1280px) {
   .contentWithSidebar {
-    margin-left: 300px;
+    margin-left: 300px; /* Account for sidebar width */
   }
   
   .sidebarToggle {
     display: none;
   }
   
-  .main {
+  .mainContent {
     padding: 2rem;
   }
 }
 
 @media (max-width: 768px) {
-  .main {
+  .mainContent {
     padding: 1.5rem 1rem;
   }
 } 

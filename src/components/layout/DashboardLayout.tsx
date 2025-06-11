@@ -52,9 +52,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       <div className={`${styles.content} ${sidebarOpen ? styles.contentWithSidebar : ''}`}>
         <Header />
         <main className={styles.main}>
-          {children}
+          <div className={styles.mainContent}>
+            {children}
+          </div>
         </main>
-        <Footer />
+        <div className={styles.footerWrapper}>
+          <Footer />
+        </div>
       </div>
       
       {/* Mobile sidebar toggle button */}

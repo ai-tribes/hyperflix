@@ -10,6 +10,8 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  /* Ensure sidebar content is properly contained */
+  overflow: hidden;
 }
 
 .sidebar.open {

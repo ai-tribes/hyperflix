@@ -9,10 +9,20 @@ import { useAuth } from '@/contexts/AuthContext'
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   
   // Check if we're on the landing page
   const isLandingPage = pathname === '/';
+
+  // Handle sign out
+  const handleSignOut = async () => {
+    try {
+      await logout();
+      setMobileMenuOpen(false); // Close mobile menu after sign out
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
   // Don't show navigation links during authentication loading
   // This prevents the flicker between unauthenticated and authenticated states
@@ -45,8 +55,19 @@ const Header = () => {
         <>
           <li><Link href="/pricing">Pricing</Link></li>
           {user ? (
-            // For authenticated users, show create content link
-            <li className={styles.ctaButton}><Link href="/create">Create Content</Link></li>
+            // For authenticated users, show create content link and sign out
+            <>
+              <li className={styles.ctaButton}><Link href="/create">Create Content</Link></li>
+              <li>
+                <button 
+                  onClick={handleSignOut}
+                  className={styles.signOutButton}
+                  aria-label="Sign out"
+                >
+                  Sign Out
+                </button>
+              </li>
+            </>
           ) : (
             // For non-authenticated users, show auth buttons
             <>
@@ -59,7 +80,7 @@ const Header = () => {
     }
     
     if (user) {
-      // Authenticated user - show full navigation
+      // Authenticated user - show full navigation with sign out
       return (
         <>
           <li><Link href="/dashboard" className={pathname === '/dashboard' ? styles.active : ''}>Dashboard</Link></li>
@@ -70,6 +91,15 @@ const Header = () => {
           <li><Link href="/lipsync" className={pathname === '/lipsync' ? styles.active : ''}>Lip Sync <span className={styles.new}>New!</span></Link></li>
           <li><Link href="/account/profile" className={pathname.startsWith('/account') ? styles.active : ''}>Account</Link></li>
           <li><Link href="/support" className={pathname === '/support' ? styles.active : ''}>Support</Link></li>
+          <li>
+            <button 
+              onClick={handleSignOut}
+              className={styles.signOutButton}
+              aria-label="Sign out"
+            >
+              Sign Out
+            </button>
+          </li>
         </>
       );
     }
