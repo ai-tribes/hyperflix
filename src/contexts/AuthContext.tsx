@@ -19,6 +19,7 @@ interface AuthContextType {
   // Auth methods
   loginWithEmail: (email: string, password: string, callbackUrl?: string) => Promise<void>;
   loginWithProvider: (provider: string, callbackUrl?: string) => Promise<void>;
+  loginWithWallet: (walletType: 'metamask' | 'phantom' | 'handcash', callbackUrl?: string) => Promise<void>;
   registerWithEmail: (name: string, email: string, password: string, callbackUrl?: string) => Promise<void>;
   logout: () => Promise<void>;
   signOut: () => Promise<void>; // Alias for logout
@@ -99,6 +100,93 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const loginWithWallet = async (walletType: 'metamask' | 'phantom' | 'handcash', callbackUrl = '/dashboard') => {
+    setError(null);
+    try {
+      // Dynamically import wallet connectors to avoid SSR issues
+      const { WalletConnectors, generateWalletSignMessage } = await import('@/lib/wallet-providers/wallet-auth');
+      
+      let connectionResult;
+      let signature;
+      let address;
+      let chainId;
+
+      switch (walletType) {
+        case 'metamask':
+          connectionResult = await WalletConnectors.connectMetaMask();
+          if (!connectionResult) {
+            throw new Error('Failed to connect to MetaMask');
+          }
+          address = connectionResult.address;
+          chainId = connectionResult.chainId;
+          
+          const metamaskMessage = generateWalletSignMessage(address);
+          signature = await WalletConnectors.signMessageWithMetaMask(address, metamaskMessage);
+          
+          const metamaskResult = await signIn('wallet', {
+            address,
+            signature,
+            message: metamaskMessage,
+            walletType: 'metamask',
+            chainId: chainId.toString(),
+            callbackUrl,
+            redirect: false
+          });
+          
+          if (metamaskResult?.error) {
+            throw new Error(metamaskResult.error);
+          }
+          
+          if (metamaskResult?.ok) {
+            router.push(callbackUrl);
+          }
+          break;
+
+        case 'phantom':
+          connectionResult = await WalletConnectors.connectPhantom();
+          if (!connectionResult) {
+            throw new Error('Failed to connect to Phantom');
+          }
+          address = connectionResult.address;
+          
+          const phantomMessage = generateWalletSignMessage(address);
+          signature = await WalletConnectors.signMessageWithPhantom(phantomMessage);
+          
+          const phantomResult = await signIn('wallet', {
+            address,
+            signature,
+            message: phantomMessage,
+            walletType: 'phantom',
+            callbackUrl,
+            redirect: false
+          });
+          
+          if (phantomResult?.error) {
+            throw new Error(phantomResult.error);
+          }
+          
+          if (phantomResult?.ok) {
+            router.push(callbackUrl);
+          }
+          break;
+
+        case 'handcash':
+          // HandCash uses OAuth flow, so redirect to authorization URL
+          const { WalletConnectors: WC } = await import('@/lib/wallet-providers/wallet-auth');
+          const authUrl = WC.connectHandCash();
+          window.location.href = authUrl;
+          break;
+
+        default:
+          throw new Error(`Unsupported wallet type: ${walletType}`);
+      }
+    } catch (err: any) {
+      console.error(`${walletType} login error:`, err);
+      setError(err.message || `Failed to sign in with ${walletType}`);
+      throw err;
+    }
+  };
+
   const registerWithEmail = async (name: string, email: string, password: string, callbackUrl = '/dashboard') => {
     setError(null);
     try {
@@ -175,6 +263,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     error,
     loginWithEmail,
     loginWithProvider,
+    loginWithWallet,
     registerWithEmail,
     logout,
     signOut: signOutFunc,

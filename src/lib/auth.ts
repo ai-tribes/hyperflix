@@ -5,23 +5,33 @@ import TwitterProvider from "next-auth/providers/twitter";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "./firebase";
 import TikTokProvider from "./tiktok-provider";
+import { verifyWalletSignature, createWalletUser, WalletSignInData } from "./wallet-providers/wallet-auth";
 
-// Define the type for the session object with TikTok properties
+// Define the type for the session object with TikTok and Wallet properties
 interface TikTokSession {
   accessToken: string;
   refreshToken: string;
   expiresAt: number;
 }
 
+interface WalletSession {
+  address: string;
+  walletType: string;
+  chainId?: number;
+}
+
 // Extend the Session and JWT types
 declare module "next-auth" {
   interface Session {
     tiktok?: TikTokSession;
+    wallet?: WalletSession;
     user: {
       id: string;
       name?: string;
       email?: string;
       image?: string;
+      walletAddress?: string;
+      walletType?: string;
     };
   }
   
@@ -30,6 +40,14 @@ declare module "next-auth" {
     tiktokAccessToken?: string;
     tiktokRefreshToken?: string;
     tiktokExpiresAt?: number;
+    walletAddress?: string;
+    walletType?: string;
+    walletChainId?: number;
+  }
+
+  interface User {
+    walletAddress?: string;
+    walletType?: string;
   }
 }
 
@@ -113,6 +131,59 @@ export const authOptions: NextAuthOptions = {
         }
       }
     }),
+    // Wallet Authentication Provider
+    CredentialsProvider({
+      id: "wallet",
+      name: "Wallet",
+      credentials: {
+        address: { label: "Wallet Address", type: "text" },
+        signature: { label: "Signature", type: "text" },
+        message: { label: "Message", type: "text" },
+        walletType: { label: "Wallet Type", type: "text" },
+        chainId: { label: "Chain ID", type: "text", optional: true }
+      },
+      async authorize(credentials) {
+        if (!credentials?.address || !credentials?.signature || !credentials?.message || !credentials?.walletType) {
+          throw new Error("Wallet address, signature, message, and wallet type are required");
+        }
+
+        try {
+          // Verify the wallet signature
+          const isValidSignature = await verifyWalletSignature(
+            credentials.address,
+            credentials.signature,
+            credentials.message
+          );
+
+          if (!isValidSignature) {
+            throw new Error("Invalid wallet signature");
+          }
+
+          // Create wallet user data
+          const walletData: WalletSignInData = {
+            address: credentials.address,
+            signature: credentials.signature,
+            message: credentials.message,
+            walletType: credentials.walletType as 'metamask' | 'phantom' | 'handcash',
+            chainId: credentials.chainId ? parseInt(credentials.chainId) : undefined
+          };
+
+          const walletUser = createWalletUser(walletData);
+
+          return {
+            id: walletUser.id,
+            name: walletUser.name,
+            email: null, // Wallets don't have emails
+            image: walletUser.image,
+            walletAddress: walletUser.address,
+            walletType: walletUser.walletType
+          };
+        } catch (error: any) {
+          console.error("Wallet authentication failed:", error);
+          throw new Error(`Wallet authentication failed: ${error.message}`);
+        }
+      }
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
@@ -156,6 +227,13 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
+        
+        // Store wallet information if this is a wallet login
+        if (user.walletAddress && user.walletType) {
+          token.walletAddress = user.walletAddress;
+          token.walletType = user.walletType;
+          // Note: chainId would be passed through credentials if needed
+        }
       }
       
       // Store the access token and provider in the token
@@ -170,6 +248,17 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        
+        // Add wallet information to session
+        if (token.walletAddress && token.walletType) {
+          session.user.walletAddress = token.walletAddress as string;
+          session.user.walletType = token.walletType as string;
+          session.wallet = {
+            address: token.walletAddress as string,
+            walletType: token.walletType as string,
+            chainId: token.walletChainId as number | undefined
+          };
+        }
         
         // Add TikTok-specific properties to the session
         if (token.tiktokAccessToken) {

@@ -11,6 +11,7 @@ import { SiTiktok } from 'react-icons/si';
 import styles from './signin.module.css';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
+import WalletSignIn from '@/components/auth/WalletSignIn';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -219,6 +220,12 @@ export default function SignIn() {
             <span>Sign in with TikTok</span>
           </button>
         </div>
+        
+        <div className={styles.divider}>
+          <span>or connect your wallet</span>
+        </div>
+        
+        <WalletSignIn callbackUrl={callbackUrl} className={styles.walletSection} />
         
         <div className={styles.signup}>
           Don't have an account? <Link href="/auth/signup">Sign up</Link>
