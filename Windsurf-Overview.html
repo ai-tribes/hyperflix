@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HyperFlix Codebase Overview</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #1a73e8;
+        }
+        .section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .tech-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .timestamp {
+            color: #666;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <h1>HyperFlix Codebase Overview</h1>
+    <div class="timestamp">Last updated: March 7, 2025</div>
+
+    <div class="section">
+        <h2>Project Overview</h2>
+        <p>HyperFlix is a Next.js 14 application that leverages React 18 for its frontend architecture. Built on this modern full-stack framework, it appears to be a streaming or content delivery platform with integrated payment processing capabilities through Stripe. The project takes advantage of Next.js features like server-side rendering, API routes, and optimized client-side navigation while maintaining React's component-based architecture.</p>
+    </div>
+
+    <div class="section">
+        <h2>Technology Stack</h2>
+        <div class="tech-stack">
+            <div class="tech-item">
+                <h3>Framework & Frontend</h3>
+                <ul>
+                    <li>Next.js 14.1.0 (Full-stack framework)</li>
+                    <li>React 18.2.0 (UI library)</li>
+                    <li>TypeScript (Type safety)</li>
+                    <li>React Icons (UI components)</li>
+                </ul>
+            </div>
+            <div class="tech-item">
+                <h3>Authentication</h3>
+                <ul>
+                    <li>Firebase 11.4.0</li>
+                    <li>NextAuth.js</li>
+                    <li>Google OAuth integration</li>
+                </ul>
+            </div>
+            <div class="tech-item">
+                <h3>Payment Processing</h3>
+                <ul>
+                    <li>Stripe integration</li>
+                    <li>React Stripe.js</li>
+                </ul>
+            </div>
+            <div class="tech-item">
+                <h3>Development Tools</h3>
+                <ul>
+                    <li>TypeScript</li>
+                    <li>SVG tools for graphics</li>
+                    <li>Environment configuration</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Project Structure</h2>
+        <ul>
+            <li><strong>src/</strong> - Main application source code
+                <ul>
+                    <li><strong>app/</strong> - Next.js App Router structure with route handlers and layouts</li>
+                    <li><strong>components/</strong> - Reusable React components</li>
+                    <li><strong>context/</strong> - React context providers</li>
+                    <li><strong>hooks/</strong> - Custom React hooks</li>
+                    <li><strong>lib/</strong> - Utility functions and configurations</li>
+                    <li><strong>types/</strong> - TypeScript type definitions</li>
+                </ul>
+            </li>
+            <li><strong>public/</strong> - Static assets</li>
+            <li><strong>docs/</strong> - Project documentation</li>
+            <li><strong>.env.*</strong> - Environment configurations for different deployment stages</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Key Features</h2>
+        <ul>
+            <li>Google Authentication integration</li>
+            <li>Stripe payment processing</li>
+            <li>Environment-specific configurations</li>
+            <li>TypeScript for type safety</li>
+            <li>Responsive design with custom icons</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Development Setup</h2>
+        <p>The project uses standard Next.js commands for development:</p>
+        <ul>
+            <li><code>npm run dev</code> - Start development server</li>
+            <li><code>npm run build</code> - Build for production</li>
+            <li><code>npm run start</code> - Start production server</li>
+            <li><code>npm run lint</code> - Run linting</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Deployment</h2>
+        <p>The application is configured for deployment on Vercel, with specific domain and authentication configurations in place.</p>
+    </div>
+</body>
+</html>

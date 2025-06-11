@@ -11,9 +11,6 @@ import { SiTiktok } from 'react-icons/si';
 import styles from './signup.module.css';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '@/lib/firebase';
-import { signIn } from 'next-auth/react';
 
 export default function SignUpPage() {
   const [name, setName] = useState('');
@@ -34,40 +31,37 @@ export default function SignUpPage() {
     e.preventDefault();
     setError('');
     setSuccessMessage('');
-    setLoading(true);
     
     if (!name || !email || !password || !confirmPassword) {
       setError('Please fill in all fields');
-      setLoading(false);
       return;
     }
     
     if (password !== confirmPassword) {
       setError('Passwords do not match');
-      setLoading(false);
       return;
     }
     
     if (password.length < 6) {
       setError('Password must be at least 6 characters long');
-      setLoading(false);
       return;
     }
     
     try {
+      setLoading(true);
       await registerWithEmail(name, email, password, callbackUrl);
       setSuccessMessage('Account created successfully! Redirecting...');
     } catch (err: any) {
       console.error('Sign up error:', err);
       
-      if (err.code === 'auth/email-already-in-use') {
+      if (err.message.includes('email-already-in-use')) {
         setError('Email is already in use. Please use a different email or sign in.');
-      } else if (err.code === 'auth/invalid-email') {
+      } else if (err.message.includes('invalid-email')) {
         setError('Invalid email address');
-      } else if (err.code === 'auth/weak-password') {
+      } else if (err.message.includes('weak-password')) {
         setError('Password is too weak. Please use a stronger password.');
       } else {
-        setError('Failed to create account. Please try again.');
+        setError(err.message || 'Failed to create account. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -85,17 +79,14 @@ export default function SignUpPage() {
     } catch (err: any) {
       console.error('Google sign-up error:', err);
       
-      if (err.code === 'auth/popup-closed-by-user') {
+      if (err.message.includes('popup-closed-by-user')) {
         console.log('User closed the popup window');
         // Don't show error for user-initiated cancellation
-      } else if (err.code === 'auth/popup-blocked') {
+      } else if (err.message.includes('popup-blocked')) {
         setError('Popup was blocked by your browser. Please allow popups for this site.');
-      } else if (err.code === 'auth/cancelled-popup-request') {
-        console.log('Authentication popup request was cancelled');
-        // Don't show error for cancellation
-      } else if (err.code === 'auth/network-request-failed') {
+      } else if (err.message.includes('network-request-failed')) {
         setError('Network error. Please check your internet connection and try again.');
-      } else if (err.code === 'auth/unauthorized-domain') {
+      } else if (err.message.includes('unauthorized-domain')) {
         setError('This domain is not authorized for Google authentication. Please contact support.');
       } else {
         setError('Failed to sign up with Google. Please try again.');
@@ -105,26 +96,16 @@ export default function SignUpPage() {
     }
   };
   
-  // Handle Twitter login - currently disabled until configured
   const handleTwitterSignUp = async () => {
     setError('Twitter authentication is coming soon!');
   };
 
-  // Handle TikTok signup
   const handleTikTokSignUp = async () => {
     setError('');
     setLoading(true);
     
     try {
-      const result = await signIn('tiktok', {
-        callbackUrl,
-        redirect: true,
-      });
-      
-      // Note: This code won't execute because of the redirect
-      if (result?.error) {
-        setError(result.error);
-      }
+      await loginWithProvider('tiktok', callbackUrl);
     } catch (err: any) {
       console.error('TikTok sign-up error:', err);
       setError('Failed to sign up with TikTok. Please try again.');
@@ -240,14 +221,6 @@ export default function SignUpPage() {
             <FaGoogle />
             Sign up with Google
           </button>
-          
-          <Link 
-            href="/auth/signup/google" 
-            className={styles.alternativeLink}
-            style={{ marginTop: '0.5rem', fontSize: '0.85rem', textAlign: 'center' }}
-          >
-            Go to dedicated Google sign-up page
-          </Link>
           
           <button 
             className={`${styles.socialButton} ${styles.tiktokButton}`}

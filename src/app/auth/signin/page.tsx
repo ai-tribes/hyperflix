@@ -8,13 +8,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaGoogle, FaTwitter, FaTiktok } from 'react-icons/fa';
 import { SiTiktok } from 'react-icons/si';
-import { FiMail } from 'react-icons/fi';
 import styles from './signin.module.css';
 import { useAuth } from '@/contexts/AuthContext';
-import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '@/lib/firebase';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -33,7 +29,6 @@ export default function SignIn() {
     
     if (!email || !password) {
       setError('Please enter both email and password');
-      setLoading(false);
       return;
     }
     
@@ -43,12 +38,15 @@ export default function SignIn() {
     } catch (err: any) {
       console.error('Sign in error:', err);
       
-      if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+      // Set user-friendly error messages
+      if (err.message.includes('Invalid password')) {
         setError('Invalid email or password');
-      } else if (err.code === 'auth/too-many-requests') {
+      } else if (err.message.includes('too many requests')) {
         setError('Too many failed login attempts. Please try again later or reset your password');
+      } else if (err.message.includes('user-not-found') || err.message.includes('invalid-credential')) {
+        setError('Invalid email or password');
       } else {
-        setError('Failed to sign in. Please try again.');
+        setError(err.message || 'Failed to sign in. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -60,21 +58,16 @@ export default function SignIn() {
     setLoading(true);
     
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log('Google sign-in successful:', result.user.uid);
-      router.push(callbackUrl);
+      await loginWithProvider('google', callbackUrl);
     } catch (err: any) {
       console.error('Google sign-in error:', err);
       
-      if (err.code === 'auth/popup-closed-by-user') {
-        console.log('User closed the popup window');
+      if (err.message.includes('popup-closed-by-user')) {
         // Don't show error for user-initiated cancellation
-      } else if (err.code === 'auth/popup-blocked') {
+        console.log('User closed the popup window');
+      } else if (err.message.includes('popup-blocked')) {
         setError('Popup was blocked by your browser. Please allow popups for this site.');
-      } else if (err.code === 'auth/cancelled-popup-request') {
-        console.log('Authentication popup request was cancelled');
-        // Don't show error for cancellation
-      } else if (err.code === 'auth/network-request-failed') {
+      } else if (err.message.includes('network-request-failed')) {
         setError('Network error. Please check your internet connection and try again.');
       } else {
         setError('Failed to sign in with Google. Please try again.');
@@ -84,25 +77,16 @@ export default function SignIn() {
     }
   };
 
-  // Handle Twitter login - currently disabled until configured
   const handleTwitterSignIn = async () => {
     setError('Twitter authentication is coming soon!');
   };
 
-  // Handle TikTok login
   const handleTikTokSignIn = async () => {
     setError(null);
     setLoading(true);
     
     try {
-      const result = await signIn('tiktok', {
-        callbackUrl,
-        redirect: true,
-      });
-      
-      if (result?.error) {
-        throw new Error(result.error);
-      }
+      await loginWithProvider('tiktok', callbackUrl);
     } catch (err: any) {
       console.error('TikTok sign-in error:', err);
       setError('Failed to sign in with TikTok. Please try again.');
@@ -111,13 +95,40 @@ export default function SignIn() {
     }
   };
 
-  // Clear error on component mount
+  // Handle URL error parameters
   useEffect(() => {
     const error = searchParams?.get('error');
     if (error) {
       switch (error) {
         case 'CredentialsSignin':
           setError('Invalid email or password.');
+          break;
+        case 'OAuthSignin':
+          setError('Error occurred during OAuth sign in.');
+          break;
+        case 'OAuthCallback':
+          setError('Error occurred in OAuth callback.');
+          break;
+        case 'OAuthCreateAccount':
+          setError('Could not create OAuth account.');
+          break;
+        case 'EmailCreateAccount':
+          setError('Could not create email account.');
+          break;
+        case 'Callback':
+          setError('Error occurred in callback.');
+          break;
+        case 'OAuthAccountNotLinked':
+          setError('OAuth account is not linked to any user.');
+          break;
+        case 'EmailSignin':
+          setError('Check your email for sign in link.');
+          break;
+        case 'CredentialsSignup':
+          setError('Registration failed.');
+          break;
+        case 'SessionRequired':
+          setError('Please sign in to access this page.');
           break;
         default:
           setError('An error occurred during sign in. Please try again.');
@@ -189,14 +200,6 @@ export default function SignIn() {
             <FaGoogle />
             <span>Sign in with Google</span>
           </button>
-          
-          <Link 
-            href="/auth/signup/google" 
-            className={styles.alternativeLink}
-            style={{ marginTop: '0.5rem', fontSize: '0.85rem', textAlign: 'center' }}
-          >
-            Sign up with Google instead
-          </Link>
           
           <button 
             className={`${styles.socialButton} ${styles.twitterButton}`}

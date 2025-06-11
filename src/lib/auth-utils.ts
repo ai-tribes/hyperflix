@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 
 // Cookie constants
 export const AUTH_COOKIE_NAME = 'firebase-auth-token';
+export const AUTH_STATUS_COOKIE = 'auth-status';
 export const COOKIE_OPTIONS = {
   expires: 7, // 7 days
   path: '/',

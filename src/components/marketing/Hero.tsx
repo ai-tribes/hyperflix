@@ -16,11 +16,18 @@ const Hero = () => {
           <h1>Revolutionize Memecoin Marketing with AI</h1>
           <p>Hyper-Flix.com - The utility token powering the first AI-driven platform designed specifically for memecoins to create viral TikTok content. Join the future of crypto marketing.</p>
           <div className={styles.heroButtons}>
-            <a href="#" className="btn">Buy $FLIX Token</a>
             {isAuthenticated ? (
-              <Link href="/dashboard" className="btn btn-accent">Go to Dashboard</Link>
+              // For authenticated users, emphasize token purchase
+              <>
+                <a href="#" className="btn btn-accent">Buy $FLIX Token</a>
+                <Link href="/create" className="btn">Create Content</Link>
+              </>
             ) : (
-              <Link href="/auth/signup" className="btn btn-accent">Get Started Free</Link>
+              // For new users, emphasize getting started
+              <>
+                <Link href="/auth/signup" className="btn btn-accent">Get Started Free</Link>
+                <a href="#" className="btn">Buy $FLIX Token</a>
+              </>
             )}
           </div>
           <div className={styles.tokenInfo}>

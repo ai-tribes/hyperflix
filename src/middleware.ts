@@ -12,27 +12,44 @@ const protectedRoutes = [
   '/account',
 ]
 
-// Define allowed origins for CORS
-const allowedOrigins = [
-  'https://hyperflix.vercel.app',
-  'https://hyperflix-njjwcecgx-ai-tribes.vercel.app',
-  'https://hyper-flix-f2891.firebaseapp.com',
+// Define public paths that don't require authentication
+const publicRoutes = [
+  '/',
+  '/auth',
+  '/api/auth',
+  '/test-auth',
 ]
+
+// Define allowed origins for CORS
+// Get allowed origins from environment variables or use defaults
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',') 
+  : [
+      'https://hyperflix.vercel.app',
+      'https://hyperflix-njjwcecgx-ai-tribes.vercel.app',
+      'https://hyper-flix-f2891.firebaseapp.com',
+    ]
+
+// Always allow development origins
+if (process.env.NODE_ENV === 'development') {
+  allowedOrigins.push('http://localhost:3000', 'http://localhost:3001')
+}
 
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const origin = request.headers.get('origin') || ''
   
+  console.log(`[Middleware] Processing request for: ${pathname}`)
+  
   // Handle CORS preflight requests
   if (request.method === 'OPTIONS') {
     const response = new NextResponse(null, { status: 204 })
     
-    // Add CORS headers
     response.headers.set('Access-Control-Allow-Origin', allowedOrigins.includes(origin) ? origin : allowedOrigins[0])
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
     response.headers.set('Access-Control-Allow-Credentials', 'true')
-    response.headers.set('Access-Control-Max-Age', '86400') // 24 hours
+    response.headers.set('Access-Control-Max-Age', '86400')
     
     return response
   }
@@ -42,14 +59,24 @@ export default function middleware(request: NextRequest) {
     pathname === route || pathname.startsWith(`${route}/`)
   )
   
+  // Check if the path is public
+  const isPublicRoute = publicRoutes.some(route => 
+    pathname === route || pathname.startsWith(`${route}/`)
+  )
+  
   if (isProtectedRoute) {
-    // Check for auth token
-    const hasToken = request.cookies.has('firebase-auth-token') || 
-                     request.cookies.has('next-auth.session-token') || 
-                     request.cookies.has('__session')
+    // Check for NextAuth session token (multiple possible cookie names)
+    const sessionToken = request.cookies.get('next-auth.session-token')?.value ||
+                        request.cookies.get('__Secure-next-auth.session-token')?.value ||
+                        request.cookies.get('__Host-next-auth.session-token')?.value
     
-    // If no token, redirect to login
-    if (!hasToken) {
+    // Also check for our custom Firebase token as fallback
+    const firebaseToken = request.cookies.get('firebase-auth-token')?.value ||
+                         request.cookies.get('auth-token')?.value
+    
+    const isAuthenticated = !!sessionToken || !!firebaseToken
+    
+    if (!isAuthenticated) {
       console.log(`[Middleware] Redirecting unauthenticated user from ${pathname} to login`)
       const url = new URL('/auth/signin', request.url)
       url.searchParams.set('callbackUrl', pathname)
@@ -59,12 +86,12 @@ export default function middleware(request: NextRequest) {
     console.log(`[Middleware] Authenticated user accessing ${pathname}`)
   }
   
-  // Add CORS headers to all responses
+  // Create response with CORS headers
   const response = NextResponse.next()
   
-  // Add CORS headers
-  if (origin) {
-    response.headers.set('Access-Control-Allow-Origin', allowedOrigins.includes(origin) ? origin : allowedOrigins[0])
+  // Add CORS headers to all responses
+  if (origin && allowedOrigins.includes(origin)) {
+    response.headers.set('Access-Control-Allow-Origin', origin)
     response.headers.set('Access-Control-Allow-Credentials', 'true')
   }
   
@@ -75,23 +102,12 @@ export default function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match specific protected routes
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder
      */
-    '/dashboard',
-    '/dashboard/:path*',
-    '/create',
-    '/create/:path*',
-    '/videos',
-    '/videos/:path*',
-    '/tokens',
-    '/tokens/:path*',
-    '/audios',
-    '/audios/:path*',
-    '/lipsync',
-    '/lipsync/:path*',
-    '/account',
-    '/account/:path*',
-    // Also match API routes for CORS
-    '/api/:path*',
+    '/((?!_next/static|_next/image|favicon.ico|public/).*)',
   ],
 } 

@@ -39,17 +39,20 @@ const Header = () => {
 
   // Simple navigation links setup - only render once loading is complete
   const getNavLinks = () => {
-    // If we're on the landing page, always show auth buttons
+    // If we're on the landing page, show minimal navigation
     if (isLandingPage) {
       return (
         <>
           <li><Link href="/pricing">Pricing</Link></li>
-          {/* Always show sign-up and sign-in buttons on landing page */}
-          <li className={styles.authButton}><Link href="/auth/signin">Sign In</Link></li>
-          <li className={styles.ctaButton}><Link href="/auth/signup">Sign Up</Link></li>
-          {/* Show dashboard button for authenticated users */}
-          {user && (
-            <li><Link href="/dashboard" className={styles.dashboardButton}>Dashboard</Link></li>
+          {user ? (
+            // For authenticated users, show create content link
+            <li className={styles.ctaButton}><Link href="/create">Create Content</Link></li>
+          ) : (
+            // For non-authenticated users, show auth buttons
+            <>
+              <li className={styles.authButton}><Link href="/auth/signin">Sign In</Link></li>
+              <li className={styles.ctaButton}><Link href="/auth/signup">Sign Up</Link></li>
+            </>
           )}
         </>
       );

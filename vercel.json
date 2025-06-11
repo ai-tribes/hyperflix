@@ -6,6 +6,14 @@
   "regions": ["sfo1"],
   "routes": [
     {
+      "src": "/api/auth/(.*)",
+      "dest": "/api/auth/$1",
+      "headers": {
+        "Cache-Control": "no-store, max-age=0",
+        "Set-Cookie": "Path=/; Secure; HttpOnly; SameSite=Lax"
+      }
+    },
+    {
       "src": "/api/stripe/webhook",
       "dest": "/api/stripe/webhook",
       "methods": ["POST"],
@@ -41,5 +49,16 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Credentials", "value": "true" },
+        { "key": "Access-Control-Allow-Origin", "value": "$ALLOWED_ORIGINS" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
+      ]
+    }
+  ]
 } 
