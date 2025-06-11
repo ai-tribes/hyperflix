@@ -31,11 +31,7 @@ const Header = () => {
       <header className={styles.header}>
         <div className="container">
           <div className={styles.headerContainer}>
-            <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>
-            
-            <div className={styles.tagline}>
-              <span>HyperFlix - Generate Viral TikTok Content for Memecoins</span>
-            </div>
+            {/* Hide logo during loading to prevent flicker */}
             
             {/* Empty space where navigation would be */}
             <div className={styles.navigation}>
@@ -118,11 +114,8 @@ const Header = () => {
     <header className={styles.header}>
       <div className="container">
         <div className={styles.headerContainer}>
-          <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>
-          
-          <div className={styles.tagline}>
-            <span>HyperFlix - Generate Viral TikTok Content for Memecoins</span>
-          </div>
+          {/* Only show logo when user is not authenticated */}
+          {!user && <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>}
           
           <button 
             className={styles.mobileMenuButton} 

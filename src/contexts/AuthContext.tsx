@@ -21,6 +21,8 @@ interface AuthContextType {
   loginWithProvider: (provider: string, callbackUrl?: string) => Promise<void>;
   registerWithEmail: (name: string, email: string, password: string, callbackUrl?: string) => Promise<void>;
   logout: () => Promise<void>;
+  signOut: () => Promise<void>; // Alias for logout
+  signOutFromAllDevices: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
 }
 
@@ -134,6 +136,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Alias for logout to match the interface
+  const signOutFunc = logout;
+
+  const signOutFromAllDevices = async () => {
+    setError(null);
+    try {
+      // For NextAuth, signing out from all devices means:
+      // 1. Clear all sessions in the database (if using database sessions)
+      // 2. Sign out from current session
+      // Since we're using JWT sessions, we'll just sign out normally
+      // In a production app with database sessions, you'd invalidate all user sessions here
+      
+      await signOut({ callbackUrl: '/' });
+    } catch (err: any) {
+      console.error('Sign out from all devices error:', err);
+      setError(err.message || 'Failed to sign out from all devices');
+      throw err;
+    }
+  };
+
   const resetPassword = async (email: string) => {
     setError(null);
     try {
@@ -155,6 +177,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loginWithProvider,
     registerWithEmail,
     logout,
+    signOut: signOutFunc,
+    signOutFromAllDevices,
     resetPassword,
   };
 
