@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Sidebar.module.css';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 interface SidebarProps {
@@ -17,18 +16,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
         <div className={styles.sidebarHeader}>
           <Link href="/" className={styles.logo}>
-            <Image
-              src="/hyperflix-logo.png"
-              alt="Hyper-Flix.com"
-              width={32}
-              height={32}
-              priority
-              className={styles.logoImage}
-            />
-            <span className={styles.brandText}>Hyper-Flix.com</span>
+            <span className={styles.brandIcon}>HF</span>
+            <span className={styles.brandText}>HyperFlix</span>
           </Link>
           <button className={styles.closeButton} onClick={toggleSidebar} aria-label="Close sidebar">
-            ×
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
           </button>
         </div>
         

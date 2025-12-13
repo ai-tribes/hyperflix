@@ -2,23 +2,24 @@
 
 import React from 'react'
 import styles from './Token.module.css'
+import GlitchText from '@/components/effects/GlitchText'
 
 const Token = () => {
   const features = [
     {
-      icon: '💎',
-      title: 'Platform Access',
-      description: 'Hold $FLIX to access premium features and create unlimited viral content.'
+      icon: '🚀',
+      title: 'Premium Creator Access',
+      description: 'Hold $FLIX for unlimited video generation, priority support, and exclusive avatar drops.'
     },
     {
-      icon: '📈',
-      title: 'Revenue Share',
-      description: 'Earn a share of platform revenue based on your token holdings.'
+      icon: '💰',
+      title: 'Profit Sharing',
+      description: 'Earn passive income from platform fees. The more HyperFlix grows, the more you earn.'
     },
     {
-      icon: '🎯',
-      title: 'Governance Rights',
-      description: 'Vote on platform features and token economics.'
+      icon: '⚡',
+      title: 'Early Access',
+      description: 'Get first access to new features, AI models, and beta testing opportunities.'
     }
   ]
 
@@ -27,8 +28,8 @@ const Token = () => {
       <div className="container">
         <div className={styles.tokenContainer}>
           <div className={styles.tokenContent}>
-            <h2>The $FLIX Token Economy</h2>
-            <p>$FLIX is more than just a utility token - it's your stake in the future of memecoin marketing and the growing platform revenue.</p>
+            <h2>Own a Piece of the <GlitchText text="Viral Economy" /></h2>
+            <p>$FLIX isn't just access to the platform - it's ownership in the future of memecoin marketing. As more projects succeed using HyperFlix, your tokens become more valuable.</p>
             <div className={styles.tokenFeatures}>
               {features.map((feature, index) => (
                 <div key={index} className={styles.tokenFeature}>

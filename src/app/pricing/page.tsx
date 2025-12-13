@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import { IoClose } from 'react-icons/io5';
 import { SUBSCRIPTION_PLANS } from '@/lib/stripe';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useAuth } from '@/contexts/AuthContext';
@@ -45,7 +46,15 @@ export default function PricingPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContainer}>
+        <button 
+          className={styles.closeButton}
+          onClick={() => router.push('/')}
+          aria-label="Close"
+        >
+          <IoClose />
+        </button>
       <div className={styles.header}>
         <h1>Choose Your Plan</h1>
         <p>Select the perfect plan for your memecoin marketing needs</p>
@@ -183,6 +192,7 @@ export default function PricingPage() {
           <h3>Can I use HyperFlix for multiple memecoin projects?</h3>
           <p>Yes, you can use HyperFlix for multiple memecoin projects under the same subscription. There are no limits on the number of projects you can create.</p>
         </div>
+      </div>
       </div>
     </div>
   );

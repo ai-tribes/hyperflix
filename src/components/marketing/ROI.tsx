@@ -2,24 +2,25 @@
 
 import React from 'react'
 import styles from './ROI.module.css'
+import GlitchText from '@/components/effects/GlitchText'
 
 const ROI = () => {
   const stats = [
     {
-      value: '247%',
-      label: 'Average increase in trading volume'
+      value: '1,247%',
+      label: 'Average token price increase'
     },
     {
-      value: '32K+',
-      label: 'New wallet holders per viral video'
+      value: '85K+',
+      label: 'New holders per month'
     },
     {
-      value: '83%',
-      label: 'Improved token retention'
+      value: '92%',
+      label: 'Projects see 10x+ volume'
     },
     {
-      value: '5.4x',
-      label: 'Average ROI on marketing spend'
+      value: '30 Days',
+      label: 'To reach 100M+ views'
     }
   ]
 
@@ -28,9 +29,9 @@ const ROI = () => {
       <div className="container">
         <div className={styles.roiContainer}>
           <div className={styles.roiContent}>
-            <h2>Proven ROI for Memecoin Projects</h2>
-            <p>TikTok has become the #1 platform for memecoin virality, with a direct correlation between content performance and token price action.</p>
-            <p>Our data shows memecoin projects using targeted TikTok marketing experience:</p>
+            <h2><GlitchText text="Real Results" /> From <GlitchText text="Real Projects" /></h2>
+            <p>Why pay $50K+ for one influencer when you can create unlimited content for $99/month? Our users consistently outperform traditional marketing.</p>
+            <p>Projects using HyperFlix see massive improvements within 30 days:</p>
             
             <div className={styles.roiStats}>
               {stats.map((stat, index) => (
@@ -41,8 +42,8 @@ const ROI = () => {
               ))}
             </div>
             
-            <p>With HyperFlix, you can create and publish up to 150 viral-optimized videos per month at a fraction of traditional production costs.</p>
-            <a href="#" className="btn btn-accent">View Case Studies</a>
+            <p><strong>Case Study:</strong> $MOONCAT went from $50K to $15M market cap in 21 days using just HyperFlix content. Zero influencer spend required.</p>
+            <a href="#" className="btn btn-accent">See More Success Stories</a>
           </div>
           <div className={styles.roiChart}>
             <div className={styles.chartContainer}>

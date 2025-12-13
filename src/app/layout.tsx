@@ -1,17 +1,21 @@
 import React from 'react'
 import './globals.css'
-import { Poppins } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { AppAuthProvider } from '@/contexts/AuthContext'
+import dynamic from 'next/dynamic'
 
-const poppins = Poppins({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
   display: 'swap',
 })
 
+const CustomCursor = dynamic(() => import('@/components/effects/CustomCursor'), {
+  ssr: false
+})
+
 export const metadata = {
-  title: 'Hyper-Flix.com - The Ultimate Memecoin Marketing Platform',
-  description: 'AI-powered platform for creating viral TikTok content for memecoins.',
+  title: 'HyperFlix - AI Viral Marketing Platform | Turn Memecoins Into Billions',
+  description: 'Revolutionary AI that creates viral TikTok content. Watch your memecoin explode from $0 to $100M in days.',
 }
 
 export default function RootLayout({
@@ -21,8 +25,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body className={inter.className}>
         <AppAuthProvider>
+          <CustomCursor />
           {children}
         </AppAuthProvider>
       </body>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Header from '../shared/Header';
+import InternalHeader from '../shared/InternalHeader';
 import Sidebar from '../shared/Sidebar';
 import Footer from '../shared/Footer';
 import styles from './DashboardLayout.module.css';
@@ -50,7 +50,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       
       <div className={`${styles.content} ${sidebarOpen ? styles.contentWithSidebar : ''}`}>
-        <Header />
+        <InternalHeader />
         <main className={styles.main}>
           <div className={styles.mainContent}>
             {children}

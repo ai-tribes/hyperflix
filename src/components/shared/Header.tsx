@@ -24,19 +24,23 @@ const Header = () => {
     }
   };
 
-  // Don't show navigation links during authentication loading
-  // This prevents the flicker between unauthenticated and authenticated states
+  // Show basic header during loading
   if (loading) {
     return (
       <header className={styles.header}>
         <div className="container">
           <div className={styles.headerContainer}>
-            {/* Hide logo during loading to prevent flicker */}
+            {/* Always show logo */}
+            <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>
             
-            {/* Empty space where navigation would be */}
-            <div className={styles.navigation}>
-              {/* Show nothing during loading */}
-            </div>
+            {/* Show basic navigation during loading */}
+            <nav className={styles.navigation}>
+              <ul className={styles.navLinks}>
+                <li><Link href="/pricing">Pricing</Link></li>
+                <li className={styles.authButton}><Link href="/auth/signin">Sign In</Link></li>
+                <li className={styles.ctaButton}><Link href="/auth/signup">Sign Up</Link></li>
+              </ul>
+            </nav>
           </div>
         </div>
       </header>
@@ -114,8 +118,8 @@ const Header = () => {
     <header className={styles.header}>
       <div className="container">
         <div className={styles.headerContainer}>
-          {/* Only show logo when user is not authenticated */}
-          {!user && <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>}
+          {/* Always show logo */}
+          <Link href="/" className={styles.logo}>Hyper-<span>Flix</span></Link>
           
           <button 
             className={styles.mobileMenuButton} 

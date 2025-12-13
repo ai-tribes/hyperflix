@@ -2,38 +2,29 @@
 
 import React from 'react'
 import styles from './Platform.module.css'
+import GlitchText from '@/components/effects/GlitchText'
 
 const Platform = () => {
   const steps = [
     {
       number: 1,
-      title: 'Connect Your Wallet',
-      description: 'Hold $FLIX tokens to access the platform and unlock premium features based on your holding tier.'
+      title: 'Start Creating',
+      description: 'Connect wallet, add your token details. Takes 30 seconds. No technical knowledge required.'
     },
     {
       number: 2,
-      title: 'Add Your Token',
-      description: 'Input your memecoin\'s contract address and basic details to set up automated price tracking and content optimization.'
+      title: 'Pick Your Vibe',
+      description: 'Choose from 200+ crypto-native avatars that look like real TikTok influencers. Find your perfect match.'
     },
     {
       number: 3,
-      title: 'Choose Your Avatar',
-      description: 'Select from our library of crypto-native avatars designed to resonate with memecoin communities.'
+      title: 'Generate Viral Content',
+      description: 'AI creates custom hooks, scripts and videos based on 50M+ viral examples. Each video optimized for maximum engagement.'
     },
     {
       number: 4,
-      title: 'Generate Your Hook',
-      description: 'Our AI analyzes top-performing memecoin content to create hooks with the highest potential for virality.'
-    },
-    {
-      number: 5,
-      title: 'Customize Your Script',
-      description: 'Edit the AI-generated script or craft your own to highlight your token\'s unique value proposition.'
-    },
-    {
-      number: 6,
-      title: 'Publish & Track',
-      description: 'Directly publish to TikTok and track performance metrics alongside token price movement in real-time.'
+      title: 'Watch It Moonshot',
+      description: 'Content goes live instantly. Watch real-time analytics as your token price pumps with each viral video.'
     }
   ]
 
@@ -41,8 +32,8 @@ const Platform = () => {
     <section id="platform" className={styles.section}>
       <div className="container">
         <div className={styles.sectionTitle}>
-          <h2>How to Use HyperFlix</h2>
-          <p>Creating viral memecoin content has never been easier. Follow these simple steps to launch your next token to the moon.</p>
+          <h2>Go From <GlitchText text="Launch" /> to <GlitchText text="Viral" /> in Minutes</h2>
+          <p>No complex setups. No hiring creators. No expensive campaigns. Just pure AI-powered viral content generation that actually works.</p>
         </div>
         <div className={styles.platformGrid}>
           {steps.map((step) => (
