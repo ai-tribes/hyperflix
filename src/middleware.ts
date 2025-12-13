@@ -5,7 +5,6 @@ import type { NextRequest } from 'next/server'
 const protectedRoutes = [
   '/dashboard',
   '/create',
-  '/videos',
   '/tokens',
   '/audios',
   '/lipsync',
@@ -18,6 +17,8 @@ const publicRoutes = [
   '/auth',
   '/api/auth',
   '/test-auth',
+  '/videos',
+  '/pricing',
 ]
 
 // Define allowed origins for CORS
